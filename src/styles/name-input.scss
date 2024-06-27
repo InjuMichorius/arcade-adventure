@@ -1,0 +1,21 @@
+.name-input-wrapper {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr auto;
+    height: 60px;
+    background-color: white;
+    border-radius: 5px;
+    width: 100%;
+    input[type="text"] {
+        height: 100%;
+        padding: 0;
+        outline: none;
+        border: 0;
+        font-size: 24px;
+    }
+    .icon {
+        color: #222;
+        height: 20px;
+        padding: 16px;
+    }
+}

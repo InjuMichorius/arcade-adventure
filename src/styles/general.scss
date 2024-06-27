@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+$accentColor: #F7AF29;
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    background-color: #222;
+}
+
+button {
+    border: 0;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    padding: 1rem;
+    background: transparent;
+    border-radius: 5px;
+    width: fit-content;
+
+    &.primary {
+        color: #222;
+        background-color: $accentColor;
+    }
+
+    &.secondary {
+        border: 2px solid $accentColor;
+        color: $accentColor;
+    }
+
+    .icon {
+        height: 20px;
+    }
+}

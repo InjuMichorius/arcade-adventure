@@ -1,0 +1,19 @@
+.home-container {
+    padding: 30px 15px;
+    &__title {
+        margin-bottom: 1rem;
+    }
+    &__player-list {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+
+    &__button-container {
+        display: flex;
+        gap: 3rem;
+        flex-direction: column;
+    }
+}
