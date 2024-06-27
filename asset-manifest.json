@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-doodles/static/css/main.16008aa2.css",
+    "main.js": "/react-doodles/static/js/main.16e56b23.js",
+    "index.html": "/react-doodles/index.html",
+    "main.16008aa2.css.map": "/react-doodles/static/css/main.16008aa2.css.map",
+    "main.16e56b23.js.map": "/react-doodles/static/js/main.16e56b23.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.16008aa2.css",
+    "static/js/main.16e56b23.js"
+  ]
+}
