@@ -1,0 +1,62 @@
+.memory-game-container {
+    text-align: center;
+  }
+  
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust the size of the grid columns */
+    grid-template-rows: repeat(3, 1fr); /* Adjust the size of the grid rows */
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .card {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 2em;
+    cursor: pointer;
+    background-color: #6ecea0;
+    font-size: 2em;
+    color: #369064;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card.hole {
+    cursor: default; /* Disable cursor on the hole */
+    visibility: hidden; /* Hide the hole */
+  }
+  
+  .card.flipped {
+    background-color: #f0f0f0; /* Background color when card is flipped */
+    cursor: default; /* Disable cursor on flipped cards */
+  }
+  
+  .memory-game-container p {
+    margin-top: 10px;
+    font-size: 1.2em;
+  }
+  
+  .memory-game-container > div {
+    margin-top: 20px;
+  }
+  
+  .memory-game-container > div > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  /* Style for the hole */
+  .hole {
+    width: 100px; /* Adjust the size of the hole */
+    height: 100px; /* Adjust the size of the hole */
+    background-color: #f0f0f0; /* Color of the hole */
+    border: none;
+    cursor: default; /* Disable cursor on the hole */
+  }
