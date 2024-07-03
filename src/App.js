@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './components/pages/home';
+import ManagePlayers from './components/pages/managePlayers';
 import Game from './components/pages/game';
+import AvatarPreview from './components/molecules/avatarPreview';
 import NoPage from './components/pages/noPage';
 import "./App.scss";
 
@@ -30,15 +31,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={
-          <Home 
+          <ManagePlayers 
             players={players} 
             addPlayer={addPlayer} 
             deletePlayer={deletePlayer} 
             handleNameChange={handleNameChange} 
           />
         } />
-        <Route path="/shit-happens" element={
-          <Home 
+        <Route path="/react-doodles" element={
+          <ManagePlayers 
             players={players} 
             addPlayer={addPlayer} 
             deletePlayer={deletePlayer} 
@@ -46,6 +47,7 @@ function App() {
           />
         } />
         <Route path="/game" element={<Game players={players}  />} />
+        <Route path="/avatar-preview" element={<AvatarPreview />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

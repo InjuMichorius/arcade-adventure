@@ -1,0 +1,49 @@
+.tic-tac-toe-container {
+  text-align: center;
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .cell {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #6ecea0;
+    font-size: 2em;
+    color: #369064;
+    cursor: pointer;
+    border-radius: 10px;
+    &.circle {
+      background-image: url("../../assets/images/tic-tac-toe-circle.png");
+      background-size: 50% 50%;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    &.cross {
+      background-image: url("../../assets/images/tic-tac-toe-cross.png");
+      background-size: 50% 50%;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .status-message {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    color: #6ecea0;
+    font-family: var(--font);
+  }
+}

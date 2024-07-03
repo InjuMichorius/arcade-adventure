@@ -1,7 +1,7 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser, faTrash } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
+import Button from "./button";
 
 function NameInput({ id, onNameChange, onDelete }) {
   const handleNameChange = (event) => {
@@ -10,9 +10,9 @@ function NameInput({ id, onNameChange, onDelete }) {
 
   return (
     <div className="name-input-wrapper">
-      <FontAwesomeIcon icon={faCircleUser} className="icon" />
+      <Button icon={faCircleUser}  />
       <input type="text" placeholder="Spelernaam" onChange={handleNameChange} />
-      <FontAwesomeIcon icon={faTrash} className="icon" onClick={onDelete} />
+      <Button icon={faTrash} onClick={onDelete} />
     </div>
   );
 }
