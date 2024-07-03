@@ -10,13 +10,13 @@ function getRandomPlayers(players, num = 2) {
 }
 
 const dummyPlayers = [
-  { id: 0, name: 'Inju', component: null },
-  { id: 1, name: 'Casper', component: null },
+  { id: 0, name: 'Inju 1' },
+  { id: 1, name: 'Inju 2' },
   // Add more players if needed
 ];
 
 function Game({ players }) {
-  const randomPlayers = getRandomPlayers(dummyPlayers);
+  const randomPlayers = getRandomPlayers(players);
   const [player1, player2] = randomPlayers;
 
   return (
