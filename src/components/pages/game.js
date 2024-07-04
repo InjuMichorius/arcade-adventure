@@ -1,9 +1,9 @@
 import React from 'react';
 import NavBar from '../organisms/navBar';
-// import TicTacToe from '../games/ticTacToe';
-import Fingering from '../games/fingering';
+import TicTacToe from '../games/ticTacToe';
+// import Fingering from '../games/fingering';
 // import RockPaperScissors from '../games/rockPaperScissors';
-// import Memory from '../games/memory';
+import Memory from '../games/memory';
 
 function getRandomPlayers(players, num = 2) {
   const shuffled = players.sort(() => 0.5 - Math.random());
@@ -23,10 +23,10 @@ function Game({ players }) {
     <div className='game-container'>
       <NavBar />
       <main>
-      {/* <TicTacToe player1={player1} player2={player2} /> */}
+      <TicTacToe player1={player1} player2={player2} />
       {/* <RockPaperScissors player1={player1} player2={player2} /> */}
-      {/* <Memory player1={player1} player2={player2} /> */}
-      <Fingering />
+      <Memory player1={player1} player2={player2} />
+      {/* <Fingering /> */}
       </main>
     </div>
   );
