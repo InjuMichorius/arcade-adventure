@@ -64,9 +64,13 @@ function Memory({ player1, player2 }) {
     player2.score = 0;
   };
 
+  console.log(player1, player2);
+
   return (
     <div className='memory-game-container'>
       <h1>Memory Game</h1>
+      <p>player1 score: {player1.score}</p>
+      <p>player2 score: {player2.score}</p>
       <p>Current Player: {currentPlayer.name}</p>
       <div className='board'>
         {shuffledCards.map((card, index) => (

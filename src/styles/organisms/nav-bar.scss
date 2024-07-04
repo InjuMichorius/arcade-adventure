@@ -1,0 +1,33 @@
+.navbar-container {
+  display: flex;
+  justify-content: center;
+  button {
+    padding: 0;
+  }
+  .player-list {
+    position: fixed;
+    top: -100%;
+    width: 100vw;
+    height: 100vh;
+    background-color: #6ecea0;
+    padding: 4rem 1rem;
+    list-style: none;
+    transition: all 0.3s ease-in-out;
+    &.show {
+      top: 0;
+    }
+    .player-container {
+        display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #6ECEA0;
+            border-radius: 10px;
+        .avatar-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 100%;
+            background-color: red;
+        }
+    }
+  }
+}

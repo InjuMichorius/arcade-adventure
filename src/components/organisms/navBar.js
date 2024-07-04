@@ -1,13 +1,24 @@
-import logo from "../../assets/images/logo.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
+import Hamburger from "../atoms/hamburger";
 
 function NavBar() {
+  const [isPlayerListVisible, setIsPlayerListVisible] = useState(false);
+
+  const handleHamburgerClick = () => {
+    setIsPlayerListVisible(!isPlayerListVisible);
+  };
+
   return (
-    <nav className="navbar-container">
-      <img src={logo} alt="Logo" className="logo" />
-      <FontAwesomeIcon icon={faBars} className="hamburger" />
-    </nav>
+    <header className="navbar-container">
+      <Hamburger onClick={handleHamburgerClick} />
+      <ul className={`player-list ${isPlayerListVisible ? "show" : ""}`}>
+        <h1>Leaderboard</h1>
+        <li className="player-container">
+          <div className="avatar-preview">avatar</div>
+          <div className="place">1</div>
+        </li>
+      </ul>
+    </header>
   );
 }
 

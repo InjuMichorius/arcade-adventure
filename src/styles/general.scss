@@ -75,23 +75,6 @@ button {
   }
 }
 
-.navbar-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background-color: #6ECEA0;
-  color: white;
-  font-family: var(--font-bold);
-  .logo {
-    width: 100px;
-  }
-}
-
-.hamburger, .hamburger path {
-  color: #369064;
-  height: 30px;
-}
 
 main {
   padding: 1rem;
