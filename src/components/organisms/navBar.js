@@ -28,6 +28,34 @@ function NavBar() {
           </div>
           <div className="place">1</div>
         </li>
+        <li className="player-container">
+          <div className="avatar-preview">
+            <img src={avatar} alt="Avatar" />
+          </div>
+          <div className="user-details">
+            <p className="player-name">Player 1</p>
+            <div className="items-container">
+              <div className="item">1</div>
+              <div className="item">2</div>
+              <div className="item">3</div>
+            </div>
+          </div>
+          <div className="place">1</div>
+        </li>
+        <li className="player-container">
+          <div className="avatar-preview">
+            <img src={avatar} alt="Avatar" />
+          </div>
+          <div className="user-details">
+            <p className="player-name">Player 1</p>
+            <div className="items-container">
+              <div className="item">1</div>
+              <div className="item">2</div>
+              <div className="item">3</div>
+            </div>
+          </div>
+          <div className="place">1</div>
+        </li>
       </ul>
     </header>
   );
