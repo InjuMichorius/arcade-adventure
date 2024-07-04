@@ -1,40 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
 const Fingering = () => {
-  const [touchPoints, setTouchPoints] = useState([]);
+  const [touchCount, setTouchCount] = useState(0);
 
   const handleTouchStart = (event) => {
     event.preventDefault(); // Prevent default behavior
-    const touches = Array.from(event.touches).map(touch => ({
-      identifier: touch.identifier,
-      clientX: touch.clientX,
-      clientY: touch.clientY
-    }));
-    setTouchPoints(touches);
+    setTouchCount(event.touches.length);
   };
 
   const handleTouchMove = (event) => {
     event.preventDefault(); // Prevent default behavior
-    const touches = Array.from(event.touches).map(touch => ({
-      identifier: touch.identifier,
-      clientX: touch.clientX,
-      clientY: touch.clientY
-    }));
-    setTouchPoints(touches);
+    setTouchCount(event.touches.length);
   };
 
   const handleTouchEnd = (event) => {
     event.preventDefault(); // Prevent default behavior
-    const remainingTouches = Array.from(event.touches).map(touch => ({
-      identifier: touch.identifier,
-      clientX: touch.clientX,
-      clientY: touch.clientY
-    }));
-    setTouchPoints(remainingTouches);
+    setTouchCount(event.touches.length);
   };
 
   useEffect(() => {
-    const touchArea = document.getElementById('touchArea');
+    const touchArea = document.body; // Attach listeners to the body element
     touchArea.addEventListener('touchstart', handleTouchStart, { passive: false });
     touchArea.addEventListener('touchmove', handleTouchMove, { passive: false });
     touchArea.addEventListener('touchend', handleTouchEnd, { passive: false });
@@ -50,37 +35,8 @@ const Fingering = () => {
 
   return (
     <div>
-      <h1>Multi-Touch Detection</h1>
-      <div
-        id="touchArea"
-        style={{
-          width: '100%',
-          height: '300px',
-          backgroundColor: '#ccc',
-          position: 'relative',
-          touchAction: 'none' // Disable default touch actions
-        }}
-      >
-        {touchPoints.map(point => (
-          <div
-            key={point.identifier}
-            style={{
-              position: 'absolute',
-              top: point.clientY,
-              left: point.clientX,
-              width: '20px',
-              height: '20px',
-              backgroundColor: 'red',
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%)'
-            }}
-          />
-        ))}
-      </div>
-      <div>
-        <h2>Touch Points:</h2>
-        <pre>{JSON.stringify(touchPoints, null, 2)}</pre>
-      </div>
+      <h1>{touchCount ? touchCount : "Fingering"}</h1>
+      <p className='explanation-text'>Place your finger on the screen. Clockwise, guess how many fingers are on the screen. If you guess correctly, you're out. If you guess wrong, you must drink.</p>
     </div>
   );
 };
