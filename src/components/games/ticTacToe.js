@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "../molecules/button";
 
-function TicTacToe({ player1, player2 }) {
+function TicTacToe({ player1, player2, onNextGame }) {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
@@ -67,14 +67,15 @@ function TicTacToe({ player1, player2 }) {
             className={`cell ${cell}`}
             onClick={() => handleClick(index)}
           >
-            {cell && (
-              <div className={cell}></div>
-            )}
+            {cell && <div className={cell}></div>}
           </div>
         ))}
       </div>
       {winner && (
-        <Button variant="primary" onClick={resetGame} text="Play again" />
+        <div>
+          <Button variant="primary" onClick={resetGame} text="Play again" />
+          <Button variant="secondary" onClick={onNextGame} text="Next Game" />
+        </div>
       )}
     </div>
   );

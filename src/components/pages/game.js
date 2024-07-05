@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../organisms/navBar";
 import TicTacToe from "../games/ticTacToe";
-// import Fingering from '../games/fingering';
-// import RockPaperScissors from '../games/rockPaperScissors';
 import Memory from "../games/memory";
 
 function getRandomPlayers(players, num = 2) {
@@ -15,18 +13,31 @@ const dummyPlayers = [
   { id: 1, name: "Inju 2", points: 0 },
 ];
 
+const games = [
+  { component: TicTacToe, name: "TicTacToe" },
+  { component: Memory, name: "Memory" },
+];
+
 function Game({ players }) {
   const randomPlayers = getRandomPlayers(dummyPlayers);
   const [player1, player2] = randomPlayers;
+  const [currentGameIndex, setCurrentGameIndex] = useState(0);
+
+  const CurrentGameComponent = games[currentGameIndex].component;
+
+  const handleNextGame = () => {
+    setCurrentGameIndex((prevIndex) => (prevIndex + 1) % games.length);
+  };
 
   return (
     <div className="game-container">
       <NavBar players={dummyPlayers} />
       <main>
-        <TicTacToe player1={player1} player2={player2} />
-        {/* <RockPaperScissors player1={player1} player2={player2} /> */}
-        <Memory player1={player1} player2={player2} />
-        {/* <Fingering /> */}
+        <CurrentGameComponent
+          player1={player1}
+          player2={player2}
+          onNextGame={handleNextGame}
+        />
       </main>
     </div>
   );

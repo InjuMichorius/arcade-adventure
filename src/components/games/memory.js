@@ -16,7 +16,7 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-function Memory({ player1, player2 }) {
+function Memory({ player1, player2, onNextGame }) {
   const [shuffledCards, setShuffledCards] = useState(shuffleArray([...cards])); // Including empty card
   const [flippedCards, setFlippedCards] = useState([]);
   const [matchedCards, setMatchedCards] = useState([]);
@@ -87,6 +87,7 @@ function Memory({ player1, player2 }) {
         <div>
           {winner && <p>Winner: {winner}</p>}
           <Button variant="primary" onClick={resetGame} text="Play again" />
+          <Button variant="secondary" onClick={onNextGame} text="Next Game" />
         </div>
       ) : null}
     </div>
