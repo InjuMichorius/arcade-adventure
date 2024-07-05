@@ -11,6 +11,9 @@
 :root {
   --font: "Arcade Adventure";
   --font-bold: "Arcade Adventure Bold";
+  --green: #369064;
+  --light-green: #6ecea0;
+  --off-white: #fffcc1;
 }
 
 * {
@@ -19,21 +22,19 @@
   box-sizing: border-box;
 }
 
-$backgroundColor: #369064;
-
 body {
   font-family: Arial, Helvetica, sans-serif;
   color: white;
-  background-color: $backgroundColor;
+  background-color: var(--green);
 }
 
 h1 {
   color: #e64d48;
   font-size: 3rem;
   text-transform: uppercase;
-  text-shadow: -5px -5px 0 #fffcc1, 5px -5px 0 #fffcc1, -5px 5px 0 #fffcc1,
-    5px 5px 0 #fffcc1, 0 -5px 0 #fffcc1, 0 5px 0 #fffcc1, -5px 0 0 #fffcc1,
-    5px 0 0 #fffcc1;
+  text-shadow: -5px -5px 0 var(--off-white), 5px -5px 0 var(--off-white), -5px 5px 0 var(--off-white),
+    5px 5px 0 var(--off-white), 0 -5px 0 var(--off-white), 0 5px 0 var(--off-white), -5px 0 0 var(--off-white),
+    5px 0 0 var(--off-white);
   text-align: center;
   font-family: var(--font-bold);
 }
@@ -41,7 +42,7 @@ h1 {
 .explanation-text {
   text-align: center;
   font-family: var(--font);
-  color: #6ecea0;
+  color: var(--light-green);
   font-size: 1.2rem;
 }
 
@@ -63,10 +64,10 @@ button {
   }
 
   &.secondary {
-    background-color: #369064;
-    border-color: #369064;
+    background-color: var(--green);
+    border-color: var(--green);
     svg path {
-      fill: #6ecea0;
+      fill: var(--light-green);
     }
   }
 

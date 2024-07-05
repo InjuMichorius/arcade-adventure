@@ -19,7 +19,7 @@
 .line {
   fill: none;
   transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
-  stroke: #fffcc1;
+  stroke: var(--off-white);
   stroke-width: 5.5;
   stroke-linecap: round;
 }
@@ -33,16 +33,16 @@
   stroke-dasharray: 40 205;
 }
 .ham.active .top {
-  stroke: #369064;
+  stroke: var(--green);
   stroke-dasharray: 75 130;
   stroke-dashoffset: -63px;
 }
 .ham.active .middle {
-  stroke: #369064;
+  stroke: var(--green);
   stroke-dashoffset: -102px;
 }
 .ham.active .bottom {
-  stroke: #369064;
+  stroke: var(--green);
   stroke-dasharray: 110 205;
   stroke-dashoffset: -86px;
 }

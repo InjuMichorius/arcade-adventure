@@ -9,7 +9,7 @@
     top: -9999px;
     width: 100vw;
     height: 100vh;
-    background-color: #6ecea0;
+    background-color: var(--light-green);
     padding: 4rem 1rem;
     list-style: none;
     &__title {
@@ -23,7 +23,7 @@
       gap: 20px;
       justify-content: space-between;
       align-items: center;
-      background-color: #6ecea0;
+      background-color: var(--light-green);
       border-radius: 10px;
       margin-bottom: 2rem;
 
@@ -32,7 +32,7 @@
         height: 80px;
         aspect-ratio: 1;
         border-radius: 100%;
-        border: 4px solid #fffcc1;
+        border: 4px solid var(--off-white);
         img {
           width: 100%;
           height: 100%;
@@ -45,7 +45,7 @@
         .player-name {
           font-size: 1.5rem;
           font-family: var(--font-bold);
-          color: #fffcc1;
+          color: var(--off-white);
         }
         .items-container {
           display: flex;
@@ -64,16 +64,16 @@
       }
       &:first-of-type {
         .place {
-          color: #369064;
-          background-color: #fffcc1;
+          color: var(--green);
+          background-color: var(--off-white);
         }
       }
       .place {
         display: flex;
         align-items: center;
-        background-color: #369064;
+        background-color: var(--green);
         border-radius: 10px;
-        color: #6ecea0;
+        color: var(--light-green);
         font-size: 2rem;
         font-family: var(--font-bold);
         padding: 0 2rem;
