@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ManagePlayers from './components/pages/managePlayers';
 import Game from './components/pages/game';
-import AvatarPreview from './components/molecules/avatarPreview';
 import NoPage from './components/pages/noPage';
 import "./App.scss";
 
@@ -32,7 +31,7 @@ function App() {
       <Routes>
         <Route index element={
           <ManagePlayers 
-            players={players} 
+            players={players}
             addPlayer={addPlayer} 
             deletePlayer={deletePlayer} 
             handleNameChange={handleNameChange} 
@@ -47,7 +46,6 @@ function App() {
           />
         } />
         <Route path="/game" element={<Game players={players}  />} />
-        <Route path="/avatar-preview" element={<AvatarPreview />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>

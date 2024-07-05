@@ -31,7 +31,7 @@ function Game({ players }) {
 
   return (
     <div className="game-container">
-      <NavBar players={dummyPlayers} />
+      <NavBar players={players} />
       <main>
         <CurrentGameComponent
           player1={player1}

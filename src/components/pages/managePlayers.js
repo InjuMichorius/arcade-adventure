@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import NameInput from '../molecules/nameInput';
+import NameInput from '../organisms/nameInput';
 import Button from '../molecules/button';
 
 function ManagePlayers({ players, addPlayer, deletePlayer, handleNameChange }) {
   const navigate = useNavigate();
+  const [allInputsFilled, setAllInputsFilled] = useState(false);
+
+  useEffect(() => {
+    const allFilled = players.every(player => player.name.trim() !== '');
+    setAllInputsFilled(allFilled);
+  }, [players]);
 
   const handleStartGame = () => {
     navigate('/game');
@@ -20,6 +26,7 @@ function ManagePlayers({ players, addPlayer, deletePlayer, handleNameChange }) {
             <li key={player.id}>
               <NameInput 
                 id={player.id} 
+                name={player.name} // Pass the player's name
                 onNameChange={handleNameChange} 
                 onDelete={() => deletePlayer(player.id)} 
               />
@@ -27,12 +34,16 @@ function ManagePlayers({ players, addPlayer, deletePlayer, handleNameChange }) {
           ))}
         </ul>
         <div className="manage-players-container__button-container">
-          <Button
-            variant="secondary"
-            icon={faPlus}
-            onClick={addPlayer}
-          />
-          <Button variant="primary" onClick={handleStartGame} text="Play game" />
+          {allInputsFilled && (
+            <Button
+              variant="secondary"
+              icon={faPlus}
+              onClick={addPlayer}
+            />
+          )}
+          {allInputsFilled && (
+            <Button variant="primary" onClick={handleStartGame} text="Play game" />
+          )}
         </div>
       </main>
     </div>
