@@ -4,13 +4,13 @@
 }
 
 @font-face {
-    font-family: "Arcade Adventure Bold";
-    src: url("../assets/fonts/Kanit-Bold.ttf") format("truetype");
-  }
+  font-family: "Arcade Adventure Bold";
+  src: url("../assets/fonts/Kanit-Bold.ttf") format("truetype");
+}
 
 :root {
-    --font: "Arcade Adventure";
-    --font-bold: "Arcade Adventure Bold";
+  --font: "Arcade Adventure";
+  --font-bold: "Arcade Adventure Bold";
 }
 
 * {
@@ -28,27 +28,20 @@ body {
 }
 
 h1 {
-  color: #E64D48;
+  color: #e64d48;
   font-size: 3rem;
   text-transform: uppercase;
-  text-shadow:
-        -5px -5px 0 #fffcc1,
-        5px -5px 0 #fffcc1,
-        -5px 5px 0 #fffcc1,
-        5px 5px 0 #fffcc1,
-        0 -5px 0 #fffcc1,
-        0 5px 0 #fffcc1,
-        -5px 0 0 #fffcc1,
-        5px 0 0 #fffcc1;
+  text-shadow: -5px -5px 0 #fffcc1, 5px -5px 0 #fffcc1, -5px 5px 0 #fffcc1,
+    5px 5px 0 #fffcc1, 0 -5px 0 #fffcc1, 0 5px 0 #fffcc1, -5px 0 0 #fffcc1,
+    5px 0 0 #fffcc1;
   text-align: center;
   font-family: var(--font-bold);
-
 }
 
 .explanation-text {
   text-align: center;
   font-family: var(--font);
-  color: #6ECEA0;
+  color: #6ecea0;
   font-size: 1.2rem;
 }
 
@@ -65,7 +58,7 @@ button {
   color: white;
 
   &.primary {
-    background-color: #E64D48;
+    background-color: #e64d48;
     border-bottom: 5px solid #901814;
   }
 
@@ -73,7 +66,7 @@ button {
     background-color: #369064;
     border-color: #369064;
     svg path {
-      fill: #6ECEA0;
+      fill: #6ecea0;
     }
   }
 
@@ -82,9 +75,6 @@ button {
   }
 }
 
-
 main {
   padding: 1rem;
 }
-
-

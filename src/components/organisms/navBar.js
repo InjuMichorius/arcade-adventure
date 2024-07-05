@@ -2,60 +2,45 @@ import React, { useState } from "react";
 import Hamburger from "../atoms/hamburger";
 import avatar from "../../assets/images/character1.png";
 
-function NavBar() {
+function NavBar({ players }) { // Destructure players from props
   const [isPlayerListVisible, setIsPlayerListVisible] = useState(false);
 
   const handleHamburgerClick = () => {
     setIsPlayerListVisible(!isPlayerListVisible);
   };
 
+  const dummyPlayers = [
+    {
+      name: 'Inju',
+      items: [1, 2, 3]
+    },
+    {
+      name: 'Andere Inju',
+      items: [4, 5, 6]
+    }
+  ];
+
   return (
     <header className="navbar-container">
       <Hamburger onClick={handleHamburgerClick} />
       <ul className={`player-list ${isPlayerListVisible ? "show" : ""}`}>
         <h1 className="player-list__title">Leaderboard</h1>
-        <li className="player-container">
-          <div className="avatar-preview">
-            <img src={avatar} alt="Avatar" />
-          </div>
-          <div className="user-details">
-            <p className="player-name">Player 1</p>
-            <div className="items-container">
-              <div className="item">1</div>
-              <div className="item">2</div>
-              <div className="item">3</div>
+        {dummyPlayers.map((player, index) => (
+          <li key={index} className="player-container">
+            <div className="avatar-preview">
+              <img src={avatar} alt="Avatar" />
             </div>
-          </div>
-          <div className="place">1</div>
-        </li>
-        <li className="player-container">
-          <div className="avatar-preview">
-            <img src={avatar} alt="Avatar" />
-          </div>
-          <div className="user-details">
-            <p className="player-name">Player 1</p>
-            <div className="items-container">
-              <div className="item">1</div>
-              <div className="item">2</div>
-              <div className="item">3</div>
+            <div className="user-details">
+              <p className="player-name">{player.name}</p>
+              <div className="items-container">
+                {player.items.map((item, key) => (
+                  <div key={key} className="item">{item}</div>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="place">1</div>
-        </li>
-        <li className="player-container">
-          <div className="avatar-preview">
-            <img src={avatar} alt="Avatar" />
-          </div>
-          <div className="user-details">
-            <p className="player-name">Player 1</p>
-            <div className="items-container">
-              <div className="item">1</div>
-              <div className="item">2</div>
-              <div className="item">3</div>
-            </div>
-          </div>
-          <div className="place">1</div>
-        </li>
+            <div className="place">{index + 1}</div>
+          </li>
+        ))}
       </ul>
     </header>
   );

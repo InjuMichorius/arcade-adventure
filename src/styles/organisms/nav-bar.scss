@@ -62,10 +62,16 @@
           }
         }
       }
+      &:first-of-type {
+        .place {
+          color: #369064;
+          background-color: #fffcc1;
+        }
+      }
       .place {
         display: flex;
         align-items: center;
-        background-color: #fffcc1;
+        background-color: #369064;
         border-radius: 10px;
         color: #6ecea0;
         font-size: 2rem;

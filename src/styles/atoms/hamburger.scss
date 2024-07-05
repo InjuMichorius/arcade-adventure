@@ -1,6 +1,6 @@
 .ham {
-    position: relative;
-    z-index: 999;
+  position: relative;
+  z-index: 999;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: transform 400ms;
@@ -23,7 +23,6 @@
   stroke-width: 5.5;
   stroke-linecap: round;
 }
-
 .ham .top {
   stroke-dasharray: 40 130;
 }
