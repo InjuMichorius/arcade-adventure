@@ -17,6 +17,22 @@ function ManagePlayers({ players, addPlayer, deletePlayer, handleNameChange }) {
     navigate('/game');
   };
 
+  const handleAvatarChange = (id, newAvatar) => {
+    const updatedPlayers = players.map(player =>
+      player.id === id ? { ...player, avatar: newAvatar } : player
+    );
+    // This should update the player's avatar in the parent component's state
+    // Assuming there is a function to update players in the parent
+    console.log(newAvatar)
+    handlePlayersUpdate(updatedPlayers);
+  };
+
+  // Assuming you have a function to update players
+  const handlePlayersUpdate = (updatedPlayers) => {
+    // This should update the players list with the new avatar selection
+    // Implementation depends on how you manage state at the top level
+  };
+
   return (
     <div className="manage-players-container">
       <h1 className="manage-players-container__title">Players</h1>
@@ -27,8 +43,10 @@ function ManagePlayers({ players, addPlayer, deletePlayer, handleNameChange }) {
               <NameInput 
                 id={player.id} 
                 name={player.name} // Pass the player's name
+                avatar={player.avatar} // Pass the player's avatar
                 onNameChange={handleNameChange} 
                 onDelete={() => deletePlayer(player.id)} 
+                onAvatarChange={handleAvatarChange} // Pass avatar change handler
               />
             </li>
           ))}

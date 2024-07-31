@@ -2,7 +2,6 @@
 @import "./styles/mixins.scss";
 
 @import "./styles/molecules/name-input.scss";
-@import "./styles/molecules/avatar-select.scss";
 
 @import "./styles/games/tic-tac-toe.scss";
 @import "./styles/games/memory.scss";
@@ -10,6 +9,7 @@
 @import "./styles/atoms/hamburger.scss";
 
 @import "./styles/organisms/nav-bar.scss";
+@import "./styles/organisms/avatar-select.scss";
 
 @import "./styles/pages/managePlayers.scss";
 @import "./styles/pages/game.scss";
