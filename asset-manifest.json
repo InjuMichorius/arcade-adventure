@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/react-doodles/static/css/main.b19d17a7.css",
+    "main.css": "/react-doodles/static/css/main.4a20cf6e.css",
     "main.js": "/react-doodles/static/js/main.97afdc1e.js",
     "static/media/character1.png": "/react-doodles/static/media/character1.8025a804682c0d061d97.png",
     "static/media/Kanit-Bold.ttf": "/react-doodles/static/media/Kanit-Bold.46cd98a815b9874526ad.ttf",
     "static/media/Kanit-Regular.ttf": "/react-doodles/static/media/Kanit-Regular.f3bae13d78ced30b6ea3.ttf",
     "index.html": "/react-doodles/index.html",
-    "main.b19d17a7.css.map": "/react-doodles/static/css/main.b19d17a7.css.map",
+    "main.4a20cf6e.css.map": "/react-doodles/static/css/main.4a20cf6e.css.map",
     "main.97afdc1e.js.map": "/react-doodles/static/js/main.97afdc1e.js.map"
   },
   "entrypoints": [
-    "static/css/main.b19d17a7.css",
+    "static/css/main.4a20cf6e.css",
     "static/js/main.97afdc1e.js"
   ]
 }
