@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/react-doodles/static/css/main.f86184fb.css",
-    "main.js": "/react-doodles/static/js/main.95c22cdb.js",
+    "main.css": "/react-doodles/static/css/main.3190804b.css",
+    "main.js": "/react-doodles/static/js/main.c5d5dc2f.js",
     "static/media/character1.png": "/react-doodles/static/media/character1.8025a804682c0d061d97.png",
     "static/media/Kanit-Bold.ttf": "/react-doodles/static/media/Kanit-Bold.46cd98a815b9874526ad.ttf",
     "static/media/Kanit-Regular.ttf": "/react-doodles/static/media/Kanit-Regular.f3bae13d78ced30b6ea3.ttf",
     "index.html": "/react-doodles/index.html",
-    "main.f86184fb.css.map": "/react-doodles/static/css/main.f86184fb.css.map",
-    "main.95c22cdb.js.map": "/react-doodles/static/js/main.95c22cdb.js.map"
+    "main.3190804b.css.map": "/react-doodles/static/css/main.3190804b.css.map",
+    "main.c5d5dc2f.js.map": "/react-doodles/static/js/main.c5d5dc2f.js.map"
   },
   "entrypoints": [
-    "static/css/main.f86184fb.css",
-    "static/js/main.95c22cdb.js"
+    "static/css/main.3190804b.css",
+    "static/js/main.c5d5dc2f.js"
   ]
 }
