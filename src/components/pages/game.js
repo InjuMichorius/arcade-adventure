@@ -8,19 +8,14 @@ function getRandomPlayers(players, num = 2) {
   return shuffled.slice(0, num);
 }
 
-const dummyPlayers = [
-  { id: 0, name: "Inju 1", points: 0 },
-  { id: 1, name: "Inju 2", points: 0 },
-];
-
 const games = [
   { component: TicTacToe, name: "TicTacToe" },
   { component: Memory, name: "Memory" },
 ];
 
-function Game({ players }) {
-  const randomPlayers = getRandomPlayers(dummyPlayers);
-  const [player1, player2] = randomPlayers;
+function Game() {
+  const players = JSON.parse(localStorage.getItem('players'));
+  console.log(players);
   const [currentGameIndex, setCurrentGameIndex] = useState(0);
 
   const CurrentGameComponent = games[currentGameIndex].component;
@@ -33,11 +28,11 @@ function Game({ players }) {
     <div className="game-container">
       <NavBar players={players} />
       <main>
-        <CurrentGameComponent
+        {/* <CurrentGameComponent
           player1={player1}
           player2={player2}
           onNextGame={handleNextGame}
-        />
+        /> */}
       </main>
     </div>
   );

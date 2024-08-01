@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "../molecules/button";
+import Button from "../atoms/button";
 
 function TicTacToe({ player1, player2, onNextGame }) {
   const [board, setBoard] = useState(Array(9).fill(null));

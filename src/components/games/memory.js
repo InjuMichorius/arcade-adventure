@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../molecules/button';
+import Button from '../atoms/button';
 
 const cards = [
   '🍎', '🍎', '🍌',

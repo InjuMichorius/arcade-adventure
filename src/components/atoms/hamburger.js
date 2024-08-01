@@ -12,7 +12,7 @@ function Hamburger({ onClick }) {
     }
   };
   return (
-    <button onClick={handleClick}>
+    <button className='hamburger-button' onClick={handleClick}>
       <svg
       ref={svgRef}
         className="ham"

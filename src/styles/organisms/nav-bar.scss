@@ -1,22 +1,27 @@
 .navbar-container {
   display: flex;
   justify-content: center;
-  button {
+  .hamburger-button {
     padding: 0;
   }
   .player-list {
+    display: grid;
     position: fixed;
     top: -9999px;
     width: 100vw;
     height: 100vh;
     background-color: var(--light-green);
-    padding: 4rem 1rem;
+    padding: 4rem 1rem 6rem;
     list-style: none;
     &__title {
       margin-bottom: 60px;
     }
     &.show {
       top: 0;
+    }
+    > ul {
+      overflow-x: auto;
+      margin-bottom: 2rem;
     }
     .player-container {
       display: flex;
@@ -38,6 +43,21 @@
           height: 100%;
           border-radius: 100%;
           object-fit: cover;
+        }
+        > .points-text {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: -10px;
+          display: block;
+          width: fit-content;
+          font-size: 14px;
+          text-wrap: nowrap;
+          padding: 0 .5rem;
+          border-radius: 100px;
+          background-color: var(--off-white);
+          color: #e64d48;
+          font-family: var(--font-bold);
         }
       }
       .user-details {

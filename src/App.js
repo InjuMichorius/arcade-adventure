@@ -1,52 +1,31 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ManagePlayers from './components/pages/managePlayers';
-import Game from './components/pages/game';
-import NoPage from './components/pages/noPage';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import ManagePlayers from "./components/pages/managePlayers";
+import Game from "./components/pages/game";
+import NoPage from "./components/pages/noPage";
 import "./App.scss";
 
 function App() {
-  const [players, setPlayers] = useState([{ id: 0, name: '', component: null }]);
-  const [nextId, setNextId] = useState(1);
+  const [playersFromStorage, setPlayersFromStorage] = useState(null); // Start with null to detect loading state
 
-  const addPlayer = () => {
-    const newId = nextId;
-    setPlayers([...players, { id: newId, name: '', component: null }]);
-    setNextId(nextId + 1);
-  };
+  useEffect(() => {
+    const storedPlayers = JSON.parse(localStorage.getItem('players')) || [];
+    setPlayersFromStorage(storedPlayers);
+  }, []);
 
-  const deletePlayer = (idToDelete) => {
-    setPlayers(players.filter(player => player.id !== idToDelete));
-  };
-
-  const handleNameChange = (id, name) => {
-    setPlayers(players.map(player => 
-      player.id === id ? { ...player, name } : player
-    ));
-  };
-  
+  if (playersFromStorage === null) {
+    // Optionally render a loading state while checking localStorage
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={
-          <ManagePlayers 
-            players={players}
-            addPlayer={addPlayer} 
-            deletePlayer={deletePlayer} 
-            handleNameChange={handleNameChange} 
-          />
-        } />
-        <Route path="/react-doodles" element={
-          <ManagePlayers 
-            players={players} 
-            addPlayer={addPlayer} 
-            deletePlayer={deletePlayer} 
-            handleNameChange={handleNameChange} 
-          />
-        } />
-        <Route path="/game" element={<Game players={players}  />} />
+        <Route path="/" element={<ManagePlayers />} />
+        <Route path="/react-doodles" element={<ManagePlayers />} />
+        <Route path="/game" element={playersFromStorage.length > 0 ? <Game /> : <Navigate to="/react-doodles" />} />
         <Route path="*" element={<NoPage />} />
+        {/* Ensure this is the last route to handle any unmatched paths */}
       </Routes>
     </BrowserRouter>
   );

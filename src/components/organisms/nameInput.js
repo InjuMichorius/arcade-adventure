@@ -1,10 +1,10 @@
 import React from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
-import Button from "../molecules/button";
-import AvatarSelect from "../molecules/avatarSelect"
+import Button from "../atoms/button";
+import AvatarSelect from "../molecules/avatarSelect";
 
-function NameInput({ id, name, onNameChange, onDelete }) {
+function NameInput({ id, onNameChange, onDelete }) {
   const handleNameChange = (event) => {
     onNameChange(id, event.target.value);
   };
@@ -15,17 +15,15 @@ function NameInput({ id, name, onNameChange, onDelete }) {
       <input
         type="text"
         placeholder="Enter name.."
-        value={name}
         onChange={handleNameChange}
       />
-      <Button icon={faTrash} onClick={onDelete} />
+      <Button icon={faTrash} onClick={() => onDelete(id)} />
     </div>
   );
 }
 
 NameInput.propTypes = {
   id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
   onNameChange: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
