@@ -55,7 +55,7 @@ function ManagePlayers() {
   };
 
   const handleStartGame = () => {
-    navigate("/react-doodles");
+    navigate("/game");
   };
 
   return (
