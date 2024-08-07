@@ -15,7 +15,6 @@ function App() {
   if (playersFromStorage === null) {
     return <div>Loading...</div>;
   }
-  console.log("playersFromStorage.length", playersFromStorage.length > 0)
 
   return (
     <HashRouter>

@@ -4,7 +4,6 @@ import Button from "../atoms/button"
 function NoPage() {
   const navigate = useNavigate();
   const handleClick = () => {
-    console.log("click");
     navigate("/react-doodles");
   }
   return (
