@@ -64,8 +64,6 @@ function Memory({ player1, player2, onNextGame }) {
     player2.score = 0;
   };
 
-  console.log(player1, player2);
-
   return (
     <div className='memory-game-container'>
       <h1>Memory Game</h1>

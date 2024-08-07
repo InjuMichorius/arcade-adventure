@@ -1,20 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import Hamburger from "../atoms/hamburger";
 import Button from "../atoms/button";
 import avatar from "../../assets/images/character1.png";
 
-function NavBar({ players }) {
+function NavBar({ players, onLeaveGameClick }) {
   const [isPlayerListVisible, setIsPlayerListVisible] = useState(false);
-  const navigate = useNavigate();
 
   const handleHamburgerClick = () => {
     setIsPlayerListVisible(!isPlayerListVisible);
-  };
-
-  const handleLeaveGameClick = () => {
-    localStorage.clear();  // Clear localStorage
-    navigate("/");
   };
 
   return (
@@ -23,7 +16,7 @@ function NavBar({ players }) {
       <div className={`player-list ${isPlayerListVisible ? "show" : ""}`}>
         <h1 className="player-list__title">Leaderboard</h1>
         <ul>
-          {players.map((player, index) => (
+          {players && players.map((player, index) => (
             <li key={index} className="player-container">
               <div className="avatar-preview">
                 <img src={avatar} alt="Avatar" />
@@ -41,7 +34,7 @@ function NavBar({ players }) {
             </li>
           ))}
         </ul>
-        <Button variant="primary" text="Leave arcade" onClick={handleLeaveGameClick} />
+        <Button variant="primary" text="Leave arcade" onClick={onLeaveGameClick} />
       </div>
     </header>
   );

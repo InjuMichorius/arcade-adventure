@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, HashRouter } from "react-router-dom";
 import ManagePlayers from "./components/pages/managePlayers";
 import Game from "./components/pages/game";
-import NoPage from "./components/pages/noPage";
 import "./App.scss";
 
 function App() {
-  const [playersFromStorage, setPlayersFromStorage] = useState(null); // Start with null to detect loading state
+  const [playersFromStorage, setPlayersFromStorage] = useState(null);
 
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem('players')) || [];
@@ -14,20 +13,18 @@ function App() {
   }, []);
 
   if (playersFromStorage === null) {
-    // Optionally render a loading state while checking localStorage
     return <div>Loading...</div>;
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
-        <Route path="/" element={<ManagePlayers />} />
-        <Route path="/react-doodles" element={<ManagePlayers />} />
-        <Route path="/game" element={playersFromStorage.length > 0 ? <Game /> : <Navigate to="/react-doodles" />} />
-        <Route path="*" element={<NoPage />} />
-        {/* Ensure this is the last route to handle any unmatched paths */}
+        <Route path="/react-doodles" element={playersFromStorage.length > 1 ? <Game /> : <ManagePlayers />} />
+        <Route path="/game" element={<Game />} />
+        <Route path="/" element={<Navigate to="/react-doodles" />} />
+        <Route path="*" element={<Navigate to="/react-doodles" />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
