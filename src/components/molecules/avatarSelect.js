@@ -1,7 +1,7 @@
 import React from "react";
 import avatar from "../../assets/images/character1.png";
 
-function AvatarSelect({ id, name, onNameChange, onDelete }) {
+function AvatarSelect() {
   return (
     <div className="avatar-select-container">
       <img src={avatar} alt="avatar" />

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "../atoms/button";
+import CurrentPlayerPreview from "../organisms/currentPlayerPreview"; // Import the component
 
 function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -59,7 +60,11 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
 
   return (
     <div className="tic-tac-toe-container">
-      <h1>Tic Tac Toe</h1>
+      <CurrentPlayerPreview
+        player1={player1}
+        player2={player2}
+        isPlayerOneTurn={isPlayerOneTurn} // Pass the turn state as a prop
+      />
       <p className="status-message">
         {winner ? `Winner: ${winner}` : `${currentPlayer}'s turn`}
       </p>

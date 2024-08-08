@@ -3,8 +3,8 @@ import NavBar from "../organisms/navBar";
 import TicTacToe from "../games/ticTacToe";
 import Memory from "../games/memory";
 import { useNavigate } from "react-router-dom";
-import NeverHaveIEver from "../games/neverHaveIEver";
-import PlayerVersus from "../organisms/playerVersus";
+// import NeverHaveIEver from "../games/neverHaveIEver";
+import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 
 // List of available games
 const games = [
@@ -136,9 +136,7 @@ function Game() {
     <div className="game-container">
       <NavBar players={players} onLeaveGameClick={handleLeaveGameClick} />
       <main>
-        {player1 && player2 && (
-          <PlayerVersus player1={player1} player2={player2} />
-        )}
+      <h1>Tic Tac Toe</h1>
         {/* Render the current game component if players are set */}
         {player1 && player2 && (
           <CurrentGameComponent
