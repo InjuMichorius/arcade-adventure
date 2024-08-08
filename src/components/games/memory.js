@@ -3,6 +3,7 @@ import Button from "../atoms/button";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 
 const cards = ["🍎", "🍎", "🍌", "🍇", "", "🍇", "🍓", "🍓", "🍌"];
+// const cards = ["🍎", "🍎"];
 
 // Shuffle function to ensure the empty card remains at index 4
 const shuffleArray = (array) => {
@@ -13,7 +14,7 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-function Memory({ player1, player2, onNextGame }) {
+function Memory({ player1, player2, onNextGame, onLose }) {
   const [shuffledCards, setShuffledCards] = useState(shuffleArray([...cards])); // Include the empty card
   const [flippedCards, setFlippedCards] = useState([]);
   const [matchedCards, setMatchedCards] = useState([]);
@@ -21,22 +22,28 @@ function Memory({ player1, player2, onNextGame }) {
   const [winner, setWinner] = useState(null);
   const [loser, setLoser] = useState(null);
   const [scores, setScores] = useState({ player1: 0, player2: 0 }); // Track scores separately
+  const [startingPlayer, setStartingPlayer] = useState(player1); // Track starting player
 
-  // Determine winner and loser when all matches are found
+  // Handle game completion
   useEffect(() => {
-    if (matchedCards.length === cards.filter((card) => card !== "").length) {
+
+    const declareResults = () => {
       if (scores.player1 > scores.player2) {
         setWinner(player1.username);
         setLoser(player2.username);
+        onLose(player2.username); // Ensure this does not cause unintended state updates
       } else if (scores.player1 < scores.player2) {
         setWinner(player2.username);
         setLoser(player1.username);
+        onLose(player1.username);
       } else {
-        setWinner("Draw");
+        setWinner(null);
         setLoser(null);
       }
-    }
-  }, [matchedCards, scores, player1, player2]);
+    };
+
+    declareResults();
+  }, [scores, player1.username, player2.username, onLose]);
 
   const handleCardClick = (index) => {
     if (
@@ -61,29 +68,6 @@ function Memory({ player1, player2, onNextGame }) {
           shuffledCards[secondIndex],
         ]);
         setFlippedCards([]);
-        const currentUsername = currentPlayer.username;
-
-        // Update the scores based on the current player
-        setScores((prevScores) => {
-          const updatedScores = {
-            ...prevScores,
-            [currentPlayer === player1 ? "player1" : "player2"]:
-              prevScores[currentPlayer === player1 ? "player1" : "player2"] + 1,
-          };
-
-          // Update the players in local storage with new scores
-          const updatedPlayers = JSON.parse(
-            localStorage.getItem("players")
-          ).map((player) =>
-            player.username === currentUsername
-              ? { ...player, points: player.points + 100 }
-              : player
-          );
-
-          localStorage.setItem("players", JSON.stringify(updatedPlayers));
-
-          return updatedScores;
-        });
       } else {
         setTimeout(() => setFlippedCards([]), 1000);
         setCurrentPlayer((current) =>
@@ -91,14 +75,7 @@ function Memory({ player1, player2, onNextGame }) {
         );
       }
     }
-  }, [
-    flippedCards,
-    shuffledCards,
-    matchedCards,
-    player1,
-    player2,
-    currentPlayer,
-  ]);
+  }, [flippedCards, shuffledCards, player1, player2, currentPlayer]);
 
   const resetGame = () => {
     setShuffledCards(shuffleArray([...cards]));
@@ -106,8 +83,9 @@ function Memory({ player1, player2, onNextGame }) {
     setMatchedCards([]);
     setWinner(null);
     setLoser(null); // Reset loser state
-    setCurrentPlayer(player1); // Reset to player1's turn
     setScores({ player1: 0, player2: 0 }); // Reset the scores
+    setStartingPlayer((prev) => (prev === player1 ? player2 : player1)); // Alternate starting player
+    setCurrentPlayer(startingPlayer); // Set the new starting player
   };
 
   return (
@@ -123,7 +101,7 @@ function Memory({ player1, player2, onNextGame }) {
           ? `${loser} drinks 5 sips!`
           : winner === "Draw"
           ? "It's a draw!"
-          : ""}
+          : "Loser drinks 5 sips"}
       </p>
       <div className="board">
         {shuffledCards.map((card, index) => (
@@ -142,12 +120,12 @@ function Memory({ player1, player2, onNextGame }) {
           </div>
         ))}
       </div>
-      {winner || matchedCards.length === cards.filter((card) => card !== "").length ? (
+      {winner && (
         <div>
           <Button variant="primary" onClick={resetGame} text="Play again" />
           <Button variant="secondary" onClick={onNextGame} text="Next Game" />
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

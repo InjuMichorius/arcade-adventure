@@ -7,8 +7,6 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
   const [loser, setLoser] = useState(null);
-
-  const currentPlayer = isPlayerOneTurn ? player1.username : player2.username;
   const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
 
   const handleClick = (index) => {
@@ -21,8 +19,10 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
 
     const gameWinner = calculateWinner(newBoard);
     if (gameWinner) {
-      const winningPlayer = gameWinner === "cross" ? player1.username : player2.username;
-      const losingPlayer = gameWinner === "cross" ? player2.username : player1.username;
+      const winningPlayer =
+        gameWinner === "cross" ? player1.username : player2.username;
+      const losingPlayer =
+        gameWinner === "cross" ? player2.username : player1.username;
 
       setWinner(winningPlayer);
       setLoser(losingPlayer); // Set the loser state
@@ -61,7 +61,7 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
 
   const resetGame = () => {
     setBoard(Array(9).fill(null));
-    setIsPlayerOneTurn(true);
+    setIsPlayerOneTurn(!isPlayerOneTurn); // Toggle the starting player
     setWinner(null);
     setLoser(null); // Reset loser state
   };
@@ -79,7 +79,7 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
           ? `${loser} drinks 5 sips!`
           : winner === "Draw"
           ? "It's a draw!"
-          : `Loser takes 5 sips`}
+          : "Loser drinks 5 sips"}
       </p>
       <div className="board">
         {board.map((cell, index) => (

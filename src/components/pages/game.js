@@ -4,13 +4,12 @@ import TicTacToe from "../games/ticTacToe";
 import Memory from "../games/memory";
 import { useNavigate } from "react-router-dom";
 // import NeverHaveIEver from "../games/neverHaveIEver";
-import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 
 // List of available games
 const games = [
-  // { component: NeverHaveIEver, name: "NeverHaveIEver" },
   { component: TicTacToe, name: "TicTacToe" },
-  { component: Memory, name: "Memory" },
+  // { component: Memory, name: "Memory" },
+  // { component: NeverHaveIEver, name: "NeverHaveIEver" },
 ];
 
 function Game() {
