@@ -6,7 +6,7 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [loser, setLoser] = useState(null); // New state to track the loser
+  const [loser, setLoser] = useState(null);
 
   const currentPlayer = isPlayerOneTurn ? player1.username : player2.username;
   const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
