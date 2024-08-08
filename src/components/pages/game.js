@@ -136,7 +136,6 @@ function Game() {
     <div className="game-container">
       <NavBar players={players} onLeaveGameClick={handleLeaveGameClick} />
       <main>
-      <h1>Tic Tac Toe</h1>
         {/* Render the current game component if players are set */}
         {player1 && player2 && (
           <CurrentGameComponent

@@ -6,11 +6,13 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
+  const [loser, setLoser] = useState(null); // New state to track the loser
 
   const currentPlayer = isPlayerOneTurn ? player1.username : player2.username;
   const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
 
   const handleClick = (index) => {
+    // Prevent further moves if the cell is already occupied or if there's a winner
     if (board[index] || winner) return;
 
     const newBoard = board.slice();
@@ -19,12 +21,17 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
 
     const gameWinner = calculateWinner(newBoard);
     if (gameWinner) {
-      setWinner(gameWinner === "cross" ? player1.username : player2.username);
+      const winningPlayer = gameWinner === "cross" ? player1.username : player2.username;
+      const losingPlayer = gameWinner === "cross" ? player2.username : player1.username;
+
+      setWinner(winningPlayer);
+      setLoser(losingPlayer); // Set the loser state
 
       // Update the losing player's points
-      onLose(gameWinner === "cross" ? player2.username : player1.username);
+      onLose(losingPlayer);
     } else if (newBoard.every((cell) => cell)) {
       setWinner("Draw");
+      setLoser(null);
     } else {
       setIsPlayerOneTurn(!isPlayerOneTurn);
     }
@@ -56,17 +63,23 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
     setBoard(Array(9).fill(null));
     setIsPlayerOneTurn(true);
     setWinner(null);
+    setLoser(null); // Reset loser state
   };
 
   return (
     <div className="tic-tac-toe-container">
+      <h1>Tic Tac Toe</h1>
       <CurrentPlayerPreview
         player1={player1}
         player2={player2}
         isPlayerOneTurn={isPlayerOneTurn} // Pass the turn state as a prop
       />
       <p className="status-message">
-        {winner ? `Winner: ${winner}` : `${currentPlayer}'s turn`}
+        {winner && loser
+          ? `${loser} drinks 5 sips!`
+          : winner === "Draw"
+          ? "It's a draw!"
+          : `Loser takes 5 sips`}
       </p>
       <div className="board">
         {board.map((cell, index) => (

@@ -17,7 +17,7 @@ function Hamburger({ onClick }) {
       ref={svgRef}
         className="ham"
         viewBox="0 0 100 100"
-        width="80"
+        width="60"
       >
         <path
           className="line top"

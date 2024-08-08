@@ -1,6 +1,10 @@
 .tic-tac-toe-container {
   text-align: center;
 
+  h1 {
+    margin-bottom: 1rem;
+  }
+
   .board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -43,7 +47,6 @@
   .status-message {
     margin: 1rem 0;
     font-size: 1.2rem;
-    color: var(--light-green);
     font-family: var(--font);
   }
 }
