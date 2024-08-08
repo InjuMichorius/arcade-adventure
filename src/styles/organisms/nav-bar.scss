@@ -49,9 +49,11 @@
           left: 50%;
           transform: translateX(-50%);
           bottom: -10px;
-          display: block;
+          display: flex;
+          gap: 3px;
+          align-items: center;
           width: fit-content;
-          font-size: 14px;
+          font-size: 1rem;
           text-wrap: nowrap;
           padding: 0 .5rem;
           border-radius: 100px;

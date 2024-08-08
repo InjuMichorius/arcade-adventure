@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Hamburger from "../atoms/hamburger";
 import Button from "../atoms/button";
 import avatar from "../../assets/images/character1.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
 
 function NavBar({ players, onLeaveGameClick }) {
   const [isPlayerListVisible, setIsPlayerListVisible] = useState(false);
@@ -20,7 +22,7 @@ function NavBar({ players, onLeaveGameClick }) {
             <li key={index} className="player-container">
               <div className="avatar-preview">
                 <img src={avatar} alt="Avatar" />
-                <p className="points-text">{`${player.points} sips`}</p>
+                <p className="points-text">{player.points}<FontAwesomeIcon icon={faWineBottle} className='icon' /></p>
               </div>
               <div className="user-details">
                 <p className="player-name">{player.username}</p>

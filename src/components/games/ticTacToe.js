@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "../atoms/button";
 
-function TicTacToe({ player1, player2, onNextGame }) {
+function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
@@ -19,6 +19,9 @@ function TicTacToe({ player1, player2, onNextGame }) {
     const gameWinner = calculateWinner(newBoard);
     if (gameWinner) {
       setWinner(gameWinner === "cross" ? player1.username : player2.username);
+
+      // Update the losing player's points
+      onLose(gameWinner === "cross" ? player2.username : player1.username);
     } else if (newBoard.every((cell) => cell)) {
       setWinner("Draw");
     } else {
