@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../organisms/navBar";
 import TicTacToe from "../games/ticTacToe";
-import Memory from "../games/memory";
+// import Memory from "../games/memory";
 import { useNavigate } from "react-router-dom";
 // import NeverHaveIEver from "../games/neverHaveIEver";
 
