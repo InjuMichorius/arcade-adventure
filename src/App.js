@@ -19,10 +19,10 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/react-doodles" element={playersFromStorage.length > 1 ? <Game /> : <ManagePlayers />} />
+        <Route path="/arcade-adventure" element={playersFromStorage.length > 1 ? <Game /> : <ManagePlayers />} />
         <Route path="/game" element={<Game />} />
-        <Route path="/" element={<Navigate to="/react-doodles" />} />
-        <Route path="*" element={<Navigate to="/react-doodles" />} />
+        <Route path="/" element={<Navigate to="/arcade-adventure" />} />
+        <Route path="*" element={<Navigate to="/arcade-adventure" />} />
       </Routes>
     </HashRouter>
   );

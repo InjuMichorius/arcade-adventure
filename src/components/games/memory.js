@@ -2,90 +2,85 @@ import React, { useState, useEffect } from "react";
 import Button from "../atoms/button";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 
-const cards = ["🍎", "🍎", "🍌", "🍇", "", "🍇", "🍓", "🍓", "🍌"];
-// const cards = ["🍎", "🍎"];
+const cards = ["🍎", "🍎", "🍌", "🍇", "🍇", "🍓", "🍓", "🍌", ""];
 
-// Shuffle function to ensure the empty card remains at index 4
 const shuffleArray = (array) => {
-  const emptyCard = array[4];
-  const shuffledArray = array.filter((_, index) => index !== 4); // Remove the empty card temporarily
-  shuffledArray.sort(() => Math.random() - 0.5); // Shuffle the remaining cards
-  shuffledArray.splice(4, 0, emptyCard); // Insert the empty card back at index 4
+  const emptyCard = array[8];
+  const shuffledArray = array.slice(0, 8).sort(() => Math.random() - 0.5);
+  shuffledArray.push(emptyCard);
   return shuffledArray;
 };
 
 function Memory({ player1, player2, onNextGame, onLose }) {
-  const [shuffledCards, setShuffledCards] = useState(shuffleArray([...cards])); // Include the empty card
+  const [shuffledCards, setShuffledCards] = useState(shuffleArray([...cards]));
   const [flippedCards, setFlippedCards] = useState([]);
   const [matchedCards, setMatchedCards] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState(player1);
   const [winner, setWinner] = useState(null);
-  const [loser, setLoser] = useState(null);
-  const [scores, setScores] = useState({ player1: 0, player2: 0 }); // Track scores separately
-  const [startingPlayer, setStartingPlayer] = useState(player1); // Track starting player
+  const [scores, setScores] = useState({
+    [player1.username]: 0,
+    [player2.username]: 0,
+  });
 
-  // Handle game completion
   useEffect(() => {
-
-    const declareResults = () => {
-      if (scores.player1 > scores.player2) {
-        setWinner(player1.username);
-        setLoser(player2.username);
-        onLose(player2.username); // Ensure this does not cause unintended state updates
-      } else if (scores.player1 < scores.player2) {
-        setWinner(player2.username);
-        setLoser(player1.username);
+    if (matchedCards.length === 8) {
+      let newWinner;
+      if (scores[player1.username] > scores[player2.username]) {
+        newWinner = player1.username;
+        onLose(player2.username);
+      } else if (scores[player1.username] < scores[player2.username]) {
+        newWinner = player2.username;
         onLose(player1.username);
       } else {
-        setWinner(null);
-        setLoser(null);
+        newWinner = "Draw";
       }
-    };
-
-    declareResults();
-  }, [scores, player1.username, player2.username, onLose]);
+      setWinner(newWinner);
+    }
+  }, [matchedCards, scores, player1.username, player2.username, onLose]);
 
   const handleCardClick = (index) => {
     if (
-      index === 4 ||
       flippedCards.length >= 2 ||
       flippedCards.includes(index) ||
-      matchedCards.includes(shuffledCards[index])
+      matchedCards.includes(shuffledCards[index]) ||
+      shuffledCards[index] === ""
     ) {
-      return; // Ignore clicks on the empty space, already flipped cards, or matched cards
+      return;
     }
 
     setFlippedCards([...flippedCards, index]);
-  };
 
-  useEffect(() => {
-    if (flippedCards.length === 2) {
-      const [firstIndex, secondIndex] = flippedCards;
+    if (flippedCards.length === 1) {
+      const firstIndex = flippedCards[0];
+      const secondIndex = index;
+
       if (shuffledCards[firstIndex] === shuffledCards[secondIndex]) {
         setMatchedCards((prev) => [
           ...prev,
           shuffledCards[firstIndex],
           shuffledCards[secondIndex],
         ]);
+        setScores((prevScores) => ({
+          ...prevScores,
+          [currentPlayer.username]: prevScores[currentPlayer.username] + 1,
+        }));
         setFlippedCards([]);
       } else {
-        setTimeout(() => setFlippedCards([]), 1000);
-        setCurrentPlayer((current) =>
-          current === player1 ? player2 : player1
-        );
+        setTimeout(() => {
+          setFlippedCards([]);
+          setCurrentPlayer((prev) => (prev === player1 ? player2 : player1));
+        }, 1000);
       }
     }
-  }, [flippedCards, shuffledCards, player1, player2, currentPlayer]);
+  };
 
   const resetGame = () => {
     setShuffledCards(shuffleArray([...cards]));
     setFlippedCards([]);
     setMatchedCards([]);
     setWinner(null);
-    setLoser(null); // Reset loser state
-    setScores({ player1: 0, player2: 0 }); // Reset the scores
-    setStartingPlayer((prev) => (prev === player1 ? player2 : player1)); // Alternate starting player
-    setCurrentPlayer(startingPlayer); // Set the new starting player
+    setScores({ [player1.username]: 0, [player2.username]: 0 });
+    setCurrentPlayer(player1);
   };
 
   return (
@@ -94,14 +89,14 @@ function Memory({ player1, player2, onNextGame, onLose }) {
       <CurrentPlayerPreview
         player1={player1}
         player2={player2}
-        isPlayerOneTurn={currentPlayer === player1} // Use currentPlayer to determine the turn
+        isPlayerOneTurn={currentPlayer === player1}
       />
       <p className="status-message">
-        {winner && loser
-          ? `${loser} drinks 5 sips!`
-          : winner === "Draw"
-          ? "It's a draw!"
-          : "Loser drinks 5 sips"}
+        {winner
+          ? winner === "Draw"
+            ? "It's a draw!"
+            : `${winner} wins! ${winner === player1.username ? player2.username : player1.username} drinks 5 sips!`
+          : `${currentPlayer.username}'s turn`}
       </p>
       <div className="board">
         {shuffledCards.map((card, index) => (
@@ -111,7 +106,7 @@ function Memory({ player1, player2, onNextGame, onLose }) {
               flippedCards.includes(index) || matchedCards.includes(card)
                 ? "flipped"
                 : ""
-            } ${index === 4 ? "hole" : ""}`}
+            } ${card === "" ? "hole" : ""}`}
             onClick={() => handleCardClick(index)}
           >
             {flippedCards.includes(index) || matchedCards.includes(card)

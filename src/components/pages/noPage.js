@@ -4,7 +4,7 @@ import Button from "../atoms/button"
 function NoPage() {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/react-doodles");
+    navigate("/arcade-adventure");
   }
   return (
     <div className="no-page">

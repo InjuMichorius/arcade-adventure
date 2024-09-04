@@ -1,6 +1,6 @@
 {
-  "homepage": "https://InjuMichorius.github.io/react-doodles",
-  "name": "react-doodles",
+  "homepage": "https://InjuMichorius.github.io/arcade-adventure",
+  "name": "arcade-adventure",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
