@@ -1,2 +1,2 @@
-# React doodles
-Just chillin'
+# Arcade adventure
+Project to teach myself some cool react stuffs

@@ -6,6 +6,7 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [loser, setLoser] = useState(null);
   const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
 
@@ -74,13 +75,6 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
         player2={player2}
         isPlayerOneTurn={isPlayerOneTurn} // Pass the turn state as a prop
       />
-      <p className="status-message">
-        {winner && loser
-          ? `${loser} drinks 5 sips!`
-          : winner === "Draw"
-          ? "It's a draw!"
-          : "Loser drinks 5 sips"}
-      </p>
       <div className="board">
         {board.map((cell, index) => (
           <div
