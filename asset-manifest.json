@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/arcade-adventure/static/css/main.972b225d.css",
-    "main.js": "/arcade-adventure/static/js/main.635cdbc5.js",
+    "main.js": "/arcade-adventure/static/js/main.eb029a69.js",
     "static/media/character1.png": "/arcade-adventure/static/media/character1.8025a804682c0d061d97.png",
     "static/media/Kanit-Bold.ttf": "/arcade-adventure/static/media/Kanit-Bold.46cd98a815b9874526ad.ttf",
     "static/media/Kanit-Regular.ttf": "/arcade-adventure/static/media/Kanit-Regular.f3bae13d78ced30b6ea3.ttf",
     "index.html": "/arcade-adventure/index.html",
     "main.972b225d.css.map": "/arcade-adventure/static/css/main.972b225d.css.map",
-    "main.635cdbc5.js.map": "/arcade-adventure/static/js/main.635cdbc5.js.map"
+    "main.eb029a69.js.map": "/arcade-adventure/static/js/main.eb029a69.js.map"
   },
   "entrypoints": [
     "static/css/main.972b225d.css",
-    "static/js/main.635cdbc5.js"
+    "static/js/main.eb029a69.js"
   ]
 }
