@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Hamburger from "../atoms/hamburger";
 import Button from "../atoms/button";
-import avatar from "../../assets/images/character1.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +11,7 @@ function NavBar({ players }) {
 
   // Handler to leave the game and clear the players from local storage
   const handleLeaveGameClick = () => {
-    localStorage.removeItem("players");
-    localStorage.removeItem("currentplayers"); // Remove currentplayers when leaving the game
+    localStorage.clear();
     navigate("/arcade-adventure");
     window.location.reload();
   };
@@ -31,7 +29,7 @@ function NavBar({ players }) {
           {players && players.map((player, index) => (
             <li key={index} className="player-container">
               <div className="avatar-preview">
-                <img src={avatar} alt="Avatar" />
+                <img src={player.avatar} alt="Avatar" />
                 <p className="points-text">{player.points}<FontAwesomeIcon icon={faWineBottle} className='icon' /></p>
               </div>
               <div className="user-details">

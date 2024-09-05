@@ -1,5 +1,4 @@
 import React from "react";
-import avatar from "../../assets/images/character1.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
 
@@ -7,11 +6,9 @@ function CurrentPlayerPreview({ player1, player2, isPlayerOneTurn }) {
   return (
     <div className="current-player-preview">
       <div
-        className={`current-player-wrapper ${
-          isPlayerOneTurn ? "active" : ""
-        }`} // Add 'active' class for player 1's turn
+        className={`current-player-wrapper ${isPlayerOneTurn ? "active" : ""}`}
       >
-        <img src={avatar} alt="avatar" width={100} />
+        <img src={player1.avatar} alt="avatar" width={100} />
         <p className="points-text">
           {player1.points}
           <FontAwesomeIcon icon={faWineBottle} className="icon" />
@@ -20,11 +17,9 @@ function CurrentPlayerPreview({ player1, player2, isPlayerOneTurn }) {
       </div>
       <p>vs</p>
       <div
-        className={`current-player-wrapper ${
-          !isPlayerOneTurn ? "active" : ""
-        }`} // Add 'active' class for player 2's turn
+        className={`current-player-wrapper ${!isPlayerOneTurn ? "active" : ""}`}
       >
-        <img src={avatar} alt="avatar" width={100} />
+        <img src={player2.avatar} alt="avatar" width={100} />
         <p className="points-text">
           {player2.points}
           <FontAwesomeIcon icon={faWineBottle} className="icon" />

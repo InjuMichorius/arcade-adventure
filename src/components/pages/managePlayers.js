@@ -3,16 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import NameInput from "../organisms/nameInput";
 import Button from "../atoms/button";
+import { useRandomAvatar } from "../../hooks/useRandomAvatar";
 
 function ManagePlayers() {
   const navigate = useNavigate();
+  const { getRandomAvatar, returnAvatar, availableAvatars } = useRandomAvatar();
 
-  // Load initial state from localStorage or use default state
+  // Load initial state from localStorage or create a default player if none exist
   const loadInitialPlayers = () => {
     const playersFromStorage = JSON.parse(localStorage.getItem("players"));
-    return playersFromStorage
-      ? playersFromStorage
-      : [{ id: 1, username: "", points: 0 }];
+
+    if (playersFromStorage && playersFromStorage.length > 0) {
+      return playersFromStorage;
+    }
+
+    const randomAvatar = getRandomAvatar();
+    return [{ id: 1, username: "", points: 0, avatar: randomAvatar }];
   };
 
   const [players, setPlayers] = useState(loadInitialPlayers);
@@ -20,20 +26,7 @@ function ManagePlayers() {
     () => JSON.parse(localStorage.getItem("nextId")) || 2
   );
 
-  // Redirect to the game page if valid players are already present
-  useEffect(() => {
-    const playersFromStorage =
-      JSON.parse(localStorage.getItem("players")) || [];
-    const hasValidPlayers = playersFromStorage.some(
-      (player) => player.username.trim() !== ""
-    );
-
-    if (hasValidPlayers) {
-      navigate("/game");
-    }
-  }, [navigate]);
-
-  // Sync state to localStorage whenever players state changes
+  // Sync players to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
     localStorage.setItem("nextId", nextId);
@@ -48,15 +41,39 @@ function ManagePlayers() {
   };
 
   const addPlayer = () => {
-    const newPlayer = { id: nextId, username: "", points: 0 };
+    if (availableAvatars.length === 0) {
+      alert("No more avatars available!");
+      return;
+    }
+
+    const randomAvatar = getRandomAvatar();
+    const newPlayer = {
+      id: nextId,
+      username: "",
+      points: 0,
+      avatar: randomAvatar,
+    };
+
     setPlayers((prevPlayers) => [...prevPlayers, newPlayer]);
     setNextId((prevNextId) => prevNextId + 1);
   };
 
+  // Check if all player inputs are filled
+  const allPlayersHaveNames = players.every(
+    (player) => player.username.trim() !== ""
+  );
+
+  const canStartGame =
+    players.filter((player) => player.username.trim() !== "").length >= 2;
+
   const deletePlayer = (id) => {
-    setPlayers((prevPlayers) =>
-      prevPlayers.filter((player) => player.id !== id)
-    );
+    const playerToDelete = players.find((player) => player.id === id);
+    if (playerToDelete) {
+      returnAvatar(playerToDelete.avatar);
+      setPlayers((prevPlayers) =>
+        prevPlayers.filter((player) => player.id !== id)
+      );
+    }
   };
 
   const handleStartGame = () => {
@@ -77,15 +94,6 @@ function ManagePlayers() {
     }
   };
 
-  // Check if all player inputs are filled
-  const allPlayersHaveNames = players.every(
-    (player) => player.username.trim() !== ""
-  );
-
-  // Check if at least two player inputs are filled
-  const canStartGame =
-    players.filter((player) => player.username.trim() !== "").length >= 2;
-
   return (
     <div className="manage-players-container">
       <h1 className="manage-players-container__title">Players</h1>
@@ -97,7 +105,8 @@ function ManagePlayers() {
                 id={player.id}
                 onNameChange={handleNameChange}
                 onDelete={deletePlayer}
-                value={player.username} // Pass the current username to the NameInput component
+                avatar={player.avatar}
+                value={player.username}
               />
             </li>
           ))}
