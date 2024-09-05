@@ -1,32 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import NavBar from "../organisms/navBar";
-import TicTacToe from "../games/ticTacToe";
-// import Memory from "../games/memory";
 import { useNavigate } from "react-router-dom";
-// import NeverHaveIEver from "../games/neverHaveIEver";
-
-// List of available games
-const games = [
-  { component: TicTacToe, name: "TicTacToe" },
-  // { component: Memory, name: "Memory" },
-  // { component: NeverHaveIEver, name: "NeverHaveIEver" },
-];
+import { useCurrentGame } from "../../hooks/useCurrentGame";
+import { usePlayers } from "../../hooks/usePlayers";
 
 function Game() {
   const navigate = useNavigate();
+  const { players, player1, player2, setPlayers, setPlayer1, setPlayer2 } = usePlayers(navigate);
 
-  // State for the list of players
-  const [players, setPlayers] = useState([]);
-
-  // State for the current game index
-  const [currentGameIndex, setCurrentGameIndex] = useState(0);
-
-  // State for player1 and player2
-  const [player1, setPlayer1] = useState(null);
-  const [player2, setPlayer2] = useState(null);
-
-  // Component of the current game to render
-  const CurrentGameComponent = games[currentGameIndex].component;
+  const { CurrentGameComponent, handleNextGame } = useCurrentGame();
 
   // Function to get random players
   function getRandomPlayers(players, num = 2) {
@@ -38,9 +20,9 @@ function Game() {
     // Retrieve players from localStorage
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
 
-    // Redirect to /react-doodles if no players found
+    // Redirect to /arcade-adventure if no players found
     if (storedPlayers.length === 0) {
-      navigate("/react-doodles");
+      navigate("/arcade-adventure");
       return;
     }
 
@@ -70,7 +52,7 @@ function Game() {
         localStorage.setItem("currentplayers", JSON.stringify(randomPlayers));
       }
     }
-  }, [navigate]);
+  }, [navigate, setPlayer1, setPlayer2, setPlayers]);
 
   // Update the player's points when a game is lost
   const updateLosingPlayerPoints = (loserUsername) => {
@@ -118,22 +100,9 @@ function Game() {
     }
   };
 
-  // Handler to move to the next game
-  const handleNextGame = () => {
-    setCurrentGameIndex((prevIndex) => (prevIndex + 1) % games.length);
-  };
-
-  // Handler to leave the game and clear the players from local storage
-  const handleLeaveGameClick = () => {
-    localStorage.removeItem("players");
-    localStorage.removeItem("currentplayers"); // Remove currentplayers when leaving the game
-    navigate("/react-doodles");
-    window.location.reload();
-  };
-
   return (
     <div className="game-container">
-      <NavBar players={players} onLeaveGameClick={handleLeaveGameClick} />
+      <NavBar players={players} />
       <main>
         {/* Render the current game component if players are set */}
         {player1 && player2 && (

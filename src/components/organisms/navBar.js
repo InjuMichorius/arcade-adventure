@@ -4,9 +4,19 @@ import Button from "../atoms/button";
 import avatar from "../../assets/images/character1.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
-function NavBar({ players, onLeaveGameClick }) {
+function NavBar({ players }) {
+  const navigate = useNavigate();
   const [isPlayerListVisible, setIsPlayerListVisible] = useState(false);
+
+  // Handler to leave the game and clear the players from local storage
+  const handleLeaveGameClick = () => {
+    localStorage.removeItem("players");
+    localStorage.removeItem("currentplayers"); // Remove currentplayers when leaving the game
+    navigate("/arcade-adventure");
+    window.location.reload();
+  };
 
   const handleHamburgerClick = () => {
     setIsPlayerListVisible(!isPlayerListVisible);
@@ -36,7 +46,7 @@ function NavBar({ players, onLeaveGameClick }) {
             </li>
           ))}
         </ul>
-        <Button variant="primary" text="Leave arcade" onClick={onLeaveGameClick} />
+        <Button variant="primary" text="Leave arcade" onClick={handleLeaveGameClick} />
       </div>
     </header>
   );
