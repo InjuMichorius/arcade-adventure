@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../atoms/button";
-import CurrentPlayerPreview from "../organisms/currentPlayerPreview"; // Import the component
+import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 
 function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [board, setBoard] = useState(Array(9).fill(null));

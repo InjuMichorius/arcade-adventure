@@ -1,7 +1,9 @@
 import { useState } from "react";
+import GridGamble from "../components/games/gridGamble";
 import TicTacToe from "../components/games/ticTacToe";
 
 const games = [
+  { component: GridGamble, name: "GridGamble" },
   { component: TicTacToe, name: "TicTacToe" },
   // Add other games here
 ];
