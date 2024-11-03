@@ -1,2 +1,2 @@
 # Arcade adventure
-Project to teach myself some cool react stuffs
+Project to teach myself some cool react stuffs!
