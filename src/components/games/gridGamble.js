@@ -14,26 +14,21 @@ function GridGamble({ player1, player2, onNextGame }) {
     if (winner) return;
 
     const newBoard = board.slice();
-    console.log("bombIndex", bombIndex, "index", index);
 
-    // Only Player 2 can choose cards
     if (!isPlayerOneTurn) {
-      // Check if the selected cell is already chosen
+      // Prevent selection of already chosen cards
       if (newBoard[index] === "chosen") {
-        return; // Prevent selection of already chosen cards
+        return;
       }
 
-      // Check if player 2 chose the bomb
       if (index === bombIndex) {
-        console.log("Player 2 clicked the bomb!"); // Log bomb click
         // Player 2 drinks all remaining cards
-        const remainingCards = newBoard.filter(card => card === null).length - 1; // Remaining cards to drink
+        const remainingCards = newBoard.filter(card => card === null).length;
         setDrinksMessage(`${player2.username} drinks ${remainingCards}!`);
-        setLoser(player2.username); // Player 2 loses
-        setWinner(player1.username); // Player 1 wins
+        setLoser(player2.username);
+        setWinner(player1.username);
       } else {
-        console.log("Player 2 chose a safe card."); // Log safe card choice
-        // Mark card as chosen (disappear it)
+        // Mark card as chosen
         newBoard[index] = "chosen";
         setBoard(newBoard);
 
@@ -87,30 +82,30 @@ function GridGamble({ player1, player2, onNextGame }) {
             key={index}
             className={`cell ${cell === "bomb" ? "bomb" : cell === "chosen" ? "chosen" : ""}`}
             onClick={() => {
-              console.log("Clicked cell index:", index); // Log every click
               if (isPlayerOneTurn) {
                 // Player 1 chooses where to place the bomb
                 if (cell === null) handleSetBomb(index);
               } else {
                 console.log("Player 2 is trying to choose card at index:", index);
-                handleChooseCard(index); // Player 2 can click the bomb or other cells
+                handleChooseCard(index);
               }
             }}
           >
             {/* Only show the bomb if it's Player 1's turn and the bomb has been set */}
-            {cell === "bomb" && isPlayerOneTurn ? "💣" : cell === "chosen" ? "✔️" : ""}
+            {cell === "bomb" && isPlayerOneTurn && "💣"}
           </div>
         ))}
       </div>
 
-      {winner ? (
+      {winner && (
         <div>
           <h2>{winner} wins! {drinksMessage}</h2>
           <Button variant="primary" onClick={resetGame} text="Play again" />
           <Button variant="secondary" onClick={onNextGame} text="Next Game" />
         </div>
-      ) : (
-        <Button variant="primary" onClick={handleNextPlayer} text="Next Player" />
+      )}
+      {isPlayerOneTurn && bombIndex !== null && (
+        <Button variant="primary" onClick={handleNextPlayer} text="Hide bomb" />
       )}
     </div>
   );
