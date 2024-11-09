@@ -104,7 +104,7 @@ function GridGamble({ player1, player2, onNextGame }) {
           <Button variant="secondary" onClick={onNextGame} text="Next Game" />
         </div>
       )}
-      {isPlayerOneTurn && bombIndex !== null && (
+      {isPlayerOneTurn && bombIndex !== null && !winner && (
         <Button variant="primary" onClick={handleNextPlayer} text="Hide bomb" />
       )}
     </div>
