@@ -30,7 +30,7 @@ function Game() {
     setPlayers(storedPlayers);
 
     // Check if 'currentplayers' exist in localStorage
-    const currentPlayers = JSON.parse(localStorage.getItem("currentplayers"));
+    const currentPlayers = JSON.parse(localStorage.getItem("activePlayers"));
 
     if (currentPlayers && currentPlayers.length === 2) {
       // Use existing 'currentplayers' if available
@@ -49,12 +49,12 @@ function Game() {
         setPlayer2(randomPlayer2);
 
         // Set 'currentplayers' in localStorage
-        localStorage.setItem("currentplayers", JSON.stringify(randomPlayers));
+        localStorage.setItem("activePlayers", JSON.stringify(randomPlayers));
       }
     }
   }, [navigate, setPlayer1, setPlayer2, setPlayers]);
 
-  // Update the player's points when a game is lost
+  // TODO: remove this old function that adds points to losing player (TicTacToe)
   const updateLosingPlayerPoints = (loserUsername) => {
     // Create a new array to avoid mutating the original
     const updatedPlayers = players.map((player) => {
@@ -100,6 +100,26 @@ function Game() {
     }
   };
 
+  // Get players from localStorage, update points for localStorage and react state based on game result
+  const updateSips = (playerName, sipAmount) => {
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+  
+    // Find the player by name and update their sipAmount (or points)
+    const updatedPlayers = storedPlayers.map(player => {
+      if (player.username === playerName) {
+        // Update the player's points (or whatever property you need to update)
+        return { ...player, points: player.points + sipAmount };
+      }
+      return player;
+    });
+  
+    // Update localStorage with the new player data
+    localStorage.setItem("players", JSON.stringify(updatedPlayers));
+  
+    // Update the state so the UI will re-render
+    setPlayers(updatedPlayers);
+  };  
+
   return (
     <div className="game-container">
       <NavBar players={players} />
@@ -111,6 +131,7 @@ function Game() {
             player2={player2}
             onNextGame={handleNextGame}
             onLose={updateLosingPlayerPoints} // Pass down the updateLosingPlayerPoints function
+            updateSips={updateSips}
           />
         )}
       </main>

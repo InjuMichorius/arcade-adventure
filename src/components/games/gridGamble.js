@@ -1,14 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../atoms/button";
+import useRandomPlayers from "../../hooks/useRandomPlayers";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 
-function GridGamble({ player1, player2, onNextGame }) {
+function GridGamble({ onNextGame, updateSips }) {
+  const [player1, setPlayer1] = useState(null);
+  const [player2, setPlayer2] = useState(null);
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
   const [loser, setLoser] = useState(null);
   const [bombIndex, setBombIndex] = useState(null);
   const [drinksMessage, setDrinksMessage] = useState(null); // To store drinks message
+
+  useEffect(() => {
+    // Retrieve players from localStorage
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+
+    // If we don't have two players, select them randomly
+    if (storedPlayers.length >= 2) {
+      const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);  // Shuffle players
+      setPlayer1(shuffledPlayers[0]);
+      setPlayer2(shuffledPlayers[1]);
+    }
+  }, []);
+  useRandomPlayers(2)
 
   const handleChooseCard = (index) => {
     if (winner) return;
@@ -24,6 +40,7 @@ function GridGamble({ player1, player2, onNextGame }) {
       if (index === bombIndex) {
         // Player 2 drinks all remaining cards
         const remainingCards = newBoard.filter(card => card === null).length;
+        updateSips(player2.username, remainingCards);
         setDrinksMessage(`${player2.username} drinks ${remainingCards}!`);
         setLoser(player2.username);
         setWinner(player1.username);
@@ -71,11 +88,9 @@ function GridGamble({ player1, player2, onNextGame }) {
   return (
     <div className="grid-gamble-container">
       <h1>Grid Gamble</h1>
-      <CurrentPlayerPreview
-        player1={player1}
-        player2={player2}
-        isPlayerOneTurn={isPlayerOneTurn}
-      />
+        <CurrentPlayerPreview
+          isPlayerOneTurn={isPlayerOneTurn}
+        />
       <div className="board">
         {board.map((cell, index) => (
           <div
