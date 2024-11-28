@@ -10,11 +10,6 @@
   user-select: none;
   transition: all 0.3s ease-in-out;
 }
-.ham.active {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-}
 .hamRotate.active {
   transform: rotate(45deg);
 }
