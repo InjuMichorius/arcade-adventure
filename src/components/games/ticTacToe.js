@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Button from "../atoms/button";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 
 function TicTacToe({ player1, player2, onNextGame, onLose }) {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -87,9 +89,9 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
         ))}
       </div>
       {winner && (
-        <div>
-          <Button variant="primary" onClick={resetGame} text="Play again" />
-          <Button variant="secondary" onClick={onNextGame} text="Next Game" />
+        <div className="button-wrapper">
+          <Button icon={faRotateRight} variant="secondary" onClick={resetGame} text="Play again" />
+          <Button icon={faCircleRight}  variant="primary" onClick={onNextGame} text="Next Game" />
         </div>
       )}
     </div>

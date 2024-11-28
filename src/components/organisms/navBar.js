@@ -3,6 +3,7 @@ import Hamburger from "../atoms/hamburger";
 import Button from "../atoms/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
+import { faPersonWalkingArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 function NavBar({ players }) {
@@ -44,7 +45,7 @@ function NavBar({ players }) {
             </li>
           ))}
         </ul>
-        <Button variant="primary" text="Leave arcade" onClick={handleLeaveGameClick} />
+        <Button icon={faPersonWalkingArrowRight} variant="primary" text="Leave arcade" onClick={handleLeaveGameClick} />
       </div>
     </header>
   );

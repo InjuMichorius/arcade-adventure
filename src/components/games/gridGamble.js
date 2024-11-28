@@ -3,6 +3,9 @@ import Button from "../atoms/button";
 import Modal from "../atoms/modal";
 import useRandomPlayers from "../../hooks/useRandomPlayers";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
+import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function GridGamble({ onNextGame, updateSips }) {
   const [player1, setPlayer1] = useState(null);
@@ -136,13 +139,13 @@ function GridGamble({ onNextGame, updateSips }) {
       )}
 
       {winner && (
-        <div>
-          <Button variant="primary" onClick={resetGame} text="Play again" />
-          <Button variant="secondary" onClick={onNextGame} text="Next Game" />
+        <div className="button-wrapper">
+          <Button icon={faRotateRight} variant="secondary" onClick={resetGame} text="Play again" />
+          <Button icon={faCircleRight} variant="primary" onClick={onNextGame} text="Next Game" />
         </div>
       )}
       {isPlayerOneTurn && bombIndex !== null && !winner && (
-        <Button variant="primary" onClick={handleNextPlayer} text="Hide bomb" />
+        <Button icon={faEyeSlash} variant="primary" onClick={handleNextPlayer} text="Hide bomb" />
       )}
     </div>
   );

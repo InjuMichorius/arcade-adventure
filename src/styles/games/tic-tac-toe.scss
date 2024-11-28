@@ -51,4 +51,9 @@
     font-size: 1.2rem;
     font-family: var(--font);
   }
+  .button-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+  }
 }

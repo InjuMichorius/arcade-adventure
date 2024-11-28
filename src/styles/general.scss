@@ -29,6 +29,7 @@ body {
 }
 
 h1 {
+  padding: 0 2.5rem;
   color: #e64d48;
   font-size: 1.5rem;
   margin-bottom: 1rem;
@@ -49,6 +50,9 @@ h1 {
 }
 
 button {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
   border: 0;
   font-size: 20px;
   font-weight: 700;
@@ -71,13 +75,11 @@ button {
     width: 100%;
     background-color: var(--green);
     border-color: var(--green);
-    svg path {
-      fill: var(--light-green);
-    }
   }
 
   .icon {
     height: 20px;
+    color: white;
   }
 }
 

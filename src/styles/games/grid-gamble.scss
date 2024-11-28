@@ -28,4 +28,10 @@
       opacity: 0.5;
     }
   }
+  .button-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    align-items: start;
+  }
 }
