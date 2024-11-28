@@ -60,6 +60,7 @@ function GridGamble({ onNextGame, updateSips }) {
   };
 
   const handleSetBomb = (index) => {
+    if (winner) return;
     const newBoard = board.slice();
 
     // If there's already a bomb, remove it
