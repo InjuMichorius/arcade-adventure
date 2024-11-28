@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhiskeyGlass } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import Button from "../atoms/button";
 
 function Modal({ title, description, buttons, onClose }) {
   const [isVisible, setIsVisible] = useState(true);
@@ -14,19 +18,23 @@ function Modal({ title, description, buttons, onClose }) {
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={handleClose}>
-          &times;
+        <FontAwesomeIcon icon={faCircleXmark} className='icon' />
         </button>
         <h2 className="modal-title">{title}</h2>
         <p className="modal-description">{description}</p>
         <div className="modal-buttons">
           {buttons.map((button, index) => (
-            <button
+            <Button
+            icon={faWhiskeyGlass}
+            text={button.text}
               key={index}
-              className={`btn ${button.variant || "primary"}`}
-              onClick={button.onClick}
+              variant={`${button.variant}`}
+              onClick={() => {
+                button.onClick?.(); // Execute the button's action if provided
+                handleClose(); // Close the modal after the button action
+              }}
             >
-              {button.text}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

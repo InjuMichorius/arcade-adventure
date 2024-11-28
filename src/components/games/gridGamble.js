@@ -124,14 +124,8 @@ function GridGamble({ onNextGame, updateSips }) {
           description={drinksMessage || "Congratulations!"}
           buttons={[
             {
-              text: "Play again",
+              text: "Drink",
               variant: "primary",
-              onClick: resetGame,
-            },
-            {
-              text: "Next Game",
-              variant: "secondary",
-              onClick: onNextGame,
             },
           ]}
         />
