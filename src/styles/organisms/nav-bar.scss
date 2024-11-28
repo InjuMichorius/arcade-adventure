@@ -15,6 +15,14 @@
     list-style: none;
     z-index: 9;
     &__title {
+      color: #e64d48;
+      font-size: 3rem;
+      text-transform: uppercase;
+      text-shadow: -5px -5px 0 var(--off-white), 5px -5px 0 var(--off-white), -5px 5px 0 var(--off-white),
+        5px 5px 0 var(--off-white), 0 -5px 0 var(--off-white), 0 5px 0 var(--off-white), -5px 0 0 var(--off-white),
+        5px 0 0 var(--off-white);
+      text-align: center;
+      font-family: var(--font-bold);
       margin-bottom: 60px;
     }
     &.show {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "../atoms/button";
+import Modal from "../atoms/modal";
 import useRandomPlayers from "../../hooks/useRandomPlayers";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 
@@ -114,8 +115,28 @@ function GridGamble({ onNextGame, updateSips }) {
       </div>
 
       {winner && (
+        <>
+        <Modal
+          title={`${winner} Wins!`}
+          description={drinksMessage || "Congratulations!"}
+          buttons={[
+            {
+              text: "Play again",
+              variant: "primary",
+              onClick: resetGame,
+            },
+            {
+              text: "Next Game",
+              variant: "secondary",
+              onClick: onNextGame,
+            },
+          ]}
+        />
+        </>
+      )}
+
+      {winner && (
         <div>
-          <h2>{winner} wins! {drinksMessage}</h2>
           <Button variant="primary" onClick={resetGame} text="Play again" />
           <Button variant="secondary" onClick={onNextGame} text="Next Game" />
         </div>

@@ -1,29 +1,31 @@
 .grid-gamble-container {
-    .board {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        gap: 10px;
-        justify-content: center;
-        margin-bottom: 2rem;
-      }
-    
-      .cell {
-        width: 100%;
-        aspect-ratio: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--light-green);
-        font-size: 2em;
-        color: var(--green);
-        cursor: pointer;
-        border-radius: 10px;
-        &.chosen {
-            background-color: var(--green);
-        }
-        &.old-bomb {
-            opacity: .5;
-        }
-      }
+  padding: 0 2rem;
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 2rem;
+    padding: 0;
+  }
+
+  .cell {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-green);
+    font-size: 2em;
+    color: var(--green);
+    cursor: pointer;
+    border-radius: 10px;
+    &.chosen {
+      background-color: var(--green);
+    }
+    &.old-bomb {
+      opacity: 0.5;
+    }
+  }
 }
