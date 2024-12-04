@@ -3,20 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
 
 function CurrentPlayerPreview({ isPlayerOneTurn }) {
-  // Haal de volledige lijst van spelers en de actieve spelers op uit localStorage
-  const players = JSON.parse(localStorage.getItem("players"));
-  const activePlayers = JSON.parse(localStorage.getItem("activePlayers"));
+  // Get the full list of players from localStorage
+  const players = JSON.parse(localStorage.getItem("players")) || [];
 
-  // Log om te controleren wat er in activePlayers en players zit
+  // Filter players to get only those marked as active
+  const activePlayers = players.filter(player => player.activePlayer);
 
-  // Haal de spelers uit activePlayers op basis van hun index (zonder `find`)
-  const player1 = activePlayers[0]; // activePlayers[0] is het eerste object
-  const player2 = activePlayers[1]; // activePlayers[1] is het tweede object
-
-  // Controleer of de actieve spelers daadwerkelijk aanwezig zijn
-  if (!player1 || !player2) {
+  // Check if there are exactly two active players
+  if (activePlayers.length !== 2) {
     return <p>Er is een probleem met het ophalen van de actieve spelers. Controleer of de juiste spelers in de lijst staan.</p>;
   }
+
+  // Destructure the two active players
+  const [player1, player2] = activePlayers;
 
   return (
     <div className="current-player-preview">

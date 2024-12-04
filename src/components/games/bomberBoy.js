@@ -18,25 +18,35 @@ function BomberBoy({ onNextGame, updateSips }) {
   const [drinksMessage, setDrinksMessage] = useState(null); // To store drinks message
 
   useEffect(() => {
-    // Retrieve activePlayers from localStorage
-    const activePlayers = JSON.parse(localStorage.getItem('activePlayers'));
+    // Retrieve all players from localStorage
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    
+    // Filter for players with activePlayer: true
+    const activePlayers = storedPlayers.filter(player => player.activePlayer);
   
-    if (activePlayers && activePlayers.length >= 2) {
+    if (activePlayers.length >= 2) {
+      // Set the first two active players
       setPlayer1(activePlayers[0]);
       setPlayer2(activePlayers[1]);
-      console.log("Loaded active players:", activePlayers);
+      console.log("Active players found:", activePlayers[0], activePlayers[1]);
     } else {
-      console.warn("No active players found, randomizing players.");
-      const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-      if (storedPlayers.length >= 2) {
-        const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
-        setPlayer1(shuffledPlayers[0]);
-        setPlayer2(shuffledPlayers[1]);
-        localStorage.setItem('activePlayers', JSON.stringify(shuffledPlayers.slice(0, 2))); // Save to activePlayers
-        console.log("Randomized players:", shuffledPlayers.slice(0, 2));
-      }
+      console.warn("Not enough active players. Randomizing players.");
+      
+      // If not enough active players, select two random players
+      const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
+      setPlayer1(shuffledPlayers[0]);
+      setPlayer2(shuffledPlayers[1]);
+  
+      // Optionally, set them as active in the players list
+      const updatedPlayers = storedPlayers.map(player => ({
+        ...player,
+        activePlayer: player === shuffledPlayers[0] || player === shuffledPlayers[1],
+      }));
+  
+      localStorage.setItem("players", JSON.stringify(updatedPlayers));
+      console.log("Randomized players set as active:", shuffledPlayers.slice(0, 2));
     }
-  }, []);
+  }, []);  
   useRandomPlayers(2);
 
   const handleChooseCard = (index) => {
@@ -52,7 +62,7 @@ function BomberBoy({ onNextGame, updateSips }) {
 
       if (index === bombIndex) {
         // Player 2 drinks all remaining cards
-        const remainingCards = newBoard.filter(card => card === null).length;
+        const remainingCards = newBoard.filter(card => card === null).length + 1;
         updateSips(player2.username, remainingCards);
         setDrinksMessage(`${player2.username} drinks ${remainingCards}!`);
         setLoser(player2.username);
@@ -107,7 +117,6 @@ function BomberBoy({ onNextGame, updateSips }) {
         <CurrentPlayerPreview
           isPlayerOneTurn={isPlayerOneTurn}
         />
-        {/* <p>Player 1: {player1?.username}, Player 2: {player2?.username}</p> */}
       <div className="board">
         {board.map((cell, index) => (
           <div

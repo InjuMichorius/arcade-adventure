@@ -30,10 +30,10 @@ export function usePlayers(navigate) {
       if (randomPlayer1 && randomPlayer2) {
         setPlayer1(randomPlayer1);
         setPlayer2(randomPlayer2);
-        localStorage.setItem(
-          "currentplayers",
-          JSON.stringify([randomPlayer1, randomPlayer2])
-        );
+        // localStorage.setItem(
+        //   "currentplayers",
+        //   JSON.stringify([randomPlayer1, randomPlayer2])
+        // );
       }
     }
   }, [navigate]);

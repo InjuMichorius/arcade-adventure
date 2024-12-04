@@ -81,10 +81,10 @@ function Game() {
       }
       return player;
     });
-    localStorage.setItem(
-      "currentplayers",
-      JSON.stringify(updatedCurrentPlayers)
-    );
+    // localStorage.setItem(
+    //   "currentplayers",
+    //   JSON.stringify(updatedCurrentPlayers)
+    // );
 
     // Update player1 and player2 states if they match the loser
     if (player1 && player1.username === loserUsername) {
