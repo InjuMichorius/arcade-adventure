@@ -18,17 +18,26 @@ function BomberBoy({ onNextGame, updateSips }) {
   const [drinksMessage, setDrinksMessage] = useState(null); // To store drinks message
 
   useEffect(() => {
-    // Retrieve players from localStorage
-    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-
-    // If we don't have two players, select them randomly
-    if (storedPlayers.length >= 2) {
-      const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);  // Shuffle players
-      setPlayer1(shuffledPlayers[0]);
-      setPlayer2(shuffledPlayers[1]);
+    // Retrieve activePlayers from localStorage
+    const activePlayers = JSON.parse(localStorage.getItem('activePlayers'));
+  
+    if (activePlayers && activePlayers.length >= 2) {
+      setPlayer1(activePlayers[0]);
+      setPlayer2(activePlayers[1]);
+      console.log("Loaded active players:", activePlayers);
+    } else {
+      console.warn("No active players found, randomizing players.");
+      const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+      if (storedPlayers.length >= 2) {
+        const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
+        setPlayer1(shuffledPlayers[0]);
+        setPlayer2(shuffledPlayers[1]);
+        localStorage.setItem('activePlayers', JSON.stringify(shuffledPlayers.slice(0, 2))); // Save to activePlayers
+        console.log("Randomized players:", shuffledPlayers.slice(0, 2));
+      }
     }
   }, []);
-  useRandomPlayers(2)
+  useRandomPlayers(2);
 
   const handleChooseCard = (index) => {
     if (winner) return;
@@ -51,12 +60,14 @@ function BomberBoy({ onNextGame, updateSips }) {
       } else {
         // Mark card as chosen
         newBoard[index] = "chosen";
+        setDrinksMessage(`${player1.username} drinks 1!`);
         setBoard(newBoard);
 
         // Check if Player 2 wins by having only one card left
         const remainingCards = newBoard.filter(card => card === null).length;
         if (remainingCards === 1) {
-          setWinner(player2.username); // Player 2 wins
+          setLoser(player1.username);
+          setWinner(player2.username);
         }
       }
       setIsPlayerOneTurn(true); // Switch back to Player 1's turn
@@ -96,6 +107,7 @@ function BomberBoy({ onNextGame, updateSips }) {
         <CurrentPlayerPreview
           isPlayerOneTurn={isPlayerOneTurn}
         />
+        {/* <p>Player 1: {player1?.username}, Player 2: {player2?.username}</p> */}
       <div className="board">
         {board.map((cell, index) => (
           <div
@@ -106,7 +118,6 @@ function BomberBoy({ onNextGame, updateSips }) {
                 // Player 1 chooses where to place the bomb
                 if (cell === null) handleSetBomb(index);
               } else {
-                console.log("Player 2 is trying to choose card at index:", index);
                 handleChooseCard(index);
               }
             }}
@@ -120,8 +131,8 @@ function BomberBoy({ onNextGame, updateSips }) {
       {winner && (
         <>
         <Modal
-          title={`${winner} Wins!`}
-          description={drinksMessage || "Congratulations!"}
+          title={`${loser} loses, ${winner} Wins!`}
+          description={drinksMessage}
           buttons={[
             {
               text: "Drink",

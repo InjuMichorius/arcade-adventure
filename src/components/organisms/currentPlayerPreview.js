@@ -8,16 +8,10 @@ function CurrentPlayerPreview({ isPlayerOneTurn }) {
   const activePlayers = JSON.parse(localStorage.getItem("activePlayers"));
 
   // Log om te controleren wat er in activePlayers en players zit
-  console.log("players:", players);
-  console.log("activePlayers:", activePlayers);
 
   // Haal de spelers uit activePlayers op basis van hun index (zonder `find`)
   const player1 = activePlayers[0]; // activePlayers[0] is het eerste object
   const player2 = activePlayers[1]; // activePlayers[1] is het tweede object
-
-  // Log de actieve spelers om te debuggen
-  console.log("player1:", player1);
-  console.log("player2:", player2);
 
   // Controleer of de actieve spelers daadwerkelijk aanwezig zijn
   if (!player1 || !player2) {

@@ -17,7 +17,7 @@ function NameInput({ id, onNameChange, onDelete, avatar }) {
         type="text"
         placeholder="Enter name..."
         onChange={handleNameChange}
-        maxlength="8"
+        maxLength="8"
       />
       <Button icon={faTrash} onClick={() => onDelete(id)} />
     </div>
