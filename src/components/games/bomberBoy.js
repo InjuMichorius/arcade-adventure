@@ -7,7 +7,7 @@ import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
 import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-function GridGamble({ onNextGame, updateSips }) {
+function BomberBoy({ onNextGame, updateSips }) {
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -91,8 +91,8 @@ function GridGamble({ onNextGame, updateSips }) {
   };
 
   return (
-    <div className="grid-gamble-container">
-      <h1>Grid Gamble</h1>
+    <div className="bomber-boy-container">
+      <h1>Bomber Boy</h1>
         <CurrentPlayerPreview
           isPlayerOneTurn={isPlayerOneTurn}
         />
@@ -145,4 +145,4 @@ function GridGamble({ onNextGame, updateSips }) {
   );
 }
 
-export default GridGamble;
+export default BomberBoy;
