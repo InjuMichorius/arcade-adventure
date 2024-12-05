@@ -4,7 +4,6 @@
   top: 1.2rem;
   display: flex;
   justify-content: end;
-  width: 100%;
   z-index: 999;
   .hamburger-button {
     padding: 0;
@@ -62,7 +61,7 @@
           padding: 0 0.5rem;
           border-radius: 100px;
           background-color: var(--off-white);
-          color: #e64d48;
+          color: var(--red);
           font-family: var(--font-bold);
         }
       }
@@ -83,7 +82,7 @@
             border-radius: 100%;
             width: 25px;
             height: 25px;
-            background-color: #e64d48;
+            color: var(--red);
           }
         }
       }

@@ -21,17 +21,25 @@ function NavBar({ players }) {
     setIsPlayerListVisible(!isPlayerListVisible);
   };
 
+  // Sort players by points in descending order
+  const sortedPlayers = players
+    ? [...players].sort((a, b) => b.points - a.points)
+    : [];
+
   return (
     <header className="navbar-container">
       <Hamburger onClick={handleHamburgerClick} />
       <div className={`player-list ${isPlayerListVisible ? "show" : ""}`}>
         <h1 className="player-list__title">Leaderboard</h1>
         <ul>
-          {players && players.map((player, index) => (
+          {sortedPlayers.map((player, index) => (
             <li key={index} className="player-container">
               <div className="avatar-preview">
                 <img src={player.avatar} alt="Avatar" />
-                <p className="points-text">{player.points}<FontAwesomeIcon icon={faWineBottle} className='icon' /></p>
+                <p className="points-text">
+                  {player.points}
+                  <FontAwesomeIcon icon={faWineBottle} className="icon" />
+                </p>
               </div>
               <div className="user-details">
                 <p className="player-name">{player.username}</p>
@@ -45,7 +53,12 @@ function NavBar({ players }) {
             </li>
           ))}
         </ul>
-        <Button icon={faPersonWalkingArrowRight} variant="primary" text="Leave arcade" onClick={handleLeaveGameClick} />
+        <Button
+          icon={faPersonWalkingArrowRight}
+          variant="primary"
+          text="Leave arcade"
+          onClick={handleLeaveGameClick}
+        />
       </div>
     </header>
   );

@@ -11,7 +11,7 @@
   z-index: 1000;
 
   .modal {
-    background: var(--green);
+    background: var(--light-green);
     color: white;
     border-radius: 8px;
     padding: 20px;
@@ -22,29 +22,42 @@
 
     .modal-close {
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: 10px;
+      right: 10px;
       background: transparent;
       border: none;
       font-size: 20px;
       cursor: pointer;
       > .icon {
-        color: white;
+        color: var(--red);
+        background-color: var(--off-white);
+        padding: .2rem;
+        border-radius: 100%;
       }
     }
 
     .modal-title {
       margin-top: 0;
+      padding-left: 0;
+      text-align: left;
     }
 
     .modal-description {
-      margin: 15px 0;
+      margin: 2rem 0;
+      color: #0f5d32;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
     }
 
     .modal-buttons {
       display: flex;
       gap: 10px;
       justify-content: flex-end;
+
+      .secondary {
+        background-color: var(--green);
+        border-bottom: 5px solid #0f5d32;
+      }
     }
   }
 }

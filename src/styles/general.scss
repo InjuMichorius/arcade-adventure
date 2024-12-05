@@ -14,6 +14,7 @@
   --green: #369064;
   --light-green: #6ecea0;
   --off-white: #fffcc1;
+  --red: #e64d48;
 }
 
 * {
@@ -30,7 +31,7 @@ body {
 
 h1, h2 {
   padding: 0 2.5rem;
-  color: #e64d48;
+  color: var(--red);
   font-size: 1.5rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
@@ -67,7 +68,7 @@ button {
 
   &.primary {
     width: 100%;
-    background-color: #e64d48;
+    background-color: var(--red);
     border-bottom: 5px solid #901814;
   }
 
