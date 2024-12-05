@@ -24,6 +24,7 @@ function BomberBoy({ onNextGame, updateSips }) {
   const [bombIndex, setBombIndex] = useState(null);
   const [drinksMessage, setDrinksMessage] = useState(null);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false); // For the instructions modal
+  const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false); // For the instructions modal
 
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
@@ -63,6 +64,7 @@ function BomberBoy({ onNextGame, updateSips }) {
         setDrinksMessage(`${player2.username} drinks ${remainingCards}!`);
         setLoser(player2.username);
         setWinner(player1.username);
+        setIsDrinkModalOpen(true);
       } else {
         newBoard[index] = "chosen";
         setDrinksMessage(`${player1.username} drinks 1!`);
@@ -156,7 +158,7 @@ function BomberBoy({ onNextGame, updateSips }) {
         />
       )}
 
-      {winner && (
+      {isDrinkModalOpen && (
         <Modal
           title={`${loser} loses, ${winner} Wins!`}
           description={drinksMessage}
@@ -167,7 +169,7 @@ function BomberBoy({ onNextGame, updateSips }) {
               variant: "primary",
             },
           ]}
-          onClose={() => setWinner(null)}
+          onClose={() => setIsDrinkModalOpen(false)}
         />
       )}
 
@@ -180,7 +182,7 @@ function BomberBoy({ onNextGame, updateSips }) {
               icon: faForward,
               text: "Skip",
               variant: "secondary",
-              onClick: () => console.log("Go to next game"),
+              onClick: onNextGame,
             },
             {
               icon: faGamepad,

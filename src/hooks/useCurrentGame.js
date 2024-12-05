@@ -12,6 +12,17 @@ export function useCurrentGame() {
   const [currentGameIndex, setCurrentGameIndex] = useState(0);
 
   const handleNextGame = () => {
+    // Remove activePlayer flag from all players
+    const players = JSON.parse(localStorage.getItem("players")) || [];
+    const updatedPlayers = players.map(player => ({
+      ...player,
+      activePlayer: false, // Set activePlayer to false for all players
+    }));
+
+    // Save the updated players array back to localStorage
+    localStorage.setItem("players", JSON.stringify(updatedPlayers));
+
+    // Move to the next game
     setCurrentGameIndex((prevIndex) => (prevIndex + 1) % games.length);
   };
 
