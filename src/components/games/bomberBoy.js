@@ -98,6 +98,24 @@ function BomberBoy({ onNextGame, updateSips }) {
   };
 
   const resetGame = () => {
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
+
+    // Update the `activePlayer` property
+    const updatedPlayers = storedPlayers.map((player) => ({
+      ...player,
+      activePlayer:
+        player.id === shuffledPlayers[0].id ||
+        player.id === shuffledPlayers[1].id,
+    }));
+
+    // Save the updated players back to localStorage
+    localStorage.setItem("players", JSON.stringify(updatedPlayers));
+
+    // Update state with the shuffled players
+    setPlayer1(shuffledPlayers[0]);
+    setPlayer2(shuffledPlayers[1]);
+
     setBoard(Array(9).fill(null));
     setIsPlayerOneTurn(true);
     setWinner(null);
