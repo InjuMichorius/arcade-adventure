@@ -60,18 +60,24 @@ function BomberBoy({ onNextGame, updateSips }) {
       if (index === bombIndex) {
         const remainingCards =
           newBoard.filter((card) => card === null).length + 1;
+        const saveCardAmount = 9 - remainingCards;
         updateSips(player2.username, remainingCards);
-        setDrinksMessage(`${player2.username} drinks ${remainingCards}!`);
+        updateSips(player1.username, saveCardAmount);
+        setDrinksMessage(
+          `${player2.username} drinks ${remainingCards}, ${player1.username} drinks ${saveCardAmount}!`
+        );
         setLoser(player2.username);
         setWinner(player1.username);
         setIsDrinkModalOpen(true);
       } else {
         newBoard[index] = "chosen";
-        setDrinksMessage(`${player1.username} drinks 1!`);
         setBoard(newBoard);
 
         const remainingCards = newBoard.filter((card) => card === null).length;
         if (remainingCards === 1) {
+          updateSips(player1.username, 9);
+          setDrinksMessage(`${player1.username} drinks all 9!`);
+          setIsDrinkModalOpen(true);
           setLoser(player1.username);
           setWinner(player2.username);
         }
@@ -178,7 +184,7 @@ function BomberBoy({ onNextGame, updateSips }) {
 
       {isDrinkModalOpen && (
         <Modal
-          title={`${loser} loses, ${winner} Wins!`}
+          title={`Drink up`}
           description={drinksMessage}
           buttons={[
             {
