@@ -176,7 +176,7 @@ function BomberBoy({ onNextGame, updateSips }) {
       {isInfoModalOpen && (
         <Modal
           title="How to Bomber Boy"
-          description="Player 1 hides the bomb in one of the tiles. Player 2 then chooses a tile. If it's the bomb player 2 drinks the same amount of sips as cards on the table. If the card is save, player 1 drinks one sip and can choose where to put the bomb next."
+          description={`${player1.username} hides the bomb in one of the tiles. ${player2.username} then chooses a tile. If it's the bomb ${player2.username} drinks the same amount of sips as cards on the table. If the card is save, ${player1.username} drinks one sip and can choose where to put the bomb next.`}
           buttons={[
             {
               icon: faForward,
