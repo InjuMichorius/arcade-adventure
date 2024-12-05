@@ -30,6 +30,11 @@ function NavBar({ players }) {
     <header className="navbar-container">
       <Hamburger onClick={handleHamburgerClick} />
       <div className={`player-list ${isPlayerListVisible ? "show" : ""}`}>
+      <Button
+          icon={faPersonWalkingArrowRight}
+          variant="primary"
+          onClick={handleLeaveGameClick}
+        />
         <h1 className="player-list__title">Leaderboard</h1>
         <ul>
           {sortedPlayers.map((player, index) => (
@@ -53,12 +58,6 @@ function NavBar({ players }) {
             </li>
           ))}
         </ul>
-        <Button
-          icon={faPersonWalkingArrowRight}
-          variant="primary"
-          text="Leave arcade"
-          onClick={handleLeaveGameClick}
-        />
       </div>
     </header>
   );
