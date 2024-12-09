@@ -1,16 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../atoms/button";
+import Modal from "../atoms/modal";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
-import { faRotateRight } from "@fortawesome/free-solid-svg-icons";
-import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faWhiskeyGlass,
+  faRotateRight,
+  faCircleRight,
+} from "@fortawesome/free-solid-svg-icons";
 
-function TicTacToe({ player1, player2, onNextGame, onLose }) {
+function TicTacToe({ onNextGame, updateSips }) {
+  const [player1, setPlayer1] = useState(null);
+  const [player2, setPlayer2] = useState(null);
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
+  const [drinksMessage, setDrinksMessage] = useState(null);
+  const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [loser, setLoser] = useState(null);
   const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
+
+  useEffect(() => {
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    const activePlayers = storedPlayers.filter((player) => player.activePlayer);
+
+    if (activePlayers.length >= 2) {
+      setPlayer1(activePlayers[0]);
+      setPlayer2(activePlayers[1]);
+    } else {
+      const shuffledPlayers = [...storedPlayers].sort(
+        () => Math.random() - 0.5
+      );
+      setPlayer1(shuffledPlayers[0]);
+      setPlayer2(shuffledPlayers[1]);
+
+      const updatedPlayers = storedPlayers.map((player) => ({
+        ...player,
+        activePlayer:
+          player === shuffledPlayers[0] || player === shuffledPlayers[1],
+      }));
+
+      localStorage.setItem("players", JSON.stringify(updatedPlayers));
+    }
+  }, []);
 
   const handleClick = (index) => {
     // Prevent further moves if the cell is already occupied or if there's a winner
@@ -29,9 +61,11 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
 
       setWinner(winningPlayer);
       setLoser(losingPlayer); // Set the loser state
+      setDrinksMessage(`${losingPlayer} drinks 10`);
+      setIsDrinkModalOpen(true);
 
       // Update the losing player's points
-      onLose(losingPlayer);
+      updateSips(losingPlayer, 10);
     } else if (newBoard.every((cell) => cell)) {
       setWinner("Draw");
       setLoser(null);
@@ -88,11 +122,37 @@ function TicTacToe({ player1, player2, onNextGame, onLose }) {
           </div>
         ))}
       </div>
+      {isDrinkModalOpen &&
+        <Modal
+        title={`Drink up`}
+        description={drinksMessage}
+        buttons={[
+          {
+            icon: faWhiskeyGlass,
+            text: "Drink",
+            variant: "primary",
+          },
+        ]}
+        onClose={() => setIsDrinkModalOpen(false)}
+      />
+      }
       {winner && (
-        <div className="button-wrapper">
-          <Button icon={faRotateRight} variant="secondary" onClick={resetGame} text="Play again" />
-          <Button icon={faCircleRight}  variant="primary" onClick={onNextGame} text="Next Game" />
-        </div>
+        <>
+          <div className="button-wrapper">
+            <Button
+              icon={faRotateRight}
+              variant="secondary"
+              onClick={resetGame}
+              text="Play again"
+            />
+            <Button
+              icon={faCircleRight}
+              variant="primary"
+              onClick={onNextGame}
+              text="Next Game"
+            />
+          </div>
+        </>
       )}
     </div>
   );

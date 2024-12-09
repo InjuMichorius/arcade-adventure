@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from "../atoms/button";
 import Modal from "../atoms/modal";
-import useRandomPlayers from "../../hooks/useRandomPlayers";
 import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,11 +19,12 @@ function BomberBoy({ onNextGame, updateSips }) {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [loser, setLoser] = useState(null);
   const [bombIndex, setBombIndex] = useState(null);
   const [drinksMessage, setDrinksMessage] = useState(null);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false); // For the instructions modal
-  const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false); // For the instructions modal
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
 
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
@@ -64,7 +64,7 @@ function BomberBoy({ onNextGame, updateSips }) {
         updateSips(player2.username, remainingCards);
         updateSips(player1.username, saveCardAmount);
         setDrinksMessage(
-          `${player2.username} drinks ${remainingCards}, ${player1.username} drinks ${saveCardAmount}!`
+          `${player1.username} drinks ${saveCardAmount}, ${player2.username} drinks ${remainingCards}!`
         );
         setLoser(player2.username);
         setWinner(player1.username);

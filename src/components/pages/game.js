@@ -54,52 +54,6 @@ function Game() {
     }
   }, [navigate, setPlayer1, setPlayer2, setPlayers]);
 
-  // TODO: remove this old function that adds points to losing player (TicTacToe)
-  const updateLosingPlayerPoints = (loserUsername) => {
-    // Create a new array to avoid mutating the original
-    const updatedPlayers = players.map((player) => {
-      if (player.username === loserUsername) {
-        // Increase points by 5
-        return { ...player, points: player.points + 5 };
-      }
-      return player;
-    });
-
-    // Update the players state
-    setPlayers(updatedPlayers);
-
-    // Update the localStorage
-    localStorage.setItem("players", JSON.stringify(updatedPlayers));
-
-    // Update 'currentplayers' in localStorage
-    const currentPlayers =
-      JSON.parse(localStorage.getItem("currentplayers")) || [];
-    const updatedCurrentPlayers = currentPlayers.map((player) => {
-      if (player.username === loserUsername) {
-        // Increase points by 5
-        return { ...player, points: player.points + 5 };
-      }
-      return player;
-    });
-    // localStorage.setItem(
-    //   "currentplayers",
-    //   JSON.stringify(updatedCurrentPlayers)
-    // );
-
-    // Update player1 and player2 states if they match the loser
-    if (player1 && player1.username === loserUsername) {
-      setPlayer1((prevPlayer) => ({
-        ...prevPlayer,
-        points: prevPlayer.points + 5,
-      }));
-    } else if (player2 && player2.username === loserUsername) {
-      setPlayer2((prevPlayer) => ({
-        ...prevPlayer,
-        points: prevPlayer.points + 5,
-      }));
-    }
-  };
-
   // Get players from localStorage, update points for localStorage and react state based on game result
   const updateSips = (playerName, sipAmount) => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
@@ -130,7 +84,6 @@ function Game() {
             player1={player1}
             player2={player2}
             onNextGame={handleNextGame}
-            onLose={updateLosingPlayerPoints} // Pass down the updateLosingPlayerPoints function
             updateSips={updateSips}
           />
         )}
