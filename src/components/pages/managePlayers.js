@@ -5,6 +5,7 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import NameInput from "../organisms/nameInput";
 import Button from "../atoms/button";
 import { useRandomAvatar } from "../../hooks/useRandomAvatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ManagePlayers() {
   const navigate = useNavigate();
@@ -114,12 +115,17 @@ function ManagePlayers() {
         </ul>
         <div className="manage-players-container__button-container">
           {allPlayersHaveNames && (
-            <Button icon={faUserPlus} variant="secondary" onClick={addPlayer} text="Add player" />
+            <Button
+              icon={faUserPlus}
+              variant="pushable green"
+              onClick={addPlayer}
+              text="Add player"
+            />
           )}
           {canStartGame && (
             <Button
-            icon={faGamepad}
-              variant="primary"
+              icon={faGamepad}
+              variant="pushable red"
               onClick={handleStartGame}
               text="Play game"
             />

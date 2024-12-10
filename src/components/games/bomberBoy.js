@@ -167,7 +167,7 @@ function BomberBoy({ onNextGame, updateSips }) {
           />
           <Button
             icon={faCircleRight}
-            variant="primary"
+            variant="pushable red"
             onClick={onNextGame}
             text="Next Game"
           />
@@ -176,7 +176,7 @@ function BomberBoy({ onNextGame, updateSips }) {
       {isPlayerOneTurn && bombIndex !== null && !winner && (
         <Button
           icon={faEyeSlash}
-          variant="primary"
+          variant="pushable red"
           onClick={handleNextPlayer}
           text="Hide bomb"
         />
@@ -190,7 +190,7 @@ function BomberBoy({ onNextGame, updateSips }) {
             {
               icon: faWhiskeyGlass,
               text: "Drink",
-              variant: "primary",
+              variant: "pushable red",
             },
           ]}
           onClose={() => setIsDrinkModalOpen(false)}
@@ -205,13 +205,13 @@ function BomberBoy({ onNextGame, updateSips }) {
             {
               icon: faForward,
               text: "Skip",
-              variant: "secondary",
+              variant: "pushable green",
               onClick: onNextGame,
             },
             {
               icon: faGamepad,
               text: "Got it!",
-              variant: "primary",
+              variant: "pushable red",
               onClick: () => setIsInfoModalOpen(false), // Close modal on button click
             },
           ]}

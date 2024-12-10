@@ -23,7 +23,6 @@ function TicTacToe({ onNextGame, updateSips }) {
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
     const activePlayers = storedPlayers.filter((player) => player.activePlayer);
-
     if (activePlayers.length >= 2) {
       setPlayer1(activePlayers[0]);
       setPlayer2(activePlayers[1]);
@@ -130,7 +129,7 @@ function TicTacToe({ onNextGame, updateSips }) {
           {
             icon: faWhiskeyGlass,
             text: "Drink",
-            variant: "primary",
+            variant: "pushable red",
           },
         ]}
         onClose={() => setIsDrinkModalOpen(false)}
@@ -147,7 +146,7 @@ function TicTacToe({ onNextGame, updateSips }) {
             />
             <Button
               icon={faCircleRight}
-              variant="primary"
+              variant="pushable red"
               onClick={onNextGame}
               text="Next Game"
             />
