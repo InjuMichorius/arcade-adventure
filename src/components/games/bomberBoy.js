@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "../atoms/button";
 import Modal from "../atoms/modal";
-import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
+import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGamepad,
@@ -51,40 +51,60 @@ function BomberBoy({ onNextGame, updateSips }) {
   }, []);
 
   const handleChooseCard = (index) => {
-    if (winner) return;
+    if (winner) return; // Exit if there is already a winner
     const newBoard = board.slice();
-
+  
+    // Only allow player 2 to choose cards during their turn
     if (!isPlayerOneTurn) {
+      // Prevent choosing the same card again
       if (newBoard[index] === "chosen") return;
-
+  
+      // Check if the selected card is the bomb
       if (index === bombIndex) {
-        const remainingCards =
-          newBoard.filter((card) => card === null).length + 1;
+        const remainingCards = newBoard.filter((card) => card === null).length + 1;
         const saveCardAmount = 9 - remainingCards;
-        updateSips(player2.username, remainingCards);
-        updateSips(player1.username, saveCardAmount);
+  
+        // Update sips based on roles
+        updateSips(player2.username, remainingCards); // Player 2 (guesser) drinks the remaining cards
+        updateSips(player1.username, saveCardAmount); // Player 1 (bomber) drinks saved card count
+        
         setDrinksMessage(
           `${player1.username} drinks ${saveCardAmount}, ${player2.username} drinks ${remainingCards}!`
         );
-        setLoser(player2.username);
-        setWinner(player1.username);
+        
+        // Declare winner and loser
+        setLoser(player2.username); // Guesser loses
+        setWinner(player1.username); // Bomber wins
+        
+        // Open drink modal
         setIsDrinkModalOpen(true);
       } else {
+        // Card is safe, mark it as chosen
         newBoard[index] = "chosen";
         setBoard(newBoard);
-
+  
+        // Check if there's only one card left
         const remainingCards = newBoard.filter((card) => card === null).length;
-        if (remainingCards === 1) {
+        if (remainingCards === 1 && bombIndex !== null) {
+          // Player 1 (bomber) drinks all 9 sips because only the bomb remains
           updateSips(player1.username, 9);
           setDrinksMessage(`${player1.username} drinks all 9!`);
-          setIsDrinkModalOpen(true);
+  
+          // Declare winner and loser
           setLoser(player1.username);
           setWinner(player2.username);
+  
+          // Open drink modal
+          setIsDrinkModalOpen(true);
         }
       }
+  
+      // End player 2's turn and switch back to player 1
       setIsPlayerOneTurn(true);
     }
   };
+  
+  
 
   const handleSetBomb = (index) => {
     if (winner) return;
@@ -105,30 +125,32 @@ function BomberBoy({ onNextGame, updateSips }) {
 
   const resetGame = () => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    
+    // Shuffle players and select two random ones
     const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
-
-    // Update the `activePlayer` property
+    const [newPlayer1, newPlayer2] = shuffledPlayers;
+  
+    // Update the active players
     const updatedPlayers = storedPlayers.map((player) => ({
       ...player,
-      activePlayer:
-        player.id === shuffledPlayers[0].id ||
-        player.id === shuffledPlayers[1].id,
+      activePlayer: player.id === newPlayer1.id || player.id === newPlayer2.id,
     }));
-
+  
     // Save the updated players back to localStorage
     localStorage.setItem("players", JSON.stringify(updatedPlayers));
-
-    // Update state with the shuffled players
-    setPlayer1(shuffledPlayers[0]);
-    setPlayer2(shuffledPlayers[1]);
-
+  
+    // Set the new players and reset the game state
+    setPlayer1(newPlayer1);
+    setPlayer2(newPlayer2);
     setBoard(Array(9).fill(null));
-    setIsPlayerOneTurn(true);
+    setIsPlayerOneTurn(true); // Reset to Player 1's turn
     setWinner(null);
     setLoser(null);
     setBombIndex(null);
     setDrinksMessage(null);
   };
+  
+  
 
   return (
     <div className="bomber-boy-container">

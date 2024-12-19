@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../atoms/button";
 import Modal from "../atoms/modal";
-import CurrentPlayerPreview from "../organisms/currentPlayerPreview";
+import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import {
   faWhiskeyGlass,
   faRotateRight,

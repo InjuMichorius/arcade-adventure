@@ -1,7 +1,6 @@
 @mixin title($size, $borderWidth) {
   color: #e64d48;
   font-size: $size;
-  text-transform: uppercase;
   text-shadow: -5px -5px 0 var(--off-white), 5px -5px 0 var(--off-white), -5px 5px 0 var(--off-white),
     5px 5px 0 var(--off-white), 0 -5px 0 var(--off-white), 0 5px 0 var(--off-white), -5px 0 0 var(--off-white),
     5px 0 0 var(--off-white);

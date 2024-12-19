@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
 import { faPersonWalkingArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import AvatarPreview from "../atoms/avatarPreview";
 
 function NavBar({ players }) {
   const navigate = useNavigate();
@@ -39,13 +40,7 @@ function NavBar({ players }) {
         <ul>
           {sortedPlayers.map((player, index) => (
             <li key={index} className="player-container">
-              <div className="avatar-preview">
-                <img src={player.avatar} alt="Avatar" />
-                <p className="points-text">
-                  {player.points}
-                  <FontAwesomeIcon icon={faWineBottle} className="icon" />
-                </p>
-              </div>
+              <AvatarPreview width={80} image={player.avatar} points={player.points} />
               <div className="user-details">
                 <p className="player-name">{player.username}</p>
                 <div className="items-container">

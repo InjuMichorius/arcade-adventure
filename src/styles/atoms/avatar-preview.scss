@@ -1,0 +1,27 @@
+.avatar-preview {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 100%;
+  img {
+    border-radius: 100%;
+    object-fit: cover;
+    border: 4px solid var(--off-white);
+  }
+  > .points-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    width: fit-content;
+    font-size: 1rem;
+    text-wrap: nowrap;
+    padding: 0 0.5rem;
+    border-radius: 100px;
+    background-color: var(--off-white);
+    color: var(--red);
+    font-family: var(--font-bold);
+  }
+}

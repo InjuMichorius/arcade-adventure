@@ -1,18 +1,19 @@
 @import "./styles/general.scss";
 @import "./styles/mixins.scss";
 
+@import "./styles/atoms/hamburger.scss";
+@import "./styles/atoms/modal.scss";
+@import "./styles/atoms/avatar-preview.scss";
+
 @import "./styles/molecules/name-input.scss";
 @import "./styles/molecules/avatar-select.scss";
+
+@import "./styles/organisms/nav-bar.scss";
+@import "./styles/organisms/current-player-preview.scss";
 
 @import "./styles/games/bomber-boy.scss";
 @import "./styles/games/tic-tac-toe.scss";
 @import "./styles/games/memory.scss";
-
-@import "./styles/atoms/hamburger.scss";
-@import "./styles/atoms/modal.scss";
-
-@import "./styles/organisms/nav-bar.scss";
-@import "./styles/organisms/current-player-preview.scss";
 
 @import "./styles/pages/manage-players.scss";
 @import "./styles/pages/game.scss";
