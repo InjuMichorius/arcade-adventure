@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Button from "../atoms/button";
 import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import whistleSound from "../../assets/sounds/whistle.mp3";
@@ -15,6 +15,29 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
   const [player1, setPlayer1] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null); // Timer state
   const [intervalId, setIntervalId] = useState(null); // Interval ID to clear timer
+  const audioRef = useRef(null); // Reference to audio element
+
+  // Ensure AudioContext is unlocked on the first interaction
+  useEffect(() => {
+    const unlockAudioContext = () => {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) {
+        const audioContext = new AudioContext();
+        const dummySource = audioContext.createBufferSource();
+        dummySource.buffer = audioContext.createBuffer(1, 1, 22050);
+        dummySource.connect(audioContext.destination);
+        dummySource.start(0);
+        dummySource.onended = () => {
+          audioContext.close();
+        };
+      }
+    };
+
+    window.addEventListener("click", unlockAudioContext, { once: true });
+    return () => {
+      window.removeEventListener("click", unlockAudioContext);
+    };
+  }, []);
 
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
@@ -35,11 +58,18 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
 
       localStorage.setItem("players", JSON.stringify(updatedPlayers));
     }
+
+    // Preload audio
+    audioRef.current = new Audio(whistleSound);
   }, []);
 
   const playSound = () => {
-    const audio = new Audio(whistleSound);
-    audio.play();
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0; // Reset audio to the start
+      audioRef.current.play().catch((err) => {
+        console.error("Audio playback failed:", err);
+      });
+    }
   };
 
   const startSearch = () => {
@@ -127,11 +157,11 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
         </div>
       )}
       <Button
-            icon={faMagnifyingGlass}
-            variant="pushable red"
-            text="Skip game"
-            onClick={onNextGame}
-          />
+        icon={faMagnifyingGlass}
+        variant="pushable red"
+        text="Skip game"
+        onClick={onNextGame}
+      />
     </div>
   );
 }
