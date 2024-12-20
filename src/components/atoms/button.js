@@ -12,7 +12,7 @@ function Button({ variant, onClick, icon, text }) {
         </>
       )}
       <span className="front">
-        <FontAwesomeIcon icon={icon} className="icon" />
+        {icon && <FontAwesomeIcon icon={icon} className="icon" />}
         {text}
       </span>
     </button>

@@ -5,17 +5,21 @@ import Button from "../atoms/button";
 
 function Modal({ title, description, buttons, onClose }) {
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div
+    <>
+      <dialog
         className="modal"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
       >
-        <button className="modal-close" onClick={onClose}>
-          <FontAwesomeIcon icon={faCircleXmark} className="icon" />
-        </button>
-        <h2 className="modal-title">{title}</h2>
-        <p className="modal-description">{description}</p>
-        <div className="modal-buttons">
+        <header>
+          <h3 className="modal__title">{title}</h3>
+          <button className="modal__close" onClick={onClose}>
+            <FontAwesomeIcon icon={faCircleXmark} className="icon" />
+          </button>
+        </header>
+
+        <section className="modal__content">{description}</section>
+
+        <footer className="modal__buttons">
           {buttons.map((button, index) => (
             <Button
               key={index}
@@ -27,9 +31,10 @@ function Modal({ title, description, buttons, onClose }) {
               }}
             />
           ))}
-        </div>
-      </div>
-    </div>
+        </footer>
+      </dialog>
+      <div className="backdrop" onClick={onClose}></div>
+    </>
   );
 }
 
