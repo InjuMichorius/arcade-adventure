@@ -29,8 +29,7 @@ body {
   background-color: var(--green);
 }
 
-h1,
-h2 {
+h1 {
   padding: 0 2.5rem;
   color: var(--red);
   font-size: 1.5rem;
@@ -89,6 +88,10 @@ button {
     height: 20px;
     color: white;
   }
+}
+
+.transparent {
+  width: 100%;
 }
 
 main {

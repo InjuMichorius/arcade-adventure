@@ -9,15 +9,15 @@ import {
   faMagnifyingGlassLocation,
   faWhiskeyGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import Modal from "../atoms/modal";
 
 function WhereThatWhistle({ onNextGame, updateSips }) {
   const [player1, setPlayer1] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(null); // Timer state
-  const [intervalId, setIntervalId] = useState(null); // Interval ID to clear timer
-  const audioRef = useRef(null); // Reference to audio element
+  const [timeLeft, setTimeLeft] = useState(null);
+  const [intervalId, setIntervalId] = useState(null);
+  const [searchDuration, setSearchDuration] = useState(120); // Default to 2 minutes
+  const [whistleInterval, setWhistleInterval] = useState(30); // Default to 30 seconds
+  const audioRef = useRef(null);
 
-  // Ensure AudioContext is unlocked on the first interaction
   useEffect(() => {
     const unlockAudioContext = () => {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -59,13 +59,12 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       localStorage.setItem("players", JSON.stringify(updatedPlayers));
     }
 
-    // Preload audio
     audioRef.current = new Audio(whistleSound);
   }, []);
 
   const playSound = () => {
     if (audioRef.current) {
-      audioRef.current.currentTime = 0; // Reset audio to the start
+      audioRef.current.currentTime = 0;
       audioRef.current.play().catch((err) => {
         console.error("Audio playback failed:", err);
       });
@@ -73,20 +72,19 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
   };
 
   const startSearch = () => {
-    if (intervalId) clearInterval(intervalId); // Clear any existing intervals
+    if (intervalId) clearInterval(intervalId);
 
-    setTimeLeft(120); // Set timer to 2 minutes (120 seconds)
+    setTimeLeft(searchDuration);
 
     const newIntervalId = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime === null || prevTime <= 1) {
           clearInterval(newIntervalId);
-          console.log("end");
           return null;
         }
 
-        if ((prevTime - 1) % 30 === 0) {
-          playSound(); // Play sound every 30 seconds
+        if ((prevTime - 1) % whistleInterval === 0) {
+          playSound();
         }
 
         return prevTime - 1;
@@ -96,72 +94,79 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
     setIntervalId(newIntervalId);
   };
 
+  const adjustSearchDuration = (adjustment) => {
+    setSearchDuration((prev) => Math.max(60, prev + adjustment));
+  };
+
+  const adjustWhistleInterval = (adjustment) => {
+    setWhistleInterval((prev) => Math.max(15, prev + adjustment));
+  };
+
   const handleFound = () => {
-    console.log("end");
     if (intervalId) clearInterval(intervalId);
     setTimeLeft(null);
+  };
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
   };
 
   return (
     <div className="tic-tac-toe-container">
       <h1>Where that whistle</h1>
       <CurrentPlayerPreview />
-      {/* <Modal
-        title="Which player drinks SIP_AMOUNT?"
-        description={"kekjo"}
-        buttons={[
-          {
-            icon: faDice,
-            text: "Randomize",
-            variant: "pushable green",
-          },
-          {
-            icon: faWhiskeyGlass,
-            text: ".. drinks",
-            variant: "pushable red",
-          },
-        ]}
-      /> */}
       <p className="regular-text">
         Hides the phone, other players close their eyes
       </p>
-
       {timeLeft !== null && (
-        <>
-          <p className="timer">
-            {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
-          </p>
+        <div>
+          <p className="timer">{formatTime(timeLeft)}</p>
           <Button
             icon={faMagnifyingGlass}
             variant="pushable green"
             text="Found"
             onClick={handleFound}
           />
-        </>
-      )}
-
-      {timeLeft === null && (
-        <div className="button-wrapper">
-          <Button
-            icon={faVolumeHigh}
-            variant="secondary"
-            text="Play sound"
-            onClick={playSound}
-          />
-          <Button
-            icon={faMagnifyingGlass}
-            variant="pushable red"
-            text="Start search"
-            onClick={startSearch}
-          />
         </div>
       )}
-      <Button
-        icon={faMagnifyingGlass}
-        variant="pushable red"
-        text="Skip game"
-        onClick={onNextGame}
-      />
+      {timeLeft === null && (
+        <>
+          <div className="time-container">
+            <h2 className="time-title">Time to search</h2>
+            <div className="time-controls">
+              <button onClick={() => adjustSearchDuration(-15)}>-15s</button>
+              <span className="time-display">{formatTime(searchDuration)}</span>
+              <button onClick={() => adjustSearchDuration(15)}>+15s</button>
+            </div>
+          </div>
+          <div className="time-container">
+            <h2 className="time-title">Whistle Interval</h2>
+            <div className="time-controls">
+              <button onClick={() => adjustWhistleInterval(-15)}>-15s</button>
+              <span className="time-display">
+                {formatTime(whistleInterval)}
+              </span>
+              <button onClick={() => adjustWhistleInterval(15)}>+15s</button>
+            </div>
+          </div>
+          <div className="button-wrapper">
+            <Button
+              icon={faVolumeHigh}
+              variant="transparent"
+              text="Play sound"
+              onClick={playSound}
+            />
+            <Button
+              icon={faMagnifyingGlass}
+              variant="pushable red"
+              text="Start search"
+              onClick={startSearch}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

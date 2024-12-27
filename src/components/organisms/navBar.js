@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import Hamburger from "../atoms/hamburger";
 import Button from "../atoms/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWineBottle } from "@fortawesome/free-solid-svg-icons";
 import { faPersonWalkingArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import AvatarPreview from "../atoms/avatarPreview";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function NavBar({ players }) {
   const navigate = useNavigate();
@@ -31,11 +30,9 @@ function NavBar({ players }) {
     <header className="navbar-container">
       <Hamburger onClick={handleHamburgerClick} />
       <div className={`player-list ${isPlayerListVisible ? "show" : ""}`}>
-      <Button
-          icon={faPersonWalkingArrowRight}
-          variant="primary"
-          onClick={handleLeaveGameClick}
-        />
+        <button class="primary">
+          <FontAwesomeIcon icon={faPersonWalkingArrowRight} className="icon" onClick={handleLeaveGameClick} />
+        </button>
         <h1 className="player-list__title">Leaderboard</h1>
         <ul>
           {sortedPlayers.map((player, index) => (

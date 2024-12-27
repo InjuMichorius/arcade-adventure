@@ -4,9 +4,9 @@ import TicTacToe from "../components/games/ticTacToe";
 import WhereThatWhistle from "../components/games/whereThatWhistle";
 
 const games = [
+  { component: WhereThatWhistle, name: "WhereThatWhistle" },
   { component: BomberBoy, name: "BomberBoy" },
   { component: TicTacToe, name: "TicTacToe" },
-  { component: WhereThatWhistle, name: "WhereThatWhistle" },
   // Add other games here
 ];
 
