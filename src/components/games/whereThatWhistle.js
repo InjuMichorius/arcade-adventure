@@ -5,6 +5,7 @@ import whistleSound from "../../assets/sounds/whistle.mp3";
 import {
   faVolumeHigh,
   faMagnifyingGlass,
+  faEye,
   faDice,
   faMagnifyingGlassLocation,
   faWhiskeyGlass,
@@ -117,19 +118,20 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
     <div className="tic-tac-toe-container">
       <h1>Where that whistle</h1>
       <CurrentPlayerPreview />
-      <p className="regular-text">
-        Hides the phone, other players close their eyes
-      </p>
+      {!timeLeft ? (
+        <p className="regular-text">
+          Hides the phone, other players close their eyes
+        </p>
+      ) : (
+        <p className="regular-text">{formatTime(timeLeft)}</p>
+      )}
       {timeLeft !== null && (
-        <div>
-          <p className="timer">{formatTime(timeLeft)}</p>
-          <Button
-            icon={faMagnifyingGlass}
-            variant="pushable green"
-            text="Found"
-            onClick={handleFound}
-          />
-        </div>
+        <Button
+          icon={faEye}
+          variant="pushable red"
+          text="Found"
+          onClick={handleFound}
+        />
       )}
       {timeLeft === null && (
         <>

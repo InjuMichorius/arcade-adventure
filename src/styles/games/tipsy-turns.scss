@@ -1,0 +1,74 @@
+.tipsy-turns-container {
+    padding: 1.9rem 1rem 0;
+    .hint {
+      position: fixed;
+      top: 23px;
+      left: 1rem;
+      color: var(--off-white);
+    }
+    h2 {
+        font-family: var(--font-bold);
+        color: var(--off-white);
+    }
+    .chosen-player-container {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
+        width: 100%;
+        border: 3px dashed var(--off-white);
+        border-radius: 10px;
+        color: var(--off-white);
+        font-family: var(--font);
+        &:has(.selected-player) {
+            border-style: solid;
+        }
+        .empty-state {
+            display: flex;
+            gap: .5rem;
+            flex-direction: column;
+            svg {
+                height: 2rem;
+                path {
+                    fill: var(--off-white);
+                }
+            }
+           
+        }
+    }
+    .player-select-container {
+        margin-top: 2rem;
+        margin-bottom: 4rem;
+        list-style-type: none;
+        display: flex;
+        gap: 0.5rem;
+        flex-direction: column;
+        .player-container {
+            padding: .5rem;
+            border-radius: 10px;
+            border: 3px dashed transparent;
+            .player-select {
+                padding: 0;
+                .player-name {
+                    color: var(--off-white);
+                }
+            }
+
+            &.selected {
+                border-color: var(--off-white);
+            }
+        }
+    }
+    .button-wrapper {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      align-items: start;
+    }
+    .get-new-question-button {
+        width: 100%;
+        margin-top: -8px;
+    }
+  }
+  

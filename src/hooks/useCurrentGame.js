@@ -2,11 +2,13 @@ import { useState } from "react";
 import BomberBoy from "../components/games/bomberBoy";
 import TicTacToe from "../components/games/ticTacToe";
 import WhereThatWhistle from "../components/games/whereThatWhistle";
+import TipsyTurns from "../components/games/tipsyTurns";
 
 const games = [
-  { component: WhereThatWhistle, name: "WhereThatWhistle" },
+  { component: TipsyTurns, name: "TipsyTurns" },
   { component: BomberBoy, name: "BomberBoy" },
   { component: TicTacToe, name: "TicTacToe" },
+  { component: WhereThatWhistle, name: "WhereThatWhistle" },
   // Add other games here
 ];
 

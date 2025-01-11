@@ -16,6 +16,7 @@ import {
 function BomberBoy({ onNextGame, updateSips }) {
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
+  const [activePlayers, setActivePlayers] = useState(null);
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
@@ -26,85 +27,87 @@ function BomberBoy({ onNextGame, updateSips }) {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
 
+  const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    const activePlayers = storedPlayers.filter((player) => player.activePlayer);
-
-    if (activePlayers.length >= 2) {
-      setPlayer1(activePlayers[0]);
-      setPlayer2(activePlayers[1]);
-    } else {
-      const shuffledPlayers = [...storedPlayers].sort(
-        () => Math.random() - 0.5
-      );
-      setPlayer1(shuffledPlayers[0]);
-      setPlayer2(shuffledPlayers[1]);
-
-      const updatedPlayers = storedPlayers.map((player) => ({
-        ...player,
-        activePlayer:
-          player === shuffledPlayers[0] || player === shuffledPlayers[1],
-      }));
-
-      localStorage.setItem("players", JSON.stringify(updatedPlayers));
+    if (storedPlayers.length > 1) {
+      const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
+      const selectedPlayers = shuffledPlayers.slice(0, 2);
+      setPlayer1(selectedPlayers[0]);
+      setPlayer2(selectedPlayers[1]);
+      setActivePlayers(selectedPlayers);
     }
-  }, []);
+  }, []); // Initial setup of players
+  
+  const refreshActivePlayers = () => {
+    const updatedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    const active = updatedPlayers.filter((player) =>
+      [player1?.id, player2?.id].includes(player.id)
+    );
+    setActivePlayers(active);
+  };
+  
+  // Wrap `updateSips` to refresh `activePlayers`
+  const handleUpdateSips = (username, sips) => {
+    updateSips(username, sips);
+    refreshActivePlayers(); // Refresh active players after updating sips
+  };
+  
 
   const handleChooseCard = (index) => {
     if (winner) return; // Exit if there is already a winner
     const newBoard = board.slice();
-  
+
     // Only allow player 2 to choose cards during their turn
     if (!isPlayerOneTurn) {
       // Prevent choosing the same card again
       if (newBoard[index] === "chosen") return;
-  
+
       // Check if the selected card is the bomb
       if (index === bombIndex) {
-        const remainingCards = newBoard.filter((card) => card === null).length + 1;
+        const remainingCards =
+          newBoard.filter((card) => card === null).length + 1;
         const saveCardAmount = 9 - remainingCards;
-  
+
         // Update sips based on roles
-        updateSips(player2.username, remainingCards); // Player 2 (guesser) drinks the remaining cards
-        updateSips(player1.username, saveCardAmount); // Player 1 (bomber) drinks saved card count
-        
+        handleUpdateSips(player1.username, saveCardAmount);
+        handleUpdateSips(player2.username, remainingCards);
         setDrinksMessage(
           `${player1.username} drinks ${saveCardAmount}, ${player2.username} drinks ${remainingCards}!`
         );
-        
+
         // Declare winner and loser
         setLoser(player2.username); // Guesser loses
         setWinner(player1.username); // Bomber wins
-        
+
         // Open drink modal
         setIsDrinkModalOpen(true);
       } else {
         // Card is safe, mark it as chosen
         newBoard[index] = "chosen";
         setBoard(newBoard);
-  
+
         // Check if there's only one card left
         const remainingCards = newBoard.filter((card) => card === null).length;
         if (remainingCards === 1 && bombIndex !== null) {
           // Player 1 (bomber) drinks all 9 sips because only the bomb remains
-          updateSips(player1.username, 9);
+          handleUpdateSips(player1.username, 9);
           setDrinksMessage(`${player1.username} drinks all 9!`);
-  
+
           // Declare winner and loser
           setLoser(player1.username);
           setWinner(player2.username);
-  
+
           // Open drink modal
           setIsDrinkModalOpen(true);
         }
       }
-  
+
       // End player 2's turn and switch back to player 1
       setIsPlayerOneTurn(true);
     }
   };
-  
-  
 
   const handleSetBomb = (index) => {
     if (winner) return;
@@ -125,20 +128,20 @@ function BomberBoy({ onNextGame, updateSips }) {
 
   const resetGame = () => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    
+
     // Shuffle players and select two random ones
     const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
     const [newPlayer1, newPlayer2] = shuffledPlayers;
-  
+
     // Update the active players
     const updatedPlayers = storedPlayers.map((player) => ({
       ...player,
       activePlayer: player.id === newPlayer1.id || player.id === newPlayer2.id,
     }));
-  
+
     // Save the updated players back to localStorage
     localStorage.setItem("players", JSON.stringify(updatedPlayers));
-  
+
     // Set the new players and reset the game state
     setPlayer1(newPlayer1);
     setPlayer2(newPlayer2);
@@ -149,8 +152,6 @@ function BomberBoy({ onNextGame, updateSips }) {
     setBombIndex(null);
     setDrinksMessage(null);
   };
-  
-  
 
   return (
     <div className="bomber-boy-container">
@@ -158,7 +159,7 @@ function BomberBoy({ onNextGame, updateSips }) {
         <FontAwesomeIcon icon={faQuestionCircle} />
       </button>
       <h1>Bomber Boy</h1>
-      <CurrentPlayerPreview isPlayerOneTurn={isPlayerOneTurn} />
+      <CurrentPlayerPreview currentPlayers={activePlayers} />
       <div className="board">
         {board.map((cell, index) => (
           <div

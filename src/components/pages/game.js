@@ -81,8 +81,6 @@ function Game() {
         {/* Render the current game component if players are set */}
         {player1 && player2 && (
           <CurrentGameComponent
-            player1={player1}
-            player2={player2}
             onNextGame={handleNextGame}
             updateSips={updateSips}
           />
