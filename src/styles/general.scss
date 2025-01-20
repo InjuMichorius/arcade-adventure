@@ -30,15 +30,28 @@ body {
 }
 
 h1 {
-  padding: 0 2.5rem;
+  padding: 0 10px;
   color: var(--red);
-  font-size: 1.5rem;
+  font-size: 1rem;
+  margin: .5rem auto;
+  width: fit-content;
+  text-align: center;
+  font-family: var(--font-bold);
+  background-color: var(--off-white);
+  border-radius: 999px;
+}
+
+h2 {
+  text-align: center;
+  color: var(--red);
+  line-height: 2rem;
+  font-size: 1.4rem;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
   text-shadow: -2px -2px 0 var(--off-white), 2px -2px 0 var(--off-white),
     -2px 2px 0 var(--off-white), 2px 2px 0 var(--off-white),
     0 -2px 0 var(--off-white), 0 2px 0 var(--off-white),
     -2px 0 0 var(--off-white), 2px 0 0 var(--off-white);
-  text-align: center;
   font-family: var(--font-bold);
 }
 
@@ -73,7 +86,7 @@ button {
   gap: 0.5rem;
   justify-content: center;
   border: 0;
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 700;
   align-items: center;
   padding: 1rem;
@@ -229,6 +242,7 @@ button {
   .front {
     display: flex;
     gap: 0.5rem;
+    align-items: center;
   }
 }
 

@@ -253,14 +253,8 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
             icon={faRotateRight}
             variant="get-new-question-button"
             onClick={selectRandomQuestion}
-            text="New turn"
+            text="New tipsy turn"
             disabled={remainingQuestions.length === 0}
-          />
-          <Button
-            icon={faCircleRight}
-            variant="pushable red"
-            onClick={onNextGame}
-            text="Next Game"
           />
         </div>
       </div>
