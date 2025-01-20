@@ -1,52 +1,50 @@
 .homepage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--light-green);
+  overflow: hidden;
+
+  &__content {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    background-color: var(--light-green);
-  
-    &__content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-  
-      .marquee-container {
-        width: 100%;
+    align-items: center;
+
+    .marquee-container {
         overflow: hidden;
-        position: relative;
-        white-space: nowrap;
+        width: 1920px;
         margin: 2rem 0 4rem;
-  
-        .marquee {
-          display: inline-flex;
-          animation: scroll 60s linear infinite;
-          gap: 25px;
-          min-width: calc(20 * (150px + 25px)); // Adjusted for width + gap
-  
-          img {
-            width: 150px;
-            height: 150px;
-            flex-shrink: 0;
-            border: 4px solid var(--off-white);
-            border-radius: 100%;
+      
+        .marquee-wrapper {
+          display: flex;
+          gap: 27px;
+          @keyframes marqueeAnimation {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-100%);
+            }
           }
-        }
-  
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-100%);
+          animation: marqueeAnimation 60s linear infinite;
+          .marquee {
+            display: flex;
+            gap: 27px;
+            justify-content: space-between;
+            img {
+                border-radius: 100%;
+                border: 4px solid var(--off-white);
+            }
           }
         }
       }
-  
-      ul {
-        width: 180px;
-        list-style-type: none;
-      }
+
+    ul {
+      list-style-type: none;
+      width: 180px;
     }
   }
+}

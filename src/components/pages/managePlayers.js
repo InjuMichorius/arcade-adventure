@@ -97,7 +97,7 @@ function ManagePlayers() {
 
   return (
     <div className="manage-players-container">
-      <h1 className="manage-players-container__title">Players</h1>
+      <h1 className="manage-players-container__title">Choose players</h1>
       <main>
         <ul className="manage-players-container__player-list">
           {players.map((player) => (

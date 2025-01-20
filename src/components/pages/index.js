@@ -14,6 +14,7 @@ import avatar6 from "../../assets/images/avatars/avatar6.avif";
 import avatar7 from "../../assets/images/avatars/avatar7.avif";
 import avatar8 from "../../assets/images/avatars/avatar8.avif";
 import avatar9 from "../../assets/images/avatars/avatar9.avif";
+import avatar10 from "../../assets/images/avatars/avatar10.avif";
 
 const avatarImages = [
   avatar0,
@@ -26,6 +27,7 @@ const avatarImages = [
   avatar7,
   avatar8,
   avatar9,
+  avatar10,
 ];
 
 function Index() {
@@ -38,24 +40,34 @@ function Index() {
   return (
     <div className="homepage-container">
       <main className="homepage-container__content">
-        <img src={logo} width={260} className="slide-up"/>
-        <div className="marquee-container slide-up">
-          <div className="marquee">
-            {avatarImages.map((avatar, index) => (
-              <img key={index} src={avatar} alt={`Avatar ${index}`} />
-            ))}
-            {avatarImages.map((avatar, index) => (
-              <img
-                key={`clone-${index}`}
-                src={avatar}
-                width={150}
-                height={150}
-                alt={`Clone Avatar ${index}`}
-              />
-            ))}
-          </div>
+        <img src={logo} width={260} />
+        <div className="marquee-container">
+      <div className="marquee-wrapper">
+        <div className="marquee">
+          {avatarImages.map((avatar, index) => (
+            <img
+              key={index}
+              src={avatar}
+              alt={`Avatar ${index}`}
+              width={150}
+              height={150}
+            />
+          ))}
         </div>
-        <ul className="slide-up">
+        <div className="marquee">
+          {avatarImages.map((avatar, index) => (
+            <img
+              key={index + avatarImages.length}
+              src={avatar}
+              alt={`Avatar ${index + avatarImages.length}`}
+              width={150}
+              height={150}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+        <ul>
           <li>
             <Button
               icon={faGamepad}
