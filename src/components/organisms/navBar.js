@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Hamburger from "../atoms/hamburger";
-import Button from "../atoms/button";
 import { faPersonWalkingArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import AvatarPreview from "../atoms/avatarPreview";

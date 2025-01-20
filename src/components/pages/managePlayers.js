@@ -5,7 +5,6 @@ import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import NameInput from "../organisms/nameInput";
 import Button from "../atoms/button";
 import { useRandomAvatar } from "../../hooks/useRandomAvatar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ManagePlayers() {
   const navigate = useNavigate();

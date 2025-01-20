@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, HashRouter } from "react-router-dom";
-import ManagePlayers from "./components/pages/managePlayers";
+import Index from "./components/pages/index";
 import Game from "./components/pages/game";
+import ManagePlayers from "./components/pages/managePlayers";
+
 import "./App.scss";
 
 function App() {
@@ -19,7 +21,8 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/arcade-adventure" element={playersFromStorage.length > 1 ? <Game /> : <ManagePlayers />} />
+        <Route path="/arcade-adventure" element={playersFromStorage.length > 1 ? <Game /> : <Index />} />
+        <Route path="/manage-players" element={playersFromStorage.length > 1 ? <Game /> : <ManagePlayers />} />
         <Route path="/game" element={<Game />} />
         <Route path="/" element={<Navigate to="/arcade-adventure" />} />
         <Route path="*" element={<Navigate to="/arcade-adventure" />} />
