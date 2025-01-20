@@ -1,9 +1,10 @@
 {
   "files": {
-    "main.css": "/arcade-adventure/static/css/main.5f68d270.css",
-    "main.js": "/arcade-adventure/static/js/main.73390540.js",
+    "main.css": "/arcade-adventure/static/css/main.0e159c12.css",
+    "main.js": "/arcade-adventure/static/js/main.12355a17.js",
     "static/media/Kanit-Bold.ttf": "/arcade-adventure/static/media/Kanit-Bold.46cd98a815b9874526ad.ttf",
     "static/media/Kanit-Regular.ttf": "/arcade-adventure/static/media/Kanit-Regular.f3bae13d78ced30b6ea3.ttf",
+    "static/media/homepage-logo.svg": "/arcade-adventure/static/media/homepage-logo.707f5263519dd07052c556fcd931078a.svg",
     "static/media/avatar1.avif": "/arcade-adventure/static/media/avatar1.0ef1c4ec3d540a125c8b.avif",
     "static/media/avatar2.avif": "/arcade-adventure/static/media/avatar2.021da1b4691b35ffa0da.avif",
     "static/media/avatar4.avif": "/arcade-adventure/static/media/avatar4.43c20bf995a7c4c02f6d.avif",
@@ -16,11 +17,11 @@
     "static/media/avatar0.avif": "/arcade-adventure/static/media/avatar0.1bc8d8be52f970fcfe1e.avif",
     "static/media/whistle.mp3": "/arcade-adventure/static/media/whistle.00276584deb01e140390.mp3",
     "index.html": "/arcade-adventure/index.html",
-    "main.5f68d270.css.map": "/arcade-adventure/static/css/main.5f68d270.css.map",
-    "main.73390540.js.map": "/arcade-adventure/static/js/main.73390540.js.map"
+    "main.0e159c12.css.map": "/arcade-adventure/static/css/main.0e159c12.css.map",
+    "main.12355a17.js.map": "/arcade-adventure/static/js/main.12355a17.js.map"
   },
   "entrypoints": [
-    "static/css/main.5f68d270.css",
-    "static/js/main.73390540.js"
+    "static/css/main.0e159c12.css",
+    "static/js/main.12355a17.js"
   ]
 }
