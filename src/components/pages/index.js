@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import Button from "../atoms/button";
-import logo from "../../assets/images/homepage-logo.svg";
+import logo from "../../assets/images/homepage-logo.jpg";
 import { useNavigate } from "react-router-dom";
 
 import avatar0 from "../../assets/images/avatars/avatar0.avif";
