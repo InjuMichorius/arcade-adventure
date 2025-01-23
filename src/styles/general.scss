@@ -96,6 +96,7 @@ button {
   width: fit-content;
   height: fit-content;
   color: white;
+  cursor: pointer;
 
   .icon {
     height: 20px;
@@ -111,8 +112,13 @@ main {
   padding: 0 1rem 1rem;
 }
 
+.secondary {
+  width: 100%;
+}
+
 .pushable {
   width: 100%;
+  transform: translateY(6px);
   position: relative;
   border: none;
   background: transparent;

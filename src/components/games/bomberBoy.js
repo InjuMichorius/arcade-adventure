@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "../atoms/button";
 import Modal from "../atoms/modal";
+import HowToPlay from "../atoms/howToPlay";
 import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,7 +25,7 @@ function BomberBoy({ onNextGame, updateSips }) {
   const [loser, setLoser] = useState(null);
   const [bombIndex, setBombIndex] = useState(null);
   const [drinksMessage, setDrinksMessage] = useState(null);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
 
   const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
@@ -32,14 +33,16 @@ function BomberBoy({ onNextGame, updateSips }) {
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
     if (storedPlayers.length > 1) {
-      const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
+      const shuffledPlayers = [...storedPlayers].sort(
+        () => Math.random() - 0.5
+      );
       const selectedPlayers = shuffledPlayers.slice(0, 2);
       setPlayer1(selectedPlayers[0]);
       setPlayer2(selectedPlayers[1]);
       setActivePlayers(selectedPlayers);
     }
   }, []); // Initial setup of players
-  
+
   const refreshActivePlayers = () => {
     const updatedPlayers = JSON.parse(localStorage.getItem("players")) || [];
     const active = updatedPlayers.filter((player) =>
@@ -47,13 +50,12 @@ function BomberBoy({ onNextGame, updateSips }) {
     );
     setActivePlayers(active);
   };
-  
+
   // Wrap `updateSips` to refresh `activePlayers`
   const handleUpdateSips = (username, sips) => {
     updateSips(username, sips);
     refreshActivePlayers(); // Refresh active players after updating sips
   };
-  
 
   const handleChooseCard = (index) => {
     if (winner) return; // Exit if there is already a winner
@@ -219,21 +221,20 @@ function BomberBoy({ onNextGame, updateSips }) {
           onClose={() => setIsDrinkModalOpen(false)}
         />
       )}
-
       {isInfoModalOpen && (
-        <Modal
-          title="How to Bomber Boy"
-          description={`${player1.username} hides the bomb in one of the tiles. ${player2.username} then chooses a tile. If it's the bomb ${player2.username} drinks the same amount of sips as cards on the table. If the card is save, ${player1.username} drinks one sip and can choose where to put the bomb next.`}
+        <HowToPlay
+          title="Bomber Boy"
+          description={`1 hides the bomb in one of the tiles. 2 then chooses a tile. If it's the bomb 2 drinks the same amount of sips as cards on the table. If the card is save, 1 drinks one sip and can choose where to put the bomb next.          `}
           buttons={[
             {
               icon: faForward,
-              text: "Skip",
-              variant: "pushable green",
+              text: "Skip game",
+              variant: "secondary",
               onClick: onNextGame,
             },
             {
               icon: faGamepad,
-              text: "Got it!",
+              text: "Play game",
               variant: "pushable red",
               onClick: () => setIsInfoModalOpen(false), // Close modal on button click
             },

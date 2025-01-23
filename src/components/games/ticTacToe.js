@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Button from "../atoms/button";
 import Modal from "../atoms/modal";
+import HowToPlay from "../atoms/howToPlay";
 import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import {
   faWhiskeyGlass,
   faRotateRight,
   faCircleRight,
+  faForward,
+  faGamepad
 } from "@fortawesome/free-solid-svg-icons";
 
 function TicTacToe({ onNextGame, updateSips }) {
@@ -16,6 +19,7 @@ function TicTacToe({ onNextGame, updateSips }) {
   const [winner, setWinner] = useState(null);
   const [drinksMessage, setDrinksMessage] = useState(null);
   const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [loser, setLoser] = useState(null);
   const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
@@ -121,20 +125,20 @@ function TicTacToe({ onNextGame, updateSips }) {
           </div>
         ))}
       </div>
-      {isDrinkModalOpen &&
+      {isDrinkModalOpen && (
         <Modal
-        title={`Drink up`}
-        description={drinksMessage}
-        buttons={[
-          {
-            icon: faWhiskeyGlass,
-            text: "Drink",
-            variant: "pushable red",
-          },
-        ]}
-        onClose={() => setIsDrinkModalOpen(false)}
-      />
-      }
+          title={`Drink up`}
+          description={drinksMessage}
+          buttons={[
+            {
+              icon: faWhiskeyGlass,
+              text: "Drink",
+              variant: "pushable red",
+            },
+          ]}
+          onClose={() => setIsDrinkModalOpen(false)}
+        />
+      )}
       {winner && (
         <>
           <div className="button-wrapper">
@@ -152,6 +156,28 @@ function TicTacToe({ onNextGame, updateSips }) {
             />
           </div>
         </>
+      )}
+      {isInfoModalOpen && (
+        <HowToPlay
+          title="Tic Tac Toe"
+          description={`two players take turns placing their mark (X or O) on a 3x3 grid, aiming to get three in a row (horizontally, vertically, or diagonally).
+          If a player wins by completing a row of three, the other player (the loser) has to drink 10 sips as a penalty.`}
+          buttons={[
+            {
+              icon: faForward,
+              text: "Skip game",
+              variant: "secondary",
+              onClick: onNextGame,
+            },
+            {
+              icon: faGamepad,
+              text: "Play game",
+              variant: "pushable red",
+              onClick: () => setIsInfoModalOpen(false), // Close modal on button click
+            },
+          ]}
+          onClose={() => setIsInfoModalOpen(false)} // Close modal when overlay or close button is clicked
+        />
       )}
     </div>
   );

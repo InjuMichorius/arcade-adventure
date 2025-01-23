@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
-import Modal from "../atoms/modal";
+import HowToPlay from "../atoms/howToPlay";
 import {
   faGamepad,
   faForward,
-  faCircleRight,
   faRotateRight,
   faUsers,
   faQuestionCircle,
@@ -13,7 +12,7 @@ import Button from "../atoms/button";
 import AvatarPreview from "../atoms/avatarPreview";
 
 const TipsyTurns = ({ onNextGame, updateSips }) => {
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [players, setPlayers] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -260,19 +259,19 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
       </div>
 
       {isInfoModalOpen && (
-        <Modal
-          title="How to play Tipsy Turns"
-          description="test"
+        <HowToPlay
+          title="Tipsy Turns"
+          description={`A question will appear on the screen, such as "Who would survive a zombie apocalypse?" Select the players who fit the question and let the drinks flow!`}
           buttons={[
             {
               icon: faForward,
-              text: "Skip",
-              variant: "pushable green",
+              text: "Skip game",
+              variant: "secondary",
               onClick: onNextGame,
             },
             {
               icon: faGamepad,
-              text: "Got it!",
+              text: "Play game",
               variant: "pushable red",
               onClick: () => setIsInfoModalOpen(false), // Close modal on button click
             },

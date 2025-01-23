@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../atoms/button";
 import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import whistleSound from "../../assets/sounds/whistle.mp3";
@@ -6,12 +7,14 @@ import {
   faVolumeHigh,
   faMagnifyingGlass,
   faEye,
-  faDice,
-  faMagnifyingGlassLocation,
-  faWhiskeyGlass,
+  faForward,
+  faGamepad,
+  faQuestionCircle
 } from "@fortawesome/free-solid-svg-icons";
+import HowToPlay from "../atoms/howToPlay";
 
 function WhereThatWhistle({ onNextGame, updateSips }) {
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [player1, setPlayer1] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
@@ -115,7 +118,10 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
   };
 
   return (
-    <div className="tic-tac-toe-container">
+    <div className="where-that-whistle">
+       <button className="hint" onClick={() => setIsInfoModalOpen(true)}>
+        <FontAwesomeIcon icon={faQuestionCircle} />
+      </button>
       <h1>Where that whistle</h1>
       <CurrentPlayerPreview />
       {!timeLeft ? (
@@ -168,6 +174,27 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
             />
           </div>
         </>
+      )}
+      {isInfoModalOpen && (
+        <HowToPlay
+          title="Where that whistle"
+          description={`One player hides the phone while the others look away. Once hidden, the seekers must find the phone guided by its whistle, which sounds every 30 seconds. Customize the search time and whistle interval to match your challenge level!`}
+          buttons={[
+            {
+              icon: faForward,
+              text: "Skip game",
+              variant: "secondary",
+              onClick: onNextGame,
+            },
+            {
+              icon: faGamepad,
+              text: "Play game",
+              variant: "pushable red",
+              onClick: () => setIsInfoModalOpen(false), // Close modal on button click
+            },
+          ]}
+          onClose={() => setIsInfoModalOpen(false)} // Close modal when overlay or close button is clicked
+        />
       )}
     </div>
   );

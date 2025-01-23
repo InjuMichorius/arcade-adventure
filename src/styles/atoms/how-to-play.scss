@@ -1,0 +1,25 @@
+.how-to-play {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--green);
+    width: 100vw;
+    height: 100vh;
+    padding: 4rem 2rem 0;
+    section {
+        color: var(--off-white);
+        font-family: var(--font);
+        margin: 1rem 0;
+        p {
+            max-width: 500px;
+            margin: auto;
+        }
+    }
+    footer {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        max-width: 500px;
+        margin: auto;
+    }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import Button from "../atoms/button";
 import logo from "../../assets/images/homepage-logo.jpg";
@@ -40,7 +40,7 @@ function Index() {
   return (
     <div className="homepage-container">
       <main className="homepage-container__content">
-        <img src={logo} width={260} />
+        <img src={logo} alt="" width="260" />
         <div className="marquee-container">
       <div className="marquee-wrapper">
         <div className="marquee">
