@@ -69,9 +69,6 @@ function Game() {
   
     // Update localStorage with the new player data
     localStorage.setItem("players", JSON.stringify(updatedPlayers));
-  
-    // Update the state so the UI will re-render
-    setPlayers(updatedPlayers);
   };  
 
   return (

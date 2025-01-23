@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "../atoms/button";
 import { faRotateRight, faForward } from "@fortawesome/free-solid-svg-icons";
 import AvatarPreview from "../atoms/avatarPreview";
+import { PlayerDataContext } from "../../providers/playerDataProvider";
 
 function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame }) {
+  const { updatePlayer } = useContext(PlayerDataContext);
+
+  // Function to add 10 points to players who must drink
+  const handleDrink = () => {
+    playersToDrink.forEach((player) => {
+      updatePlayer(player.id, { points: player.points + 1 });
+    });
+  };
+
   return (
     <div className="drink-up">
       <h2>Drink up</h2>
@@ -25,13 +35,19 @@ function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame }) {
           icon={faRotateRight}
           variant="secondary"
           text="Play again"
-          onClick={onPlayAgain}
+          onClick={() => {
+            handleDrink();
+            onPlayAgain();
+          }}
         />
         <Button
           icon={faForward}
           variant="pushable red"
           text="Next game"
-          onClick={onNextGame}
+          onClick={() => {
+            handleDrink();
+            onNextGame();
+          }}
         />
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../atoms/button";
 import whistleSound from "../../assets/sounds/whistle.mp3";
@@ -13,8 +13,10 @@ import {
 import HowToPlay from "../atoms/howToPlay";
 import DrinkUp from "../atoms/drinkUp";
 import AvatarPreview from "../atoms/avatarPreview";
+import { PlayerDataContext } from "../../providers/playerDataProvider";
 
-function WhereThatWhistle({ onNextGame, updateSips }) {
+function WhereThatWhistle({ onNextGame }) {
+  const { updatePlayer } = useContext(PlayerDataContext); // access updatePlayer
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [isDrinkUpScreen, setIsDrinkUpScreen] = useState(false);
   const [isFound, setIsFound] = useState(false);
@@ -22,7 +24,7 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
   const [seekers, setSeekers] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
-  const [searchDuration, setSearchDuration] = useState(2); // TODO deze weer terug zetten naar 120
+  const [searchDuration, setSearchDuration] = useState(2); // TODO: Reset this to 120
   const [whistleInterval, setWhistleInterval] = useState(30); // Default to 30 seconds
   const audioRef = useRef(null);
 
@@ -46,6 +48,11 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       window.removeEventListener("click", unlockAudioContext);
     };
   }, []);
+
+  const updatePlayerPoints = (id, points) => {
+    updatePlayer(id, { points });
+  };
+
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
     if (storedPlayers.length === 0) return;
@@ -53,13 +60,16 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
     const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
 
     setPlayer1(shuffledPlayers[0]);
-
-    const seekers = shuffledPlayers.slice(1);
-    setSeekers(seekers);
+    setSeekers(shuffledPlayers.slice(1));
 
     audioRef.current = new Audio(whistleSound);
   }, []);
-  console.log(player1);
+
+  useEffect(() => {
+    if (player1) {
+      updatePlayerPoints(player1.id, player1.points + 5); // Example of updating points after a game action
+    }
+  }, [player1, updatePlayer]);
 
   const playSound = () => {
     if (audioRef.current) {
@@ -67,6 +77,13 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       audioRef.current.play().catch((err) => {
         console.error("Audio playback failed:", err);
       });
+    }
+  };
+
+  const updateSips = (username, points) => {
+    const player = player1?.username === username ? player1 : seekers?.find((player) => player.username === username);
+    if (player) {
+      updatePlayer(player.id, { points: player.points + points }); // Update points for player
     }
   };
 
@@ -79,8 +96,11 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       setTimeLeft((prevTime) => {
         if (prevTime === null || prevTime <= 1) {
           clearInterval(newIntervalId);
-          setIsFound(false); // Ensure `isFound` is false when time runs out
-          setIsDrinkUpScreen(true); // Show DrinkUp screen
+          setIsFound(false);
+          seekers.forEach(seeker => {
+            updateSips(seeker.username, 10); // Add 10 points for seekers
+          });
+          setIsDrinkUpScreen(true);
           return null;
         }
 
@@ -107,6 +127,7 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
     if (intervalId) clearInterval(intervalId);
     setTimeLeft(null);
     setIsFound(true);
+    updateSips(player1.username, 5); // Add 5 points to the player who hid the phone
     setIsDrinkUpScreen(true);
   };
 
@@ -115,11 +136,8 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
     if (storedPlayers.length === 0) return;
 
     const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
-
     setPlayer1(shuffledPlayers[0]);
-
-    const seekers = shuffledPlayers.slice(1);
-    setSeekers(seekers);
+    setSeekers(shuffledPlayers.slice(1));
 
     setIsDrinkUpScreen(false);
     setIsFound(false);
@@ -213,10 +231,10 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
               icon: faGamepad,
               text: "Play game",
               variant: "pushable red",
-              onClick: () => setIsInfoModalOpen(false), // Close modal on button click
+              onClick: () => setIsInfoModalOpen(false),
             },
           ]}
-          onClose={() => setIsInfoModalOpen(false)} // Close modal when overlay or close button is clicked
+          onClose={() => setIsInfoModalOpen(false)}
         />
       )}
       {isDrinkUpScreen && (

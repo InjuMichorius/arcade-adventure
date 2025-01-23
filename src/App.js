@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, HashRouter } from "react-router-dom";
 import Index from "./components/pages/index";
 import Game from "./components/pages/game";
 import ManagePlayers from "./components/pages/managePlayers";
+import { PlayerDataProvider } from "./providers/playerDataProvider";
 
 import "./App.scss";
 
@@ -19,7 +20,8 @@ function App() {
   }
 
   return (
-    <HashRouter>
+    <PlayerDataProvider>
+      <HashRouter>
       <Routes>
         <Route path="/arcade-adventure" element={playersFromStorage.length > 1 ? <Game /> : <Index />} />
         <Route path="/manage-players" element={playersFromStorage.length > 1 ? <Game /> : <ManagePlayers />} />
@@ -28,6 +30,7 @@ function App() {
         <Route path="*" element={<Navigate to="/arcade-adventure" />} />
       </Routes>
     </HashRouter>
+  </PlayerDataProvider>
   );
 }
 
