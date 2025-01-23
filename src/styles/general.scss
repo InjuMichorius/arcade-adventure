@@ -82,12 +82,12 @@ h3 {
 }
 
 button {
+  font-family: var(--font-bold);
   display: flex;
   gap: 0.5rem;
   justify-content: center;
   border: 0;
   font-size: 1rem;
-  font-weight: 700;
   align-items: center;
   padding: 1rem;
   background: transparent;

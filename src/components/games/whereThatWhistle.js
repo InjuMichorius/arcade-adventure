@@ -5,20 +5,23 @@ import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import whistleSound from "../../assets/sounds/whistle.mp3";
 import {
   faVolumeHigh,
-  faMagnifyingGlass,
+  faStopwatch,
   faEye,
   faForward,
   faGamepad,
-  faQuestionCircle
+  faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import HowToPlay from "../atoms/howToPlay";
+import DrinkUp from "../atoms/drinkUp";
 
 function WhereThatWhistle({ onNextGame, updateSips }) {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
+  const [isDrinkUpScreen, setIsDrinkUpScreen] = useState(false);
+  const [isFound, setIsFound] = useState(false);
   const [player1, setPlayer1] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
-  const [searchDuration, setSearchDuration] = useState(120); // Default to 2 minutes
+  const [searchDuration, setSearchDuration] = useState(2); // TODO deze weer terug zetten naar 120
   const [whistleInterval, setWhistleInterval] = useState(30); // Default to 30 seconds
   const audioRef = useRef(null);
 
@@ -84,6 +87,8 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       setTimeLeft((prevTime) => {
         if (prevTime === null || prevTime <= 1) {
           clearInterval(newIntervalId);
+          setIsFound(false); // Ensure `isFound` is false when time runs out
+          setIsDrinkUpScreen(true); // Show DrinkUp screen
           return null;
         }
 
@@ -109,6 +114,13 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
   const handleFound = () => {
     if (intervalId) clearInterval(intervalId);
     setTimeLeft(null);
+    setIsFound(true);
+    setIsDrinkUpScreen(true);
+  };
+
+  const resetGame = () => {
+    setIsDrinkUpScreen(false);
+    setIsFound(false);
   };
 
   const formatTime = (seconds) => {
@@ -119,7 +131,7 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
 
   return (
     <div className="where-that-whistle">
-       <button className="hint" onClick={() => setIsInfoModalOpen(true)}>
+      <button className="hint" onClick={() => setIsInfoModalOpen(true)}>
         <FontAwesomeIcon icon={faQuestionCircle} />
       </button>
       <h1>Where that whistle</h1>
@@ -167,7 +179,7 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
               onClick={playSound}
             />
             <Button
-              icon={faMagnifyingGlass}
+              icon={faStopwatch}
               variant="pushable red"
               text="Start search"
               onClick={startSearch}
@@ -194,6 +206,17 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
             },
           ]}
           onClose={() => setIsInfoModalOpen(false)} // Close modal when overlay or close button is clicked
+        />
+      )}
+      {isDrinkUpScreen && (
+        <DrinkUp
+          player1={player1}
+          isFound={isFound}
+          onPlayAgain={resetGame}
+          onNextGame={onNextGame}
+          message={`${
+            player1?.name || "The player hiding the phone"
+          } needs to drink`}
         />
       )}
     </div>
