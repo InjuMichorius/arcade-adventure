@@ -1,32 +1,38 @@
 .where-that-whistle {
-    padding: 1.9rem 1rem 0;
-    .hint {
-        position: fixed;
-        top: 25px;
-        left: 1rem;
-        color: var(--off-white);
-      }
-    .time-container {
-        margin-bottom: 2rem;
-        color: var(--off-white);
-        .time-title {
-            text-align: center;
-            font-weight: 400;
-            font-size: 1.2rem;
-        }
-        .time-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            .time-display {
-                font-weight: 700;
-                font-size: 3rem;
-            }
-            button {
-                background-color: var(--red);
-    
-            }
-        }
+  padding: 1.9rem 1rem 0;
+  .hint {
+    position: fixed;
+    top: 25px;
+    left: 1rem;
+    color: var(--off-white);
+  }
+  .hider-container {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+  }
+  .time-container {
+    margin-bottom: 2rem;
+    color: var(--off-white);
+    .time-title {
+      text-align: center;
+      font-weight: 400;
+      font-size: 1.2rem;
     }
+    .time-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      .time-display {
+        font-weight: 700;
+        font-size: 3rem;
+      }
+      button {
+        background-color: var(--red);
+      }
+    }
+  }
 }

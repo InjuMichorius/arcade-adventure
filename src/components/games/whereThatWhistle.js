@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../atoms/button";
-import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import whistleSound from "../../assets/sounds/whistle.mp3";
 import {
   faVolumeHigh,
@@ -13,12 +12,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import HowToPlay from "../atoms/howToPlay";
 import DrinkUp from "../atoms/drinkUp";
+import AvatarPreview from "../atoms/avatarPreview";
 
 function WhereThatWhistle({ onNextGame, updateSips }) {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [isDrinkUpScreen, setIsDrinkUpScreen] = useState(false);
   const [isFound, setIsFound] = useState(false);
   const [player1, setPlayer1] = useState(null);
+  const [seekers, setSeekers] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
   const [searchDuration, setSearchDuration] = useState(2); // TODO deze weer terug zetten naar 120
@@ -45,29 +46,20 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       window.removeEventListener("click", unlockAudioContext);
     };
   }, []);
-
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    const activePlayers = storedPlayers.filter((player) => player.activePlayer);
+    if (storedPlayers.length === 0) return;
 
-    if (activePlayers.length >= 2) {
-      setPlayer1(activePlayers[0]);
-    } else {
-      const shuffledPlayers = [...storedPlayers].sort(
-        () => Math.random() - 0.5
-      );
-      setPlayer1(shuffledPlayers[0]);
+    const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
 
-      const updatedPlayers = storedPlayers.map((player) => ({
-        ...player,
-        activePlayer: player === shuffledPlayers[0],
-      }));
+    setPlayer1(shuffledPlayers[0]);
 
-      localStorage.setItem("players", JSON.stringify(updatedPlayers));
-    }
+    const seekers = shuffledPlayers.slice(1);
+    setSeekers(seekers);
 
     audioRef.current = new Audio(whistleSound);
   }, []);
+  console.log(player1);
 
   const playSound = () => {
     if (audioRef.current) {
@@ -119,8 +111,19 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
   };
 
   const resetGame = () => {
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    if (storedPlayers.length === 0) return;
+
+    const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
+
+    setPlayer1(shuffledPlayers[0]);
+
+    const seekers = shuffledPlayers.slice(1);
+    setSeekers(seekers);
+
     setIsDrinkUpScreen(false);
     setIsFound(false);
+    setTimeLeft(null);
   };
 
   const formatTime = (seconds) => {
@@ -135,11 +138,17 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
         <FontAwesomeIcon icon={faQuestionCircle} />
       </button>
       <h1>Where that whistle</h1>
-      <CurrentPlayerPreview />
       {!timeLeft ? (
-        <p className="regular-text">
-          Hides the phone, other players close their eyes
-        </p>
+        <div className="hider-container">
+          <AvatarPreview
+            width={100}
+            image={player1?.avatar}
+            points={player1?.points}
+          />
+          <p className="regular-text">
+            {`${player1?.username || "Someone"}`} hides the phone.
+          </p>
+        </div>
       ) : (
         <p className="regular-text">{formatTime(timeLeft)}</p>
       )}
@@ -190,7 +199,9 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       {isInfoModalOpen && (
         <HowToPlay
           title="Where that whistle"
-          description={`One player hides the phone while the others look away. Once hidden, the seekers must find the phone guided by its whistle, which sounds every 30 seconds. Customize the search time and whistle interval to match your challenge level!`}
+          description={`${
+            player1?.username || "Someone"
+          } hides the phone while the others look away. Once hidden, the seekers must find the phone guided by its whistle, which sounds every 30 seconds. Customize the search time and whistle interval to match your challenge level!`}
           buttons={[
             {
               icon: faForward,
@@ -210,13 +221,14 @@ function WhereThatWhistle({ onNextGame, updateSips }) {
       )}
       {isDrinkUpScreen && (
         <DrinkUp
-          player1={player1}
-          isFound={isFound}
+          drinkMessage={
+            isFound
+              ? `drinks 5!`
+              : "all drink 10!"
+          }
+          playersToDrink={isFound ? [player1] : seekers}
           onPlayAgain={resetGame}
           onNextGame={onNextGame}
-          message={`${
-            player1?.name || "The player hiding the phone"
-          } needs to drink`}
         />
       )}
     </div>

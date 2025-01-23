@@ -1,9 +1,36 @@
 .drink-up {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100%;
-    padding: 1.9rem;
-    background-color: var(--green);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  padding: 1.9rem;
+  background-color: var(--green);
+  .avatars-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    .player-avatar {
+      position: relative;
+      display: flex;
+      gap: 1rem;
+      flex-direction: column;
+      text-align: center;
+      color: var(--off-white);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+  }
+  > p {
+    margin-top: 2rem;
+  }
+  .button-wrapper {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    max-width: 500px;
+    margin: 4rem auto 0;
+  }
 }

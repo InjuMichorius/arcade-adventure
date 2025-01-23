@@ -1,26 +1,35 @@
 import React from "react";
 import Button from "../atoms/button";
-import { faGamepad, faForward } from "@fortawesome/free-solid-svg-icons";
+import { faRotateRight, faForward } from "@fortawesome/free-solid-svg-icons";
+import AvatarPreview from "../atoms/avatarPreview";
 
-function DrinkUp({ player1, isFound, onPlayAgain, onNextGame }) {
+function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame }) {
   return (
     <div className="drink-up">
-      <h1>Drink up!</h1>
-      <p className="regular-text">
-        {isFound
-          ? `${player1?.name || "The player hiding the phone"} needs to drink!`
-          : "All searchers need to drink!"}
-      </p>
+      <h2>Drink up</h2>
+      <div className="avatars-container">
+        {playersToDrink.map((player, index) => (
+          <div key={index} className="player-avatar">
+            <AvatarPreview
+              width={100}
+              image={player.avatar}
+              points={player.points}
+            />
+            <p>{player.username}</p>
+          </div>
+        ))}
+      </div>
+      <p className="regular-text">{drinkMessage}</p>
       <div className="button-wrapper">
         <Button
-          icon={faGamepad}
-          variant="pushable red"
+          icon={faRotateRight}
+          variant="secondary"
           text="Play again"
           onClick={onPlayAgain}
         />
         <Button
           icon={faForward}
-          variant="secondary"
+          variant="pushable red"
           text="Next game"
           onClick={onNextGame}
         />
