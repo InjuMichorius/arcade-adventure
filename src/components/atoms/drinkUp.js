@@ -4,7 +4,7 @@ import { faRotateRight, faForward } from "@fortawesome/free-solid-svg-icons";
 import AvatarPreview from "../atoms/avatarPreview";
 import { PlayerDataContext } from "../../providers/playerDataProvider";
 
-function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame }) {
+function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame, drinkAmount }) {
   const { updatePlayer } = useContext(PlayerDataContext);
 
   // Function to add 10 points to players who must drink
@@ -23,7 +23,7 @@ function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame }) {
             <AvatarPreview
               width={100}
               image={player.avatar}
-              points={player.points}
+              points={`+ ${drinkAmount}`}
             />
             <p>{player.username}</p>
           </div>

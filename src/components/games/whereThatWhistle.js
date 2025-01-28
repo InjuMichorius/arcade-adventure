@@ -245,6 +245,7 @@ function WhereThatWhistle({ onNextGame }) {
               : "all drink 10!"
           }
           playersToDrink={isFound ? [player1] : seekers}
+          drinkAmount={isFound ? 5 : 10}
           onPlayAgain={resetGame}
           onNextGame={onNextGame}
         />
