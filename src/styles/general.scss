@@ -263,3 +263,14 @@ button {
   align-items: center;
   z-index: 1000;
 }
+
+.hint {
+  position: fixed;
+  top: 25px;
+  left: 1rem;
+  color: var(--off-white);
+}
+
+.button-wrapper {
+  display: flex;
+}

@@ -127,9 +127,22 @@ function WhereThatWhistle({ onNextGame }) {
     if (intervalId) clearInterval(intervalId);
     setTimeLeft(null);
     setIsFound(true);
-    updateSips(player1.username, 5); // Add 5 points to the player who hid the phone
+  
+    // Update points directly in player1
+    const updatedPlayer1 = {
+      ...player1,
+      points: player1.points + 5, // Add 5 points to the player who hid the phone
+    };
+  
+    // Update the player in the context/state
+    updatePlayer(player1.id, { points: updatedPlayer1.points });
+  
+    // Update local state to trigger re-render
+    setPlayer1(updatedPlayer1);
+  
     setIsDrinkUpScreen(true);
   };
+  
 
   const resetGame = () => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
