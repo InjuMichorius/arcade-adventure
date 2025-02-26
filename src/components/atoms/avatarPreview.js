@@ -11,7 +11,7 @@ function AvatarPreview({ width, image, points }) {
           {points}
           <FontAwesomeIcon icon={faWineBottle} className="icon" />
         </p>
-      )}
+      ) }
     </div>
   );
 }

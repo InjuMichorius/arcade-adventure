@@ -271,7 +271,7 @@ function WhereThatWhistle({ onNextGame }) {
                           />
                         ))}
                       </div>
-                      <strong>Other players</strong> have<span></span>{" "}
+                      <strong>Other players</strong> <span>have</span>{" "}
                       <strong>{searchDuration}s</strong> <span>to</span>{" "}
                       <span>find</span> <span>the</span> <span>phone</span>
                     </>

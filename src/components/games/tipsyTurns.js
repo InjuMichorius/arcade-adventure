@@ -135,19 +135,6 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
     },
   ]);
 
-  // Retrieve players from localStorage on component mount
-  useEffect(() => {
-    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    // Sort players by points in descending order
-    const sortedPlayers = [...storedPlayers].sort(
-      (a, b) => b.points - a.points
-    );
-    setPlayers(sortedPlayers);
-
-    // Select a random question initially
-    selectRandomQuestion();
-  }, []);
-
   // Toggle selection of a player
   const togglePlayerSelection = (player) => {
     setSelectedPlayers(
@@ -158,35 +145,52 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
     );
   };
 
-  // Assign sips to selected players when a new question is picked
   const applySipsToSelectedPlayers = () => {
     if (currentQuestion && selectedPlayers.length > 0) {
-      selectedPlayers.forEach((player) => {
-        updateSips(player.username, currentQuestion.sips);
+      const updatedPlayers = players.map((player) => {
+        if (selectedPlayers.includes(player)) {
+          return { ...player, points: (player.points || 0) + currentQuestion.sips };
+        }
+        return player;
       });
-      // Optionally clear selected players after updating sips
-      setSelectedPlayers([]);
+  
+      setPlayers(updatedPlayers); // Force UI update
+      localStorage.setItem("players", JSON.stringify(updatedPlayers)); // Persist data
+      setSelectedPlayers([]); // Reset selection
     }
   };
+  
 
-  // Select a random question from the remaining list
+  useEffect(() => {
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    const sortedPlayers = [...storedPlayers].sort((a, b) => b.points - a.points);
+    setPlayers(sortedPlayers);
+  
+    // Select an initial question without applying sips
+    if (remainingQuestions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+      setCurrentQuestion(remainingQuestions[randomIndex]);
+    }
+  }, []);
+  
   const selectRandomQuestion = () => {
-    if (remainingQuestions.length === 0) return; // No more questions left
-
+    if (remainingQuestions.length === 0 || selectedPlayers.length === 0) return; // Prevent execution when disabled
+  
     const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
     const randomQuestion = remainingQuestions[randomIndex];
-
+  
     setCurrentQuestion(randomQuestion);
-
+  
     // Remove the selected question from the list
     const updatedQuestions = remainingQuestions.filter(
       (q, index) => index !== randomIndex
     );
     setRemainingQuestions(updatedQuestions);
-
-    // Apply sips immediately after selecting a new question
+  
+    // Apply sips after question selection
     applySipsToSelectedPlayers();
   };
+  
 
   return (
     <div className="tipsy-turns-container">
@@ -230,7 +234,7 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
                   <AvatarPreview
                     width={80}
                     image={player.avatar}
-                    points={player.points}
+                    points={player.points ? player.points : "0"}
                   />
                   <div className="user-details">
                     <p className="player-name">{player.username}</p>
@@ -252,11 +256,13 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
 
         <div className="button-wrapper">
           <Button
-            icon={faRotateRight}
-            variant="get-new-question-button"
+            icon={faWhiskeyGlass}
+            variant="pushable red"
             onClick={selectRandomQuestion}
-            text="New tipsy turn"
-            disabled={remainingQuestions.length === 0}
+            text="Drink"
+            disabled={
+              remainingQuestions.length === 0 || selectedPlayers.length === 0
+            }
           />
         </div>
       </div>
