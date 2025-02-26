@@ -5,21 +5,38 @@
     background-color: var(--green);
     width: 100vw;
     height: 100vh;
-    padding: 4rem 2rem 0;
-    section {
-        color: var(--off-white);
-        font-family: var(--font);
-        margin: 1rem 0;
-        p {
-            max-width: 500px;
-            margin: auto;
-        }
+    margin-top: 4rem;
+    padding: 0 1rem;
+
+    .avatar-stack {
+      display: flex;
+      height: 30px;
+      .avatar-preview:not(:last-child) {
+        margin-right: -1rem;
+      }
     }
+  
     footer {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        max-width: 500px;
-        margin: auto;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      max-width: 500px;
+      margin: auto;
+      opacity: 0;
+  
+      &.fade-in-footer {
+        opacity: 1; 
+        animation: fadeIn 0.5s ease-out forwards;
+      }
     }
-}
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  

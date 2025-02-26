@@ -6,10 +6,11 @@ import TipsyTurns from "../components/games/tipsyTurns";
 import Draw from "../components/games/draw";
 
 const games = [
-  { component: WhereThatWhistle, name: "WhereThatWhistle" },
   { component: TipsyTurns, name: "TipsyTurns" },
+  { component: WhereThatWhistle, name: "WhereThatWhistle" },
   { component: BomberBoy, name: "BomberBoy" },
   { component: TicTacToe, name: "TicTacToe" },
+  { component: TipsyTurns, name: "TipsyTurns" },
   { component: Draw, name: "Draw" },
   // Add other games here
 ];

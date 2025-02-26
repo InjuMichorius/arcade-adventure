@@ -3,6 +3,7 @@ import Button from "../atoms/button";
 import Modal from "../atoms/modal";
 import HowToPlay from "../atoms/howToPlay";
 import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
+import GameInstructions from "../molecules/gameInstructions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGamepad,
@@ -12,6 +13,7 @@ import {
   faCircleRight,
   faEyeSlash,
   faQuestionCircle,
+  faRepeat,
 } from "@fortawesome/free-solid-svg-icons";
 
 function BomberBoy({ onNextGame, updateSips }) {
@@ -224,7 +226,44 @@ function BomberBoy({ onNextGame, updateSips }) {
       {isInfoModalOpen && (
         <HowToPlay
           title="Bomber Boy"
-          description={`1 hides the bomb in one of the tiles. 2 then chooses a tile. If it's the bomb 2 drinks the same amount of sips as cards on the table. If the card is save, 1 drinks one sip and can choose where to put the bomb next.          `}
+          description={
+            <GameInstructions
+              steps={[
+                {
+                  avatar: player1?.avatar,
+                  name: player1?.username,
+                  text: (
+                    <>
+                      <strong>
+                        {player1?.username ? player1.username : "Someone"}
+                      </strong>{" "}
+                      chooses a tile to hide the bomb
+                    </>
+                  ),
+                },
+                {
+                  avatar: player2?.avatar,
+                  name: player2?.username,
+                  text: (
+                    <>
+                      <strong>
+                        {player2?.username ? player2.username : "Someone"}
+                      </strong>{" "}
+                      tries not to choose a tile with bomb
+                    </>
+                  ),
+                },
+                {
+                  icon: faRepeat,
+                  text: "Repeat until bomb goes of or no tiles are left",
+                },
+                {
+                  icon: faWhiskeyGlass,
+                  text: "Sips are handed out based on remaining tiles",
+                },
+              ]}
+            />
+          }
           buttons={[
             {
               icon: faForward,
@@ -236,10 +275,10 @@ function BomberBoy({ onNextGame, updateSips }) {
               icon: faGamepad,
               text: "Play game",
               variant: "pushable red",
-              onClick: () => setIsInfoModalOpen(false), // Close modal on button click
+              onClick: () => setIsInfoModalOpen(false),
             },
           ]}
-          onClose={() => setIsInfoModalOpen(false)} // Close modal when overlay or close button is clicked
+          onClose={() => setIsInfoModalOpen(false)}
         />
       )}
     </div>

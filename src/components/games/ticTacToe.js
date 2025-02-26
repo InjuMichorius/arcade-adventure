@@ -8,8 +8,10 @@ import {
   faRotateRight,
   faCircleRight,
   faForward,
-  faGamepad
+  faGamepad,
+  faRepeat
 } from "@fortawesome/free-solid-svg-icons";
+import GameInstructions from "../molecules/gameInstructions";
 
 function TicTacToe({ onNextGame, updateSips }) {
   const [player1, setPlayer1] = useState(null);
@@ -160,8 +162,48 @@ function TicTacToe({ onNextGame, updateSips }) {
       {isInfoModalOpen && (
         <HowToPlay
           title="Tic Tac Toe"
-          description={`two players take turns placing their mark (X or O) on a 3x3 grid, aiming to get three in a row (horizontally, vertically, or diagonally).
-          If a player wins by completing a row of three, the other player (the loser) has to drink 10 sips as a penalty.`}
+          description={
+            <GameInstructions
+              steps={[
+                {
+                  avatar: player1?.avatar,
+                  name: player1?.username,
+                  text: (
+                    <>
+                      <strong>
+                        {player1?.username ? player1.username : "Someone"}
+                      </strong>{" "}
+                      chooses a tile for their <strong>X</strong>
+                    </>
+                  ),
+                },
+                {
+                  avatar: player2?.avatar,
+                  name: player2?.username,
+                  text: (
+                    <>
+                      <strong>
+                        {player2?.username ? player2.username : "Someone"}
+                      </strong>{" "}
+                      chooses a tile for their <strong>O</strong>
+                    </>
+                  ),
+                },
+                {
+                  icon: faRepeat,
+                  text: (
+                    <>
+                      Repeat until <strong>X</strong> or <strong>O</strong> has three in a row
+                    </>
+                  ),
+                },
+                {
+                  icon: faWhiskeyGlass,
+                  text: "Loser drinks 10 sips",
+                },
+              ]}
+            />
+          }
           buttons={[
             {
               icon: faForward,

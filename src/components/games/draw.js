@@ -12,12 +12,14 @@ import {
   faQuestionCircle,
   faEraser,
 } from "@fortawesome/free-solid-svg-icons";
+import GameInstructions from "../molecules/gameInstructions";
 
 function Draw({ onNextGame }) {
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
+  const [selectedColor, setSelectedColor] = useState("black");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,11 +29,19 @@ function Draw({ onNextGame }) {
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.lineWidth = 5;
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = selectedColor;
     ctxRef.current = ctx;
+  }, [selectedColor]);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, []);
 
   const startDrawing = (e) => {
+    e.preventDefault();
     const { offsetX, offsetY } = getPointerPosition(e);
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(offsetX, offsetY);
@@ -40,6 +50,7 @@ function Draw({ onNextGame }) {
 
   const draw = (e) => {
     if (!isDrawing) return;
+    e.preventDefault();
     const { offsetX, offsetY } = getPointerPosition(e);
     ctxRef.current.lineTo(offsetX, offsetY);
     ctxRef.current.stroke();
@@ -68,6 +79,16 @@ function Draw({ onNextGame }) {
         <FontAwesomeIcon icon={faQuestionCircle} />
       </button>
       <h1>Draw</h1>
+      {/* <div className="color-picker">
+        {["black", "red", "blue", "green"].map((color) => (
+          <button
+            key={color}
+            className="color-block"
+            style={{ backgroundColor: color, border: selectedColor === color ? "2px solid white" : "none" }}
+            onClick={() => setSelectedColor(color)}
+          ></button>
+        ))}
+      </div> */}
       <canvas
         ref={canvasRef}
         className="draw-canvas"
@@ -86,7 +107,16 @@ function Draw({ onNextGame }) {
       {isInfoModalOpen && (
         <HowToPlay
           title="Draw"
-          description={`Person needs to draw. Other player needs to guess the word.`}
+          description={
+            <GameInstructions
+              steps={[
+                {
+                  icon: faWhiskeyGlass,
+                  text: "Loser drinks",
+                },
+              ]}
+            />
+          }
           buttons={[
             {
               icon: faForward,

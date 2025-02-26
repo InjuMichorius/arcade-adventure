@@ -6,10 +6,12 @@ function AvatarPreview({ width, image, points }) {
   return (
     <div className="avatar-preview">
       <img src={image} alt="Avatar" width={width} />
-      <p className="points-text">
-        {points}
-        <FontAwesomeIcon icon={faWineBottle} className="icon" />
-      </p>
+      {points && (
+        <p className="points-text">
+          {points}
+          <FontAwesomeIcon icon={faWineBottle} className="icon" />
+        </p>
+      )}
     </div>
   );
 }

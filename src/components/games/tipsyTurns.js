@@ -7,9 +7,12 @@ import {
   faRotateRight,
   faUsers,
   faQuestionCircle,
+  faClipboardQuestion,
+  faWhiskeyGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../atoms/button";
 import AvatarPreview from "../atoms/avatarPreview";
+import GameInstructions from "../molecules/gameInstructions";
 
 const TipsyTurns = ({ onNextGame, updateSips }) => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
@@ -261,7 +264,40 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
       {isInfoModalOpen && (
         <HowToPlay
           title="Tipsy Turns"
-          description={`A question will appear on the screen, such as "Who would survive a zombie apocalypse?" Select the players who fit the question and let the drinks flow!`}
+          description={
+            <GameInstructions
+              steps={[
+                {
+                  icon: faClipboardQuestion,
+                  text: "A question will be displayed on the screen",
+                },
+                {
+                  text: (
+                    <>
+                      <div className="avatar-stack">
+                        {players.map((player) => (
+                          <AvatarPreview
+                            key={player?.id}
+                            width={30}
+                            image={player?.avatar}
+                            alt={player?.username}
+                          />
+                        ))}
+                      </div>
+                      <strong>All players</strong> determine{" "}
+                      <strong>who</strong> <span>the</span>{" "}
+                      <span>question/statement</span> <span>applies</span>{" "}
+                      <span>to</span>
+                    </>
+                  ),
+                },
+                {
+                  icon: faWhiskeyGlass,
+                  text: "The chosen player(s) drink!",
+                },
+              ]}
+            />
+          }
           buttons={[
             {
               icon: faForward,
@@ -273,10 +309,10 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
               icon: faGamepad,
               text: "Play game",
               variant: "pushable red",
-              onClick: () => setIsInfoModalOpen(false), // Close modal on button click
+              onClick: () => setIsInfoModalOpen(false),
             },
           ]}
-          onClose={() => setIsInfoModalOpen(false)} // Close modal when overlay or close button is clicked
+          onClose={() => setIsInfoModalOpen(false)}
         />
       )}
     </div>
