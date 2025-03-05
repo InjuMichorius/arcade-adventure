@@ -11,7 +11,7 @@ function App() {
   const [playersFromStorage, setPlayersFromStorage] = useState(null);
 
   useEffect(() => {
-    const storedPlayers = JSON.parse(localStorage.getItem('players')) || [];
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
     setPlayersFromStorage(storedPlayers);
   }, []);
 
@@ -22,15 +22,15 @@ function App() {
   return (
     <PlayerDataProvider>
       <HashRouter>
-      <Routes>
-        <Route path="/arcade-adventure" element={playersFromStorage.length > 1 ? <Game /> : <Index />} />
-        <Route path="/manage-players" element={playersFromStorage.length > 1 ? <Game /> : <ManagePlayers />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/" element={<Navigate to="/arcade-adventure" />} />
-        <Route path="*" element={<Navigate to="/arcade-adventure" />} />
-      </Routes>
-    </HashRouter>
-  </PlayerDataProvider>
+        <Routes>
+          <Route path="/arcade-adventure" element={<Index />} />
+          <Route path="/manage-players" element={<ManagePlayers />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/" element={<Navigate to="/arcade-adventure" />} />
+          <Route path="*" element={<Navigate to="/arcade-adventure" />} />
+        </Routes>
+      </HashRouter>
+    </PlayerDataProvider>
   );
 }
 

@@ -6,7 +6,8 @@ import { usePlayers } from "../../hooks/usePlayers";
 
 function Game() {
   const navigate = useNavigate();
-  const { players, player1, player2, setPlayers, setPlayer1, setPlayer2 } = usePlayers(navigate);
+  const { players, player1, player2, setPlayers, setPlayer1, setPlayer2 } =
+    usePlayers(navigate);
 
   const { CurrentGameComponent, handleNextGame } = useCurrentGame();
 
@@ -19,12 +20,6 @@ function Game() {
   useEffect(() => {
     // Retrieve players from localStorage
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-
-    // Redirect to /arcade-adventure if no players found
-    if (storedPlayers.length === 0) {
-      navigate("/arcade-adventure");
-      return;
-    }
 
     // Set players state
     setPlayers(storedPlayers);
@@ -57,19 +52,19 @@ function Game() {
   // Get players from localStorage, update points for localStorage and react state based on game result
   const updateSips = (playerName, sipAmount) => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-  
+
     // Find the player by name and update their sipAmount (or points)
-    const updatedPlayers = storedPlayers.map(player => {
+    const updatedPlayers = storedPlayers.map((player) => {
       if (player.username === playerName) {
         // Update the player's points (or whatever property you need to update)
         return { ...player, points: player.points + sipAmount };
       }
       return player;
     });
-  
+
     // Update localStorage with the new player data
     localStorage.setItem("players", JSON.stringify(updatedPlayers));
-  };  
+  };
 
   return (
     <div className="game-container">

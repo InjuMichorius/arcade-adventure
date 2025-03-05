@@ -4,7 +4,6 @@ import HowToPlay from "../atoms/howToPlay";
 import {
   faGamepad,
   faForward,
-  faRotateRight,
   faUsers,
   faQuestionCircle,
   faClipboardQuestion,
@@ -149,48 +148,51 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
     if (currentQuestion && selectedPlayers.length > 0) {
       const updatedPlayers = players.map((player) => {
         if (selectedPlayers.includes(player)) {
-          return { ...player, points: (player.points || 0) + currentQuestion.sips };
+          return {
+            ...player,
+            points: (player.points || 0) + currentQuestion.sips,
+          };
         }
         return player;
       });
-  
+
       setPlayers(updatedPlayers); // Force UI update
       localStorage.setItem("players", JSON.stringify(updatedPlayers)); // Persist data
       setSelectedPlayers([]); // Reset selection
     }
   };
-  
 
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    const sortedPlayers = [...storedPlayers].sort((a, b) => b.points - a.points);
+    const sortedPlayers = [...storedPlayers].sort(
+      (a, b) => b.points - a.points
+    );
     setPlayers(sortedPlayers);
-  
+
     // Select an initial question without applying sips
     if (remainingQuestions.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
       setCurrentQuestion(remainingQuestions[randomIndex]);
     }
   }, []);
-  
+
   const selectRandomQuestion = () => {
     if (remainingQuestions.length === 0 || selectedPlayers.length === 0) return; // Prevent execution when disabled
-  
+
     const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
     const randomQuestion = remainingQuestions[randomIndex];
-  
+
     setCurrentQuestion(randomQuestion);
-  
+
     // Remove the selected question from the list
     const updatedQuestions = remainingQuestions.filter(
       (q, index) => index !== randomIndex
     );
     setRemainingQuestions(updatedQuestions);
-  
+
     // Apply sips after question selection
     applySipsToSelectedPlayers();
   };
-  
 
   return (
     <div className="tipsy-turns-container">

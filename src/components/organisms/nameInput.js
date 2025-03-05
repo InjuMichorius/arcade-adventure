@@ -1,9 +1,9 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
 import Button from "../atoms/button";
 
-function NameInput({ id, onNameChange, onDelete, avatar }) {
+const NameInput = forwardRef(({ id, onNameChange, onDelete, avatar }, ref) => {
   const handleNameChange = (event) => {
     onNameChange(id, event.target.value);
   };
@@ -14,6 +14,7 @@ function NameInput({ id, onNameChange, onDelete, avatar }) {
         <img src={avatar} alt="avatar" />
       </div>
       <input
+        ref={ref} // Forwarded ref to allow focusing
         type="text"
         placeholder="Enter name..."
         onChange={handleNameChange}
@@ -22,7 +23,7 @@ function NameInput({ id, onNameChange, onDelete, avatar }) {
       <Button icon={faTrash} onClick={() => onDelete(id)} />
     </div>
   );
-}
+});
 
 NameInput.propTypes = {
   id: PropTypes.number.isRequired,
