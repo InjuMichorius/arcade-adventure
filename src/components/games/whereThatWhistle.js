@@ -234,6 +234,7 @@ function WhereThatWhistle({ onNextGame }) {
       )}
       {isInfoModalOpen && (
         <HowToPlay
+          title={"Where that wistle"}
           description={
             <GameInstructions
               steps={[

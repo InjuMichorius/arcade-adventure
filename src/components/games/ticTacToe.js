@@ -9,9 +9,11 @@ import {
   faCircleRight,
   faForward,
   faGamepad,
-  faRepeat
+  faRepeat,
+  faQuestionCircle
 } from "@fortawesome/free-solid-svg-icons";
 import GameInstructions from "../molecules/gameInstructions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function TicTacToe({ onNextGame, updateSips }) {
   const [player1, setPlayer1] = useState(null);
@@ -110,6 +112,9 @@ function TicTacToe({ onNextGame, updateSips }) {
 
   return (
     <div className="tic-tac-toe-container">
+      <button className="hint" onClick={() => setIsInfoModalOpen(true)}>
+        <FontAwesomeIcon icon={faQuestionCircle} />
+      </button>
       <h1>Tic Tac Toe</h1>
       <CurrentPlayerPreview
         player1={player1}

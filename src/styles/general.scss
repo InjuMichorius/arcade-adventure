@@ -29,12 +29,13 @@ body {
   background-color: var(--green);
 }
 
-h1 {
+h1, .how-to-play-title {
   padding: 0 10px;
   color: var(--red);
   font-size: 1rem;
   margin: .5rem auto;
   width: fit-content;
+  font-weight: bold;
   text-align: center;
   font-family: var(--font-bold);
   background-color: var(--off-white);
