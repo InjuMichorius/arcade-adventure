@@ -4,40 +4,26 @@ import React, { createContext, useState, useEffect } from "react";
 export const PlayerDataContext = createContext();
 
 export const PlayerDataProvider = ({ children }) => {
-  const [playerData, setPlayerData] = useState([]);
+  const [players, setPlayers] = useState([]);
 
-  // Load initial data from localStorage once on mount
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("players")) || [];
-    console.log("Loaded from localStorage:", storedData);
-    setPlayerData(storedData);
-  }, []); // Empty dependency array means this effect runs only once when the component mounts
+    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+    setPlayers(storedPlayers); // Set players from localStorage
+  }, []);
 
-  // Update localStorage whenever playerData changes
-  useEffect(() => {
-    if (playerData.length > 0) {
-      localStorage.setItem("players", JSON.stringify(playerData));
-      console.log("Updated localStorage with playerData:", playerData);
-    }
-  }, [playerData]); // This will trigger when playerData changes
+  const updateSips = (playerName, sipAmount) => {
+    const updatedPlayers = players.map((player) =>
+      player.username === playerName
+        ? { ...player, points: (player.points || 0) + sipAmount }
+        : player
+    );
 
-  // Update points, active player, etc.
-  const updatePlayer = (id, updates) => {
-    setPlayerData((prevData) => {
-      const updatedData = prevData.map((player) =>
-        player.id === id ? { ...player, ...updates } : player
-      );
-      
-      // Only set new state if there is a change
-      if (JSON.stringify(updatedData) !== JSON.stringify(prevData)) {
-        return updatedData;
-      }
-      return prevData; // Avoid unnecessary state update
-    });
+    setPlayers(updatedPlayers); // Update players state
+    localStorage.setItem("players", JSON.stringify(updatedPlayers)); // Persist in localStorage
   };
 
   return (
-    <PlayerDataContext.Provider value={{ playerData, updatePlayer }}>
+    <PlayerDataContext.Provider value={{ players, setPlayers, updateSips }}>
       {children}
     </PlayerDataContext.Provider>
   );

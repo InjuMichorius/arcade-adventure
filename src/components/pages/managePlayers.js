@@ -1,26 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import NameInput from "../organisms/nameInput";
 import Button from "../atoms/button";
 import { useRandomAvatar } from "../../hooks/useRandomAvatar";
+import { PlayerDataContext } from "../../providers/playerDataProvider"; // Import context
 
 function ManagePlayers() {
   const navigate = useNavigate();
   const { getRandomAvatar, returnAvatar, availableAvatars } = useRandomAvatar();
+  const { players, setPlayers } = useContext(PlayerDataContext); // Access context here
   const inputRefs = useRef({});
 
-  const loadInitialPlayers = () => {
-    const playersFromStorage = JSON.parse(localStorage.getItem("players"));
-    if (playersFromStorage && playersFromStorage.length > 0) {
-      return playersFromStorage;
-    }
-    const randomAvatar = getRandomAvatar();
-    return [{ id: 1, username: "", points: 0, avatar: randomAvatar }];
-  };
-
-  const [players, setPlayers] = useState(loadInitialPlayers);
   const [nextId, setNextId] = useState(
     () => JSON.parse(localStorage.getItem("nextId")) || 2
   );

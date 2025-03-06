@@ -13,9 +13,9 @@ import Button from "../atoms/button";
 import AvatarPreview from "../atoms/avatarPreview";
 import GameInstructions from "../molecules/gameInstructions";
 
-const TipsyTurns = ({ onNextGame, updateSips }) => {
+const TipsyTurns = ({ onNextGame, updateSips, players }) => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
-  const [players, setPlayers] = useState([]);
+  // const [players, setPlayers] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [remainingQuestions, setRemainingQuestions] = useState([
@@ -146,35 +146,26 @@ const TipsyTurns = ({ onNextGame, updateSips }) => {
 
   const applySipsToSelectedPlayers = () => {
     if (currentQuestion && selectedPlayers.length > 0) {
-      const updatedPlayers = players.map((player) => {
-        if (selectedPlayers.includes(player)) {
-          return {
-            ...player,
-            points: (player.points || 0) + currentQuestion.sips,
-          };
-        }
-        return player;
+      selectedPlayers.forEach((player) => {
+        updateSips(player.username, currentQuestion.sips);
       });
-
-      setPlayers(updatedPlayers); // Force UI update
-      localStorage.setItem("players", JSON.stringify(updatedPlayers)); // Persist data
-      setSelectedPlayers([]); // Reset selection
+      setSelectedPlayers([]);
     }
   };
 
-  useEffect(() => {
-    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    const sortedPlayers = [...storedPlayers].sort(
-      (a, b) => b.points - a.points
-    );
-    setPlayers(sortedPlayers);
+  // useEffect(() => {
+  //   const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
+  //   const sortedPlayers = [...storedPlayers].sort(
+  //     (a, b) => b.points - a.points
+  //   );
+  //   setPlayers(sortedPlayers);
 
-    // Select an initial question without applying sips
-    if (remainingQuestions.length > 0) {
-      const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
-      setCurrentQuestion(remainingQuestions[randomIndex]);
-    }
-  }, []);
+  //   // Select an initial question without applying sips
+  //   if (remainingQuestions.length > 0) {
+  //     const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+  //     setCurrentQuestion(remainingQuestions[randomIndex]);
+  //   }
+  // }, []);
 
   const selectRandomQuestion = () => {
     if (remainingQuestions.length === 0 || selectedPlayers.length === 0) return; // Prevent execution when disabled
