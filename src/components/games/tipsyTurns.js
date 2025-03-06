@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { PlayerDataContext } from "../../providers/playerDataProvider";
 import HowToPlay from "../atoms/howToPlay";
 import {
   faGamepad,
@@ -12,127 +13,26 @@ import {
 import Button from "../atoms/button";
 import AvatarPreview from "../atoms/avatarPreview";
 import GameInstructions from "../molecules/gameInstructions";
+import questions from "../../assets/data/tipsyTurns";
 
-const TipsyTurns = ({ onNextGame, updateSips, players }) => {
+const TipsyTurns = ({ onNextGame }) => {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
-  // const [players, setPlayers] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [remainingQuestions, setRemainingQuestions] = useState([
-    { sips: 5, msg: "The tallest player drinks 5 sips." },
-    { sips: 3, msg: "The player with the most points drinks 3 sips." },
-    { sips: 7, msg: "The player who lost the last game drinks 7 sips." },
-    { sips: 4, msg: "The player who arrived last drinks 4 sips." },
-    {
-      sips: 6,
-      msg: "The player wearing the most colorful clothes drinks 6 sips.",
-    },
-    { sips: 8, msg: "The player who has the longest hair drinks 8 sips." },
-    { sips: 2, msg: "The player with the most siblings drinks 2 sips." },
-    { sips: 5, msg: "The player who knows the most languages drinks 5 sips." },
-    { sips: 3, msg: "The player who has the most pets drinks 3 sips." },
-    { sips: 7, msg: "The player who last watched a movie drinks 7 sips." },
-    { sips: 10, msg: "The player who can sing the best drinks 10 sips." },
-    { sips: 4, msg: "The player who plays the most sports drinks 4 sips." },
-    { sips: 6, msg: "The player with the most tattoos drinks 6 sips." },
-    {
-      sips: 3,
-      msg: "The player who has traveled to the most countries drinks 3 sips.",
-    },
-    { sips: 5, msg: "The player who likes coffee the most drinks 5 sips." },
-    { sips: 4, msg: "The player who eats the most vegetables drinks 4 sips." },
-    { sips: 7, msg: "The player who last went on a road trip drinks 7 sips." },
-    {
-      sips: 3,
-      msg: "The player who can name the most Harry Potter books drinks 3 sips.",
-    },
-    { sips: 6, msg: "The player who prefers tea over coffee drinks 6 sips." },
-    { sips: 5, msg: "The player who last cooked a meal drinks 5 sips." },
-    { sips: 4, msg: "The player who owns the most shoes drinks 4 sips." },
-    { sips: 6, msg: "The player who has the most plants drinks 6 sips." },
-    { sips: 5, msg: "The player who is best at math drinks 5 sips." },
-    {
-      sips: 4,
-      msg: "The player who can do the best impression of a celebrity drinks 4 sips.",
-    },
-    { sips: 7, msg: "The player who loves adventure sports drinks 7 sips." },
-    { sips: 6, msg: "The player who loves cooking drinks 6 sips." },
-    {
-      sips: 4,
-      msg: "The player who is always the first to respond drinks 4 sips.",
-    },
-    {
-      sips: 5,
-      msg: "The player who is most likely to stay up all night drinks 5 sips.",
-    },
-    { sips: 8, msg: "The player who is most organized drinks 8 sips." },
-    {
-      sips: 3,
-      msg: "The player who can name the most capitals of the world drinks 3 sips.",
-    },
-    { sips: 7, msg: "The player who can dance the best drinks 7 sips." },
-    {
-      sips: 6,
-      msg: "The player who is most likely to become famous drinks 6 sips.",
-    },
-    {
-      sips: 4,
-      msg: "The player who is most likely to get lost drinks 4 sips.",
-    },
-    { sips: 5, msg: "The player who eats the most junk food drinks 5 sips." },
-    { sips: 3, msg: "The player who can draw the best drinks 3 sips." },
-    {
-      sips: 6,
-      msg: "The player who knows the most about history drinks 6 sips.",
-    },
-    {
-      sips: 5,
-      msg: "The player who is most likely to make everyone laugh drinks 5 sips.",
-    },
-    { sips: 7, msg: "The player who last had a birthday drinks 7 sips." },
-    {
-      sips: 4,
-      msg: "The player who has been awake the longest drinks 4 sips.",
-    },
-    {
-      sips: 6,
-      msg: "The player who is most likely to invent something drinks 6 sips.",
-    },
-    {
-      sips: 7,
-      msg: "The player who would be the best at a reality show drinks 7 sips.",
-    },
-    { sips: 5, msg: "The player who loves puzzles drinks 5 sips." },
-    { sips: 8, msg: "The player who loves the outdoors drinks 8 sips." },
-    { sips: 4, msg: "The player who is best at video games drinks 4 sips." },
-    {
-      sips: 6,
-      msg: "The player who is most likely to cry during a movie drinks 6 sips.",
-    },
-    {
-      sips: 5,
-      msg: "The player who has the most unusual hobby drinks 5 sips.",
-    },
-    {
-      sips: 4,
-      msg: "The player who knows the most about science drinks 4 sips.",
-    },
-    {
-      sips: 6,
-      msg: "The player who is most likely to travel the world drinks 6 sips.",
-    },
-    { sips: 7, msg: "The player who has the best memory drinks 7 sips." },
-    { sips: 3, msg: "The player who loves puzzles drinks 3 sips." },
-    {
-      sips: 5,
-      msg: "The player who can quote the most movie lines drinks 5 sips.",
-    },
-    { sips: 4, msg: "The player who is always early drinks 4 sips." },
-    {
-      sips: 8,
-      msg: "The player who would survive a zombie apocalypse drinks 8 sips.",
-    },
-  ]);
+  const [remainingQuestions, setRemainingQuestions] = useState(questions);
+  const { players, updateSips, loading } = useContext(PlayerDataContext);
+
+  useEffect(() => {
+    if (!loading && players.length > 0 && remainingQuestions.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+      setCurrentQuestion(remainingQuestions[randomIndex]);
+    }
+  }, [players, loading]);
+
+  // Check if players are loading or empty
+  if (loading || players.length === 0) {
+    return <div>Loading players...</div>; // Show loading until players are available
+  }
 
   // Toggle selection of a player
   const togglePlayerSelection = (player) => {
@@ -144,45 +44,25 @@ const TipsyTurns = ({ onNextGame, updateSips, players }) => {
     );
   };
 
-  const applySipsToSelectedPlayers = () => {
-    if (currentQuestion && selectedPlayers.length > 0) {
-      selectedPlayers.forEach((player) => {
-        updateSips(player.username, currentQuestion.sips);
-      });
-      setSelectedPlayers([]);
-    }
-  };
-
-  // useEffect(() => {
-  //   const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-  //   const sortedPlayers = [...storedPlayers].sort(
-  //     (a, b) => b.points - a.points
-  //   );
-  //   setPlayers(sortedPlayers);
-
-  //   // Select an initial question without applying sips
-  //   if (remainingQuestions.length > 0) {
-  //     const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
-  //     setCurrentQuestion(remainingQuestions[randomIndex]);
-  //   }
-  // }, []);
-
   const selectRandomQuestion = () => {
-    if (remainingQuestions.length === 0 || selectedPlayers.length === 0) return; // Prevent execution when disabled
+    if (remainingQuestions.length === 0 || selectedPlayers.length === 0) return;
 
     const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
     const randomQuestion = remainingQuestions[randomIndex];
 
     setCurrentQuestion(randomQuestion);
 
-    // Remove the selected question from the list
+    // Update sips with the latest selected question, not the previous state
+    selectedPlayers.forEach((player) => {
+      updateSips(player.username, currentQuestion.sips);
+    });
+
     const updatedQuestions = remainingQuestions.filter(
       (q, index) => index !== randomIndex
     );
-    setRemainingQuestions(updatedQuestions);
 
-    // Apply sips after question selection
-    applySipsToSelectedPlayers();
+    setRemainingQuestions(updatedQuestions);
+    setSelectedPlayers([]); // Clear selected players after the question is processed
   };
 
   return (
@@ -193,9 +73,8 @@ const TipsyTurns = ({ onNextGame, updateSips, players }) => {
       <h1>Tipsy Turns</h1>
       <div>
         <h2>
-          {currentQuestion
-            ? currentQuestion.msg.replace("${sips}", currentQuestion.sips)
-            : "No question available"}
+          {currentQuestion &&
+            currentQuestion.msg.replace("${sips}", currentQuestion.sips)}
         </h2>
         <div className="chosen-player-container">
           {selectedPlayers.length > 0 ? (

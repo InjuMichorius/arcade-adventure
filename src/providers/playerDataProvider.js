@@ -12,15 +12,18 @@ export const PlayerDataProvider = ({ children }) => {
   }, []);
 
   const updateSips = (playerName, sipAmount) => {
-    const updatedPlayers = players.map((player) =>
-      player.username === playerName
-        ? { ...player, points: (player.points || 0) + sipAmount }
-        : player
-    );
-
-    setPlayers(updatedPlayers); // Update players state
-    localStorage.setItem("players", JSON.stringify(updatedPlayers)); // Persist in localStorage
+    setPlayers((prevPlayers) => {
+      const updatedPlayers = prevPlayers.map((player) =>
+        player.username === playerName
+          ? { ...player, points: (player.points || 0) + sipAmount }
+          : player
+      );
+      
+      localStorage.setItem("players", JSON.stringify(updatedPlayers)); // Persist in localStorage
+      return updatedPlayers;
+    });
   };
+  
 
   return (
     <PlayerDataContext.Provider value={{ players, setPlayers, updateSips }}>
