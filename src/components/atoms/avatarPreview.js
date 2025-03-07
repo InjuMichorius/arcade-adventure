@@ -6,12 +6,12 @@ function AvatarPreview({ width, image, points }) {
   return (
     <div className="avatar-preview">
       <img src={image} alt="Avatar" width={width} />
-      {points && (
+      {points !== undefined && (
         <p className="points-text">
           {points}
           <FontAwesomeIcon icon={faWineBottle} className="icon" />
         </p>
-      ) }
+      )}
     </div>
   );
 }

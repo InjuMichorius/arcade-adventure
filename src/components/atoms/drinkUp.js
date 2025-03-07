@@ -1,19 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import Button from "../atoms/button";
 import { faRotateRight, faForward } from "@fortawesome/free-solid-svg-icons";
 import AvatarPreview from "../atoms/avatarPreview";
-import { PlayerDataContext } from "../../providers/playerDataProvider";
 
-function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame, drinkAmount }) {
-  const { updatePlayer } = useContext(PlayerDataContext);
-
-  // Function to add 10 points to players who must drink
-  const handleDrink = () => {
-    playersToDrink.forEach((player) => {
-      updatePlayer(player.id, { points: player.points + 1 });
-    });
-  };
-
+function DrinkUp({
+  drinkMessage,
+  playersToDrink,
+  onPlayAgain,
+  onNextGame,
+  drinkAmount,
+}) {
   return (
     <div className="drink-up">
       <h2>Drink up</h2>
@@ -36,7 +32,6 @@ function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame, drinkA
           variant="secondary"
           text="Play again"
           onClick={() => {
-            handleDrink();
             onPlayAgain();
           }}
         />
@@ -45,7 +40,6 @@ function DrinkUp({ drinkMessage, playersToDrink, onPlayAgain, onNextGame, drinkA
           variant="pushable red"
           text="Next game"
           onClick={() => {
-            handleDrink();
             onNextGame();
           }}
         />

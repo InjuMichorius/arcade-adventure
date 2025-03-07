@@ -7,13 +7,12 @@ import Draw from "../components/games/draw";
 import emptyGame from "../components/games/emptyGame";
 
 const games = [
-  { component: TipsyTurns, name: "TipsyTurns" },
-  // { component: emptyGame, name: "EmptyGame" },
   { component: WhereThatWhistle, name: "WhereThatWhistle" },
-  { component: BomberBoy, name: "BomberBoy" },
-  { component: TicTacToe, name: "TicTacToe" },
   { component: TipsyTurns, name: "TipsyTurns" },
+  { component: TicTacToe, name: "TicTacToe" },
+  { component: BomberBoy, name: "BomberBoy" },
   { component: Draw, name: "Draw" },
+  // { component: emptyGame, name: "EmptyGame" },
   // Add other games here
 ];
 

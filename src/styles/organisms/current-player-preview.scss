@@ -3,15 +3,11 @@
   gap: 1rem;
   justify-content: center;
   align-items: center;
-  color: var(--light-green);
-  .current-player-wrapper {
-    position: relative;
+  color: var(--off-white);
+  &__wrapper {
     display: flex;
     gap: 1rem;
     flex-direction: column;
-    text-align: center;
-    color: var(--off-white);
-    font-size: 0.9rem;
-    font-weight: 700;
+    align-items: center;
   }
 }

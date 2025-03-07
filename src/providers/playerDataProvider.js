@@ -11,19 +11,20 @@ export const PlayerDataProvider = ({ children }) => {
     setPlayers(storedPlayers); // Set players from localStorage
   }, []);
 
-  const updateSips = (playerName, sipAmount) => {
+  const updateSips = (playerNames, sipAmount) => {
     setPlayers((prevPlayers) => {
       const updatedPlayers = prevPlayers.map((player) =>
-        player.username === playerName
+        (Array.isArray(playerNames) ? playerNames : [playerNames]).includes(
+          player.username
+        )
           ? { ...player, points: (player.points || 0) + sipAmount }
           : player
       );
-      
+
       localStorage.setItem("players", JSON.stringify(updatedPlayers)); // Persist in localStorage
       return updatedPlayers;
     });
   };
-  
 
   return (
     <PlayerDataContext.Provider value={{ players, setPlayers, updateSips }}>

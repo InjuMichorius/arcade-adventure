@@ -19,17 +19,36 @@ import { PlayerDataContext } from "../../providers/playerDataProvider";
 import GameInstructions from "../molecules/gameInstructions";
 
 function WhereThatWhistle({ onNextGame }) {
-  const { updatePlayer } = useContext(PlayerDataContext); // access updatePlayer
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [isDrinkUpScreen, setIsDrinkUpScreen] = useState(false);
   const [isFound, setIsFound] = useState(false);
   const [player1, setPlayer1] = useState(null);
-  const [seekers, setSeekers] = useState([]); // Initialize as an empty array
+  const [seekers, setSeekers] = useState([]);
   const [timeLeft, setTimeLeft] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
   const [searchDuration, setSearchDuration] = useState(120);
   const [whistleInterval, setWhistleInterval] = useState(30);
   const audioRef = useRef(null);
+  const { players, updateSips, loading } = useContext(PlayerDataContext);
+  const isPlayersSet = useRef(false);
+  const [winner, setWinner] = useState(null);
+
+  useEffect(() => {
+    if (winner) {
+      updateSips(winner.username, 5);
+      setIsDrinkUpScreen(true);
+      setWinner(null);
+    }
+  }, [winner]);
+
+  useEffect(() => {
+    if (!loading && players.length > 1 && !isPlayersSet.current) {
+      const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+      setPlayer1(shuffledPlayers[0]);
+      setSeekers(shuffledPlayers.slice(1));
+      isPlayersSet.current = true;
+    }
+  }, [players, loading]);
 
   useEffect(() => {
     const unlockAudioContext = () => {
@@ -46,33 +65,31 @@ function WhereThatWhistle({ onNextGame }) {
       }
     };
 
+    audioRef.current = new Audio(whistleSound);
+
     window.addEventListener("click", unlockAudioContext, { once: true });
     return () => {
       window.removeEventListener("click", unlockAudioContext);
     };
   }, []);
 
-  const updatePlayerPoints = (id, points) => {
-    updatePlayer(id, { points });
-  };
+  const [gameOver, setGameOver] = useState(false);
+  const [losers, setLosers] = useState([]);
 
   useEffect(() => {
-    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    if (storedPlayers.length === 0) return;
-
-    const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
-
-    setPlayer1(shuffledPlayers[0]);
-    setSeekers(shuffledPlayers.slice(1));
-
-    audioRef.current = new Audio(whistleSound);
-  }, []);
-
-  useEffect(() => {
-    if (player1) {
-      updatePlayerPoints(player1.id, player1.points + 5); // Example of updating points after a game action
+    if (gameOver) {
+      updateSips(
+        losers.map((seeker) => seeker.username),
+        10
+      );
+      setIsDrinkUpScreen(true);
+      setGameOver(false);
     }
-  }, [player1, updatePlayer]);
+  }, [gameOver]);
+
+  if (loading || players.length === 0) {
+    return <div>Loading players...</div>;
+  }
 
   const playSound = () => {
     if (audioRef.current) {
@@ -80,16 +97,6 @@ function WhereThatWhistle({ onNextGame }) {
       audioRef.current.play().catch((err) => {
         console.error("Audio playback failed:", err);
       });
-    }
-  };
-
-  const updateSips = (username, points) => {
-    const player =
-      player1?.username === username
-        ? player1
-        : seekers?.find((player) => player.username === username);
-    if (player) {
-      updatePlayer(player.id, { points: player.points + points }); // Update points for player
     }
   };
 
@@ -103,10 +110,8 @@ function WhereThatWhistle({ onNextGame }) {
         if (prevTime === null || prevTime <= 1) {
           clearInterval(newIntervalId);
           setIsFound(false);
-          seekers.forEach((seeker) => {
-            updateSips(seeker.username, 10); // Add 10 points for seekers
-          });
-          setIsDrinkUpScreen(true);
+          setLosers(seekers);
+          setGameOver(true);
           return null;
         }
 
@@ -134,29 +139,15 @@ function WhereThatWhistle({ onNextGame }) {
     setTimeLeft(null);
     setIsFound(true);
 
-    // Update points directly in player1
-    const updatedPlayer1 = {
-      ...player1,
-      points: player1.points + 5, // Add 5 points to the player who hid the phone
-    };
-
-    // Update the player in the context/state
-    updatePlayer(player1.id, { points: updatedPlayer1.points });
-
-    // Update local state to trigger re-render
-    setPlayer1(updatedPlayer1);
-
-    setIsDrinkUpScreen(true);
+    setWinner(player1);
   };
 
   const resetGame = () => {
-    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    if (storedPlayers.length === 0) return;
-
-    const shuffledPlayers = [...storedPlayers].sort(() => Math.random() - 0.5);
-    setPlayer1(shuffledPlayers[0]);
-    setSeekers(shuffledPlayers.slice(1));
-
+    if (players.length > 1) {
+      const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+      setPlayer1(shuffledPlayers[0]);
+      setSeekers(shuffledPlayers.slice(1));
+    }
     setIsDrinkUpScreen(false);
     setIsFound(false);
     setTimeLeft(null);
@@ -234,7 +225,7 @@ function WhereThatWhistle({ onNextGame }) {
       )}
       {isInfoModalOpen && (
         <HowToPlay
-          title={"Where that wistle"}
+          title={"Where that whistle"}
           description={
             <GameInstructions
               steps={[

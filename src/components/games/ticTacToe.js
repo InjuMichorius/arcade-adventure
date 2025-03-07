@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "../atoms/button";
 import Modal from "../atoms/modal";
 import HowToPlay from "../atoms/howToPlay";
@@ -10,12 +10,14 @@ import {
   faForward,
   faGamepad,
   faRepeat,
-  faQuestionCircle
+  faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import GameInstructions from "../molecules/gameInstructions";
+import { PlayerDataContext } from "../../providers/playerDataProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AvatarPreview from "../atoms/avatarPreview";
 
-function TicTacToe({ onNextGame, updateSips }) {
+function TicTacToe({ onNextGame }) {
   const [player1, setPlayer1] = useState(null);
   const [player2, setPlayer2] = useState(null);
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -24,32 +26,24 @@ function TicTacToe({ onNextGame, updateSips }) {
   const [drinksMessage, setDrinksMessage] = useState(null);
   const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
+  const { players, updateSips, loading } = useContext(PlayerDataContext);
   // eslint-disable-next-line no-unused-vars
   const [loser, setLoser] = useState(null);
-  const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
 
   useEffect(() => {
-    const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-    const activePlayers = storedPlayers.filter((player) => player.activePlayer);
-    if (activePlayers.length >= 2) {
-      setPlayer1(activePlayers[0]);
-      setPlayer2(activePlayers[1]);
-    } else {
-      const shuffledPlayers = [...storedPlayers].sort(
-        () => Math.random() - 0.5
-      );
+    if (!loading && players.length > 1) {
+      const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
       setPlayer1(shuffledPlayers[0]);
       setPlayer2(shuffledPlayers[1]);
-
-      const updatedPlayers = storedPlayers.map((player) => ({
-        ...player,
-        activePlayer:
-          player === shuffledPlayers[0] || player === shuffledPlayers[1],
-      }));
-
-      localStorage.setItem("players", JSON.stringify(updatedPlayers));
     }
-  }, []);
+  }, [players, loading]);
+
+  if (loading || players.length === 0) {
+    return <div>Loading players...</div>;
+  }
+
+  const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
+  
 
   const handleClick = (index) => {
     // Prevent further moves if the cell is already occupied or if there's a winner
@@ -116,11 +110,25 @@ function TicTacToe({ onNextGame, updateSips }) {
         <FontAwesomeIcon icon={faQuestionCircle} />
       </button>
       <h1>Tic Tac Toe</h1>
-      <CurrentPlayerPreview
-        player1={player1}
-        player2={player2}
-        isPlayerOneTurn={isPlayerOneTurn} // Pass the turn state as a prop
-      />
+      <div className="current-player-preview">
+        <div className="current-player-preview__wrapper">
+          <AvatarPreview
+            width={100}
+            image={player1?.avatar}
+            points={player1?.points}
+          />
+          {player1?.username}
+        </div>
+        vs
+        <div className="current-player-preview__wrapper">
+          <AvatarPreview
+            width={100}
+            image={player2?.avatar}
+            points={player2?.points}
+          />
+          {player2?.username}
+        </div>
+      </div>
       <div className="board">
         {board.map((cell, index) => (
           <div
@@ -198,7 +206,8 @@ function TicTacToe({ onNextGame, updateSips }) {
                   icon: faRepeat,
                   text: (
                     <>
-                      Repeat until <strong>X</strong> or <strong>O</strong> has three in a row
+                      Repeat until <strong>X</strong> or <strong>O</strong> has
+                      three in a row
                     </>
                   ),
                 },
