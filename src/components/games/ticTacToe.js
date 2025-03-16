@@ -1,12 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
-import Button from "../atoms/button";
-import Modal from "../atoms/modal";
 import HowToPlay from "../atoms/howToPlay";
-import CurrentPlayerPreview from "../molecules/currentPlayerPreview";
 import {
   faWhiskeyGlass,
-  faRotateRight,
-  faCircleRight,
   faForward,
   faGamepad,
   faRepeat,
@@ -16,6 +11,7 @@ import GameInstructions from "../molecules/gameInstructions";
 import { PlayerDataContext } from "../../providers/playerDataProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AvatarPreview from "../atoms/avatarPreview";
+import DrinkUp from "../atoms/drinkUp";
 
 function TicTacToe({ onNextGame }) {
   const [player1, setPlayer1] = useState(null);
@@ -24,8 +20,8 @@ function TicTacToe({ onNextGame }) {
   const [isPlayerOneTurn, setIsPlayerOneTurn] = useState(true);
   const [winner, setWinner] = useState(null);
   const [drinksMessage, setDrinksMessage] = useState(null);
-  const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
+  const [isDrinkUpScreen, setIsDrinkUpScreen] = useState(false);
   const { players, updateSips, loading } = useContext(PlayerDataContext);
   // eslint-disable-next-line no-unused-vars
   const [loser, setLoser] = useState(null);
@@ -43,7 +39,6 @@ function TicTacToe({ onNextGame }) {
   }
 
   const currentSymbol = isPlayerOneTurn ? "cross" : "circle";
-  
 
   const handleClick = (index) => {
     // Prevent further moves if the cell is already occupied or if there's a winner
@@ -56,17 +51,17 @@ function TicTacToe({ onNextGame }) {
     const gameWinner = calculateWinner(newBoard);
     if (gameWinner) {
       const winningPlayer =
-        gameWinner === "cross" ? player1.username : player2.username;
+        gameWinner === "cross" ? player1 : player2;
       const losingPlayer =
-        gameWinner === "cross" ? player2.username : player1.username;
+        gameWinner === "cross" ? player2 : player1;
 
       setWinner(winningPlayer);
       setLoser(losingPlayer); // Set the loser state
-      setDrinksMessage(`${losingPlayer} drinks 10`);
-      setIsDrinkModalOpen(true);
+      setDrinksMessage(`${losingPlayer.username} drinks 10`);
+      setIsDrinkUpScreen(true);
 
       // Update the losing player's points
-      updateSips(losingPlayer, 10);
+      updateSips(losingPlayer.username, 10);
     } else if (newBoard.every((cell) => cell)) {
       setWinner("Draw");
       setLoser(null);
@@ -98,10 +93,15 @@ function TicTacToe({ onNextGame }) {
   };
 
   const resetGame = () => {
+    if (players.length > 1) {
+      const shuffledPlayers = [...players].sort(() => Math.random() - 0.5);
+      setPlayer1(shuffledPlayers[0]);
+      setPlayer2(shuffledPlayers[1]);
+    }
+    setIsDrinkUpScreen(false);
     setBoard(Array(9).fill(null));
-    setIsPlayerOneTurn(!isPlayerOneTurn); // Toggle the starting player
     setWinner(null);
-    setLoser(null); // Reset loser state
+    setLoser(null);
   };
 
   return (
@@ -140,37 +140,14 @@ function TicTacToe({ onNextGame }) {
           </div>
         ))}
       </div>
-      {isDrinkModalOpen && (
-        <Modal
-          title={`Drink up`}
-          description={drinksMessage}
-          buttons={[
-            {
-              icon: faWhiskeyGlass,
-              text: "Drink",
-              variant: "pushable red",
-            },
-          ]}
-          onClose={() => setIsDrinkModalOpen(false)}
+      {isDrinkUpScreen && (
+        <DrinkUp
+          drinkMessage={drinksMessage}
+          playersToDrink={[loser]}
+          drinkAmount={10}
+          onPlayAgain={resetGame}
+          onNextGame={onNextGame}
         />
-      )}
-      {winner && (
-        <>
-          <div className="button-wrapper">
-            <Button
-              icon={faRotateRight}
-              variant="secondary"
-              onClick={resetGame}
-              text="Play again"
-            />
-            <Button
-              icon={faCircleRight}
-              variant="pushable red"
-              onClick={onNextGame}
-              text="Next Game"
-            />
-          </div>
-        </>
       )}
       {isInfoModalOpen && (
         <HowToPlay
@@ -213,7 +190,11 @@ function TicTacToe({ onNextGame }) {
                 },
                 {
                   icon: faWhiskeyGlass,
-                  text: "Loser drinks 10 sips",
+                  text: (
+                    <>
+                      Loser drinks <strong>10</strong> sips
+                    </>
+                  ),
                 },
               ]}
             />

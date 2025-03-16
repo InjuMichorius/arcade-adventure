@@ -4,7 +4,7 @@ import TicTacToe from "../components/games/ticTacToe";
 import WhereThatWhistle from "../components/games/whereThatWhistle";
 import TipsyTurns from "../components/games/tipsyTurns";
 import Draw from "../components/games/draw";
-import emptyGame from "../components/games/emptyGame";
+// import emptyGame from "../components/games/emptyGame";
 
 const games = [
   { component: WhereThatWhistle, name: "WhereThatWhistle" },
