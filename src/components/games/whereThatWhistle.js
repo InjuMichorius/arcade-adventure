@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../atoms/button";
 import whistleSound from "../../assets/sounds/whistle.mp3";
+import WinSound from "../../assets/sounds/win-sound.mp3";
 import {
   faVolumeHigh,
   faStopwatch,
@@ -29,6 +30,7 @@ function WhereThatWhistle({ onNextGame }) {
   const [searchDuration, setSearchDuration] = useState(120);
   const [whistleInterval, setWhistleInterval] = useState(30);
   const audioRef = useRef(null);
+  const winAudioRef = useRef(new Audio(WinSound));
   const { players, updateSips, loading } = useContext(PlayerDataContext);
   const isPlayersSet = useRef(false);
   const [winner, setWinner] = useState(null);
@@ -112,6 +114,13 @@ function WhereThatWhistle({ onNextGame }) {
           setIsFound(false);
           setLosers(seekers);
           setGameOver(true);
+
+          if (winAudioRef.current) {
+            winAudioRef.current.currentTime = 0;
+            winAudioRef.current.play().catch((err) => {
+              console.error("Win sound playback failed:", err);
+            });
+          }
           return null;
         }
 
@@ -127,18 +136,27 @@ function WhereThatWhistle({ onNextGame }) {
   };
 
   const adjustSearchDuration = (adjustment) => {
-    setSearchDuration((prev) => Math.max(60, prev + adjustment));
+    setSearchDuration((prev) => {
+      const newDuration = Math.max(whistleInterval + 15, prev + adjustment);
+      return newDuration;
+    });
   };
 
   const adjustWhistleInterval = (adjustment) => {
-    setWhistleInterval((prev) => Math.max(15, prev + adjustment));
+    setWhistleInterval((prev) => {
+      const newInterval = Math.max(15, prev + adjustment);
+      return newInterval < searchDuration ? newInterval : prev;
+    });
   };
 
   const handleFound = () => {
+    winAudioRef.current.currentTime = 0;
+    winAudioRef.current.play().catch((err) => {
+      console.error("Win sound playback failed:", err);
+    });
     if (intervalId) clearInterval(intervalId);
     setTimeLeft(null);
     setIsFound(true);
-
     setWinner(player1);
   };
 
@@ -211,7 +229,7 @@ function WhereThatWhistle({ onNextGame }) {
             <Button
               icon={faVolumeHigh}
               variant="transparent"
-              text="Play sound"
+              text="Test sound"
               onClick={playSound}
             />
             <Button
