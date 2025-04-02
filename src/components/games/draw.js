@@ -1,18 +1,39 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import Button from "../atoms/button";
-import Modal from "../atoms/modal";
 import HowToPlay from "../atoms/howToPlay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGamepad,
   faForward,
-  faWhiskeyGlass,
-  faRotateRight,
+  faEraser,
   faCircleRight,
   faQuestionCircle,
-  faEraser,
+  faWhiskeyGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import GameInstructions from "../molecules/gameInstructions";
+import { PlayerDataContext } from "../../providers/playerDataProvider";
+import AvatarPreview from "../atoms/avatarPreview";
+
+const randomWords = [
+  { word: "Rocket launcher" },
+  { word: "Wheelie" },
+  { word: "Playing cards" },
+  { word: "Hot air balloon" },
+  { word: "Treasure chest" },
+  { word: "Roller coaster" },
+  { word: "Submarine" },
+  { word: "Octopus playing drums" },
+  { word: "Viking ship" },
+  { word: "UFO abducting a cow" },
+  { word: "Knight on horseback" },
+  { word: "Haunted house" },
+  { word: "Fire-breathing dragon" },
+  { word: "Genie coming out of a lamp" },
+  { word: "A robot cooking" },
+  { word: "Ice cream melting in the sun" },
+  { word: "A monkey on a bicycle" },
+  { word: "A wizard casting a spell" },
+];
 
 function Draw({ onNextGame }) {
   const canvasRef = useRef(null);
@@ -20,6 +41,21 @@ function Draw({ onNextGame }) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [selectedColor, setSelectedColor] = useState("black");
+  const [wordChoices, setWordChoices] = useState([]);
+  const [chosenWord, setChosenWord] = useState(null);
+  const { players } = useContext(PlayerDataContext);
+  const [drawer, setDrawer] = useState(null);
+  const [guessers, setGuessers] = useState([]);
+  const [showWords, setShowWords] = useState(false);
+
+  useEffect(() => {
+    generateNewWords();
+    if (players.length > 1) {
+      const shuffledPlayers = [...players].sort(() => 0.5 - Math.random());
+      setDrawer(shuffledPlayers[0]);
+      setGuessers(shuffledPlayers.slice(1));
+    }
+  }, [players]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,44 +69,63 @@ function Draw({ onNextGame }) {
     ctxRef.current = ctx;
   }, [selectedColor]);
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
+  const generateNewWords = () => {
+    const shuffledWords = [...randomWords].sort(() => 0.5 - Math.random());
+    setWordChoices(shuffledWords.slice(0, 3));
+    setChosenWord(null);
+  };
+
+  const handleWordClick = (word) => {
+    setChosenWord(word);
+    setShowWords(false); // Hide word choices after selecting a word
+  };
+
+  const handleNextGameClick = () => {
+    if (chosenWord) {
+      alert('Word has been guessed!');
+      resetGame(); // Reset the game after the word has been guessed
+    }
+  };
+
+  const resetGame = () => {
+    setChosenWord(null);
+    generateNewWords();
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  };
 
   const startDrawing = (e) => {
-    e.preventDefault();
-    const { offsetX, offsetY } = getPointerPosition(e);
-    ctxRef.current.beginPath();
-    ctxRef.current.moveTo(offsetX, offsetY);
-    setIsDrawing(true);
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    ctx.beginPath();
+    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
   };
 
   const draw = (e) => {
     if (!isDrawing) return;
-    e.preventDefault();
-    const { offsetX, offsetY } = getPointerPosition(e);
-    ctxRef.current.lineTo(offsetX, offsetY);
-    ctxRef.current.stroke();
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    ctx.stroke();
   };
 
   const stopDrawing = () => {
-    ctxRef.current.closePath();
     setIsDrawing(false);
   };
 
-  const clearCanvas = () => {
-    const canvas = canvasRef.current;
-    ctxRef.current.clearRect(0, 0, canvas.width, canvas.height);
+  const handleMouseDown = (e) => {
+    setIsDrawing(true);
+    startDrawing(e);
   };
 
-  const getPointerPosition = (e) => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    const offsetX = e.touches ? e.touches[0].clientX - rect.left : e.nativeEvent.offsetX;
-    const offsetY = e.touches ? e.touches[0].clientY - rect.top : e.nativeEvent.offsetY;
-    return { offsetX, offsetY };
+  const handleMouseMove = (e) => {
+    draw(e);
+  };
+
+  const handleMouseUp = () => {
+    stopDrawing();
   };
 
   return (
@@ -79,40 +134,95 @@ function Draw({ onNextGame }) {
         <FontAwesomeIcon icon={faQuestionCircle} />
       </button>
       <h1>Draw</h1>
-      {/* <div className="color-picker">
-        {["black", "red", "blue", "green"].map((color) => (
-          <button
-            key={color}
-            className="color-block"
-            style={{ backgroundColor: color, border: selectedColor === color ? "2px solid white" : "none" }}
-            onClick={() => setSelectedColor(color)}
-          ></button>
-        ))}
-      </div> */}
+
+      <button onClick={() => setShowWords(!showWords)}>
+        {showWords ? "Hide Words" : "Show Words"}
+      </button>
+
+      {showWords && !chosenWord && (
+        <>
+          <p>Choose a word to draw:</p>
+          <div className="word-choices">
+            {wordChoices.map(({ word }) => (
+              <Button
+                key={word}
+                text={word}
+                onClick={() => handleWordClick(word)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {chosenWord && (
+        <p>
+          <strong>{drawer?.username} is drawing:</strong> {chosenWord}
+        </p>
+      )}
+
       <canvas
         ref={canvasRef}
         className="draw-canvas"
-        onMouseDown={startDrawing}
-        onMouseMove={draw}
-        onMouseUp={stopDrawing}
-        onMouseLeave={stopDrawing}
-        onTouchStart={startDrawing}
-        onTouchMove={draw}
-        onTouchEnd={stopDrawing}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseOut={handleMouseUp}
       ></canvas>
+
       <div className="button-wrapper">
-        <Button icon={faEraser} variant="secondary" onClick={clearCanvas} text="Clear" />
-        <Button icon={faCircleRight} variant="pushable red" onClick={onNextGame} text="Next Game" />
+        <Button icon={faEraser} variant="secondary" text="Clear" onClick={resetGame} />
+        <Button
+          icon={faCircleRight}
+          variant="pushable red"
+          onClick={handleNextGameClick}
+          text="Word Guessed"
+        />
       </div>
-      {isInfoModalOpen && (
+
+      {/* {isInfoModalOpen && (
         <HowToPlay
           title="Draw"
           description={
             <GameInstructions
               steps={[
                 {
+                  avatar: drawer?.avatar,
+                  name: drawer?.username,
+                  text: (
+                    <>
+                      <strong>{drawer?.username || "Someone"}</strong> chooses a
+                      word to draw
+                    </>
+                  ),
+                },
+                {
+                  text: (
+                    <>
+                      <div className="avatar-stack">
+                        {guessers.map((guesser) => (
+                          <AvatarPreview
+                            key={guesser?.id}
+                            width={30}
+                            image={guesser?.avatar}
+                            alt={guesser?.username}
+                          />
+                        ))}
+                      </div>
+                      <strong>Other players</strong> <span>have</span>
+                      <span>to</span>
+                      <span>guess</span> <span>the</span>
+                      <span>word</span>
+                    </>
+                  ),
+                },
+                {
                   icon: faWhiskeyGlass,
-                  text: "Loser drinks",
+                  text: (
+                    <>
+                      If the word is guessed, <strong>drawer</strong> and{" "}
+                      <strong>guesser</strong> hand out 3 sips
+                    </>
+                  ),
                 },
               ]}
             />
@@ -133,7 +243,7 @@ function Draw({ onNextGame }) {
           ]}
           onClose={() => setIsInfoModalOpen(false)}
         />
-      )}
+      )} */}
     </div>
   );
 }

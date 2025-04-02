@@ -8,10 +8,10 @@ import Draw from "../components/games/draw";
 
 const games = [
   { component: WhereThatWhistle, name: "WhereThatWhistle" },
+  { component: Draw, name: "Draw" },
   { component: TipsyTurns, name: "TipsyTurns" },
   { component: TicTacToe, name: "TicTacToe" },
   { component: BomberBoy, name: "BomberBoy" },
-  { component: Draw, name: "Draw" },
   // { component: emptyGame, name: "EmptyGame" },
   // Add other games here
 ];
