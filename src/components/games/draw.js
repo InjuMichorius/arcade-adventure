@@ -3,12 +3,14 @@ import Button from "../atoms/button";
 import HowToPlay from "../atoms/howToPlay";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faGamepad,
-  faForward,
+  faPencil,
   faEraser,
-  faCircleRight,
+  faEye,
+  faLightbulb,
   faQuestionCircle,
   faWhiskeyGlass,
+  faForward,
+  faGamepad,
 } from "@fortawesome/free-solid-svg-icons";
 import GameInstructions from "../molecules/gameInstructions";
 import { PlayerDataContext } from "../../providers/playerDataProvider";
@@ -36,17 +38,18 @@ const randomWords = [
 ];
 
 function Draw({ onNextGame }) {
+  const [revealed, setRevealed] = useState(false);
+  const [selectedWord, setSelectedWord] = useState(null);
+  const [hidden, setHidden] = useState(false);
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
-  const [selectedColor, setSelectedColor] = useState("black");
   const [wordChoices, setWordChoices] = useState([]);
   const [chosenWord, setChosenWord] = useState(null);
   const { players } = useContext(PlayerDataContext);
   const [drawer, setDrawer] = useState(null);
   const [guessers, setGuessers] = useState([]);
-  const [showWords, setShowWords] = useState(false);
 
   useEffect(() => {
     generateNewWords();
@@ -59,15 +62,19 @@ function Draw({ onNextGame }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    canvas.height = 500;
     canvas.width = window.innerWidth * 0.9;
-    canvas.height = window.innerHeight * 0.6;
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.lineWidth = 5;
-    ctx.strokeStyle = selectedColor;
+    ctx.strokeStyle = "black";
     ctxRef.current = ctx;
-  }, [selectedColor]);
+  }, [hidden]);
 
   const generateNewWords = () => {
     const shuffledWords = [...randomWords].sort(() => 0.5 - Math.random());
@@ -75,57 +82,62 @@ function Draw({ onNextGame }) {
     setChosenWord(null);
   };
 
-  const handleWordClick = (word) => {
-    setChosenWord(word);
-    setShowWords(false); // Hide word choices after selecting a word
-  };
-
   const handleNextGameClick = () => {
     if (chosenWord) {
-      alert('Word has been guessed!');
-      resetGame(); // Reset the game after the word has been guessed
+      resetGame();
     }
   };
 
   const resetGame = () => {
     setChosenWord(null);
     generateNewWords();
+
     const canvas = canvasRef.current;
     const ctx = ctxRef.current;
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    ctx.beginPath(); // Reset the drawing state
+  };
+
+  const getCoordinates = (e) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+
+    if (e.touches) {
+      return {
+        x: e.touches[0].clientX - canvas.offsetLeft,
+        y: e.touches[0].clientY - canvas.offsetTop,
+      };
+    }
+
+    return {
+      x: e.clientX - canvas.offsetLeft,
+      y: e.clientY - canvas.offsetTop,
+    };
   };
 
   const startDrawing = (e) => {
-    if (!isDrawing) return;
-    const canvas = canvasRef.current;
+    e.preventDefault(); // Prevent scrolling on touch devices
+    setIsDrawing(true);
     const ctx = ctxRef.current;
+    if (!ctx) return;
+
+    const { x, y } = getCoordinates(e);
     ctx.beginPath();
-    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    ctx.moveTo(x, y);
   };
 
   const draw = (e) => {
-    if (!isDrawing) return;
-    const canvas = canvasRef.current;
+    if (!isDrawing || !ctxRef.current) return;
+    e.preventDefault(); // Prevent scrolling on touch devices
+
     const ctx = ctxRef.current;
-    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    const { x, y } = getCoordinates(e);
+    ctx.lineTo(x, y);
     ctx.stroke();
   };
 
   const stopDrawing = () => {
     setIsDrawing(false);
-  };
-
-  const handleMouseDown = (e) => {
-    setIsDrawing(true);
-    startDrawing(e);
-  };
-
-  const handleMouseMove = (e) => {
-    draw(e);
-  };
-
-  const handleMouseUp = () => {
-    stopDrawing();
   };
 
   return (
@@ -135,51 +147,80 @@ function Draw({ onNextGame }) {
       </button>
       <h1>Draw</h1>
 
-      <button onClick={() => setShowWords(!showWords)}>
-        {showWords ? "Hide Words" : "Show Words"}
-      </button>
-
-      {showWords && !chosenWord && (
+      {!hidden ? (
         <>
-          <p>Choose a word to draw:</p>
+          <div className="draw-container__player-preview">
+            <AvatarPreview
+              width={100}
+              image={drawer?.avatar}
+              points={drawer?.points}
+            />
+            <p className="regular-text">
+              <strong>{`${drawer?.username || "Someone"}`}</strong> chooses a
+              word to draw
+            </p>
+          </div>
           <div className="word-choices">
             {wordChoices.map(({ word }) => (
-              <Button
+              <button
                 key={word}
-                text={word}
-                onClick={() => handleWordClick(word)}
-              />
+                className={`btn ${selectedWord === word ? "active" : ""}`}
+                onClick={() => revealed && setSelectedWord(word)}
+                disabled={!revealed}
+              >
+                {revealed ? word : "?"}
+              </button>
             ))}
+            {!revealed && (
+              <Button
+                icon={faEye}
+                variant="pushable red"
+                text="Reveal words"
+                onClick={() => setRevealed(true)}
+              />
+            )}
+            {selectedWord && (
+              <Button
+                icon={faPencil}
+                variant="pushable red"
+                text={<>Draw {selectedWord}</>}
+                onClick={() => setHidden(true)}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <canvas
+            ref={canvasRef}
+            className="draw-canvas"
+            onMouseDown={startDrawing}
+            onMouseMove={draw}
+            onMouseUp={stopDrawing}
+            onMouseOut={stopDrawing}
+            onTouchStart={startDrawing}
+            onTouchMove={draw}
+            onTouchEnd={stopDrawing}
+          ></canvas>
+
+          <div className="button-wrapper">
+            <Button
+              icon={faEraser}
+              variant="secondary"
+              text="Clear"
+              onClick={resetGame}
+            />
+            <Button
+              icon={faLightbulb}
+              variant="pushable red"
+              onClick={handleNextGameClick}
+              text="Word Guessed"
+            />
           </div>
         </>
       )}
 
-      {chosenWord && (
-        <p>
-          <strong>{drawer?.username} is drawing:</strong> {chosenWord}
-        </p>
-      )}
-
-      <canvas
-        ref={canvasRef}
-        className="draw-canvas"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseOut={handleMouseUp}
-      ></canvas>
-
-      <div className="button-wrapper">
-        <Button icon={faEraser} variant="secondary" text="Clear" onClick={resetGame} />
-        <Button
-          icon={faCircleRight}
-          variant="pushable red"
-          onClick={handleNextGameClick}
-          text="Word Guessed"
-        />
-      </div>
-
-      {/* {isInfoModalOpen && (
+      {isInfoModalOpen && (
         <HowToPlay
           title="Draw"
           description={
@@ -243,7 +284,7 @@ function Draw({ onNextGame }) {
           ]}
           onClose={() => setIsInfoModalOpen(false)}
         />
-      )} */}
+      )}
     </div>
   );
 }
