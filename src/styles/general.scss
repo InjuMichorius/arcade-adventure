@@ -29,11 +29,12 @@ body {
   background-color: var(--green);
 }
 
-h1, .how-to-play-title {
+h1,
+.how-to-play-title {
   padding: 0 10px;
   color: var(--red);
   font-size: 1rem;
-  margin: .5rem auto;
+  margin: 0.5rem auto;
   width: fit-content;
   font-weight: bold;
   text-align: center;
@@ -97,6 +98,10 @@ button {
   height: fit-content;
   color: white;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   .icon {
     height: 20px;

@@ -7,8 +7,8 @@ import Draw from "../components/games/draw";
 // import emptyGame from "../components/games/emptyGame";
 
 const games = [
-  { component: WhereThatWhistle, name: "WhereThatWhistle" },
   { component: Draw, name: "Draw" },
+  { component: WhereThatWhistle, name: "WhereThatWhistle" },
   { component: TipsyTurns, name: "TipsyTurns" },
   { component: TicTacToe, name: "TicTacToe" },
   { component: BomberBoy, name: "BomberBoy" },

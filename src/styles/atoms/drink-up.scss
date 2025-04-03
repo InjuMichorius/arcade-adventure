@@ -1,11 +1,12 @@
 .drink-up {
   position: fixed;
-  top: 0;
+  top: 63px;
   left: 0;
   width: 100vw;
   height: 100%;
-  padding: 1.9rem;
+  padding: 0 1rem;
   background-color: var(--green);
+  z-index: 9;
   .avatars-container {
     display: flex;
     gap: 1rem;
