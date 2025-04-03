@@ -288,6 +288,15 @@ function Draw({ onNextGame }) {
                     </>
                   ),
                 },
+                {
+                  avatar: drawer?.avatar,
+                  name: drawer?.username,
+                  text: (
+                    <>
+                      <strong>{drawer?.username || "Someone"}</strong> drinks if no one guesses the word
+                    </>
+                  ),
+                },
               ]}
             />
           }
