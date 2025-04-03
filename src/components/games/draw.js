@@ -16,27 +16,7 @@ import GameInstructions from "../molecules/gameInstructions";
 import { PlayerDataContext } from "../../providers/playerDataProvider";
 import AvatarPreview from "../atoms/avatarPreview";
 import ChoosePlayerToDrink from "../molecules/choosePlayerToDrink";
-
-const randomWords = [
-  { word: "Rocket launcher" },
-  { word: "Wheelie" },
-  { word: "Playing cards" },
-  { word: "Hot air balloon" },
-  { word: "Treasure chest" },
-  { word: "Roller coaster" },
-  { word: "Submarine" },
-  { word: "Octopus playing drums" },
-  { word: "Viking ship" },
-  { word: "UFO abducting a cow" },
-  { word: "Knight on horseback" },
-  { word: "Haunted house" },
-  { word: "Fire-breathing dragon" },
-  { word: "Genie coming out of a lamp" },
-  { word: "A robot cooking" },
-  { word: "Ice cream melting in the sun" },
-  { word: "A monkey on a bicycle" },
-  { word: "A wizard casting a spell" },
-];
+import randomWords from "../../assets/data/draw";
 
 function Draw({ onNextGame }) {
   const [revealed, setRevealed] = useState(false);
@@ -94,28 +74,8 @@ function Draw({ onNextGame }) {
   };
 
   const handleWordGuessed = () => {
-    setWordIsGuessed(true)
+    setWordIsGuessed(true);
   };
-
-  const resetGame = () => {
-    setWordIsGuessed(false);
-    setHidden(false);
-    setRevealed(false);
-    setSelectedWord(null);
-    generateNewWords();
-  
-    if (players.length > 1) {
-      const shuffledPlayers = [...players].sort(() => 0.5 - Math.random());
-      setDrawer(shuffledPlayers[0]);
-      setGuessers(shuffledPlayers.slice(1));
-    }
-  
-    const canvas = canvasRef.current;
-    const ctx = ctxRef.current;
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    ctx.beginPath(); // Reset the drawing state
-  };
-  
 
   const getCoordinates = (e) => {
     const canvas = canvasRef.current;
@@ -174,6 +134,33 @@ function Draw({ onNextGame }) {
       ctx.arc(x, y, ctx.lineWidth / 2, 0, Math.PI * 2);
       ctx.fill();
     }
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    ctx.beginPath(); // Reset the drawing state
+  };
+
+  const resetGame = () => {
+    setWordIsGuessed(false);
+    setHidden(false);
+    setRevealed(false);
+    setSelectedWord(null);
+    generateNewWords();
+
+    // Shuffle players and set new drawer
+    if (players.length > 1) {
+      const shuffledPlayers = [...players].sort(() => 0.5 - Math.random());
+      setDrawer(shuffledPlayers[0]);
+      setGuessers(shuffledPlayers.slice(1));
+    }
+
+    // Only clear the canvas, without resetting the game state
+    clearCanvas();
   };
 
   return (
@@ -244,7 +231,7 @@ function Draw({ onNextGame }) {
               icon={faEraser}
               variant="secondary"
               text="Clear"
-              onClick={resetGame}
+              onClick={clearCanvas}
             />
             <Button
               icon={faLightbulb}
@@ -321,7 +308,14 @@ function Draw({ onNextGame }) {
           onClose={() => setIsInfoModalOpen(false)}
         />
       )}
-      {wordIsGuessed && <ChoosePlayerToDrink players={players} drinkAmount={3} onNextGame={onNextGame} onPlayAgain={resetGame} />}
+      {wordIsGuessed && (
+        <ChoosePlayerToDrink
+          players={players}
+          drinkAmount={3}
+          onNextGame={onNextGame}
+          onPlayAgain={resetGame}
+        />
+      )}
     </div>
   );
 }
