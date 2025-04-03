@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import DrinkUp from "../atoms/drinkUp";
 
-function ChoosePlayerToDrink({ players, drinkAmount, onPlayAgain, onNextGame }) {
+function ChoosePlayerToDrink({
+  players,
+  drinkAmount,
+  onPlayAgain,
+  onNextGame,
+}) {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const [isDrinkUpVisible, setIsDrinkUpVisible] = useState(false); // Track visibility of DrinkUp
 
@@ -18,17 +23,20 @@ function ChoosePlayerToDrink({ players, drinkAmount, onPlayAgain, onNextGame }) 
   const handleDrinkClick = () => {
     setIsDrinkUpVisible(true); // Show the DrinkUp component
   };
-
   const drinkMessage = selectedPlayers.length > 1
-  ? `${players.filter(player => selectedPlayers.includes(player.id))
-      .map((player, index, arr) => {
-        // If it's the last player, add 'and', otherwise use a comma
-        return index === arr.length - 1
-          ? `and ${player.username}`
-          : player.username;
-      })
-      .join(", ")} drink ${drinkAmount} sips`
+  ? `${players
+      .filter(player => selectedPlayers.includes(player.id))
+      .map((player, index, arr) =>
+        index === arr.length - 1
+          ? ` and ${player.username}` // Ensure space before 'and'
+          : index === arr.length - 2
+          ? `${player.username}`
+          : `${player.username}, `
+      )
+      .join('')} drink ${drinkAmount} sips`
   : `${players.filter(player => selectedPlayers.includes(player.id))[0]?.username} drinks ${drinkAmount} sips`;
+
+
 
 
   return (
