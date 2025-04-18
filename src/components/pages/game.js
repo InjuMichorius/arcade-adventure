@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import NavBar from "../organisms/navBar";
 import { PlayerDataContext } from "../../providers/playerDataProvider";
 import { useCurrentGame } from "../../hooks/useCurrentGame";

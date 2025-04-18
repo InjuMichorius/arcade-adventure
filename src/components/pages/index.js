@@ -5,7 +5,6 @@ import {
   faQuestionCircle,
   faVolumeMute,
   faVolumeLow,
-  faBeerMugEmpty,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../atoms/button";
 import logo from "../../assets/images/homepage-logo.jpg";
@@ -106,44 +105,9 @@ function Index() {
                   text="Play game"
                 />
               </li>
-              <li>
-                <Button
-                  icon={faQuestionCircle}
-                  variant="pushable green"
-                  onClick={() => navigate("/how-to-play")}
-                  text="How to play"
-                />
-              </li>
-              {isMusicPlaying ? (
-                <li>
-                  <Button
-                    icon={faVolumeMute}
-                    variant="pushable green"
-                    onClick={handleStopMusic}
-                    text="Music off"
-                  />
-                </li>
-              ) : (
-                <li>
-                  <Button
-                    icon={faVolumeLow}
-                    variant="pushable green"
-                    onClick={handlePlayMusic}
-                    text="Music on"
-                  />
-                </li>
-              )}
             </>
           ) : (
             <>
-              <li>
-                <Button
-                  icon={faUserPlus}
-                  variant="pushable green"
-                  onClick={handleNewGame}
-                  text="New game"
-                />
-              </li>
               <li>
                 <Button
                   icon={faGamepad}
@@ -152,7 +116,42 @@ function Index() {
                   text="Continue"
                 />
               </li>
+              <li>
+                <Button
+                  icon={faUserPlus}
+                  variant="pushable green"
+                  onClick={handleNewGame}
+                  text="New game"
+                />
+              </li>
             </>
+          )}
+          <li>
+            <Button
+              icon={faQuestionCircle}
+              variant="pushable green"
+              onClick={() => navigate("/how-to-play")}
+              text="How to play"
+            />
+          </li>
+          {isMusicPlaying ? (
+            <li>
+              <Button
+                icon={faVolumeMute}
+                variant="pushable green"
+                onClick={handleStopMusic}
+                text="Music off"
+              />
+            </li>
+          ) : (
+            <li>
+              <Button
+                icon={faVolumeLow}
+                variant="pushable green"
+                onClick={handlePlayMusic}
+                text="Sounds on"
+              />
+            </li>
           )}
         </ul>
       </main>

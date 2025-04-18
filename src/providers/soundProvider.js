@@ -5,6 +5,7 @@ const SoundContext = createContext();
 export const SoundProvider = ({ children }) => {
   const bgMusicRef = useRef(new Audio());
   const slurpSoundRef = useRef(new Audio(`${process.env.PUBLIC_URL}/sounds/slurp.mp3`));
+  const clickSoundRef = useRef(new Audio(`${process.env.PUBLIC_URL}/sounds/click.mp3`));
 
   const backgroundTracks = [
     "background1.mp3",
@@ -15,6 +16,14 @@ export const SoundProvider = ({ children }) => {
   ];
 
   const currentTrackRef = useRef("");
+
+  const playClick = () => {
+    clickSoundRef.current.currentTime = 0;
+    clickSoundRef.current.volume = 0.2;
+    clickSoundRef.current.play().catch((e) => {
+      console.warn("Click sound blocked:", e);
+    });
+  };
 
   // Play a random track, but avoid repeating the same one
   const playRandomTrack = () => {
@@ -29,8 +38,8 @@ export const SoundProvider = ({ children }) => {
     const trackPath = `${process.env.PUBLIC_URL}/sounds/${newTrack}`;
 
     bgMusicRef.current.src = trackPath;
-    bgMusicRef.current.loop = false; // So we can shuffle on end
-    bgMusicRef.current.volume = 0.2;
+    bgMusicRef.current.loop = false;
+    bgMusicRef.current.volume = 0.1;
 
     bgMusicRef.current
       .play()
@@ -70,7 +79,7 @@ export const SoundProvider = ({ children }) => {
   }, []);
 
   return (
-    <SoundContext.Provider value={{ playBackground, stopBackground, playSlurp }}>
+    <SoundContext.Provider value={{ playBackground, stopBackground, playSlurp, playClick }}>
       {children}
     </SoundContext.Provider>
   );
