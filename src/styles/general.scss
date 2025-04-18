@@ -217,7 +217,7 @@ main {
   }
 
   &.red .front {
-    background: #e64d48;
+    background: var(--red);
   }
 
   &.green .edge {
@@ -231,7 +231,7 @@ main {
   }
 
   &.green .front {
-    background: #369064;
+    background: var(--green);
   }
 
   &.light-green .edge {
@@ -245,7 +245,7 @@ main {
   }
 
   &.light-green .front {
-    background: #6ecea0;
+    background: var(--light-green);
   }
 }
 

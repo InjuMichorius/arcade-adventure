@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { faGamepad, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGamepad,
+  faUserPlus,
+  faQuestionCircle,
+  faVolumeMute,
+  faVolumeLow,
+  faBeerMugEmpty,
+} from "@fortawesome/free-solid-svg-icons";
 import Button from "../atoms/button";
 import logo from "../../assets/images/homepage-logo.jpg";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +22,7 @@ import avatar7 from "../../assets/images/avatars/avatar7.avif";
 import avatar8 from "../../assets/images/avatars/avatar8.avif";
 import avatar9 from "../../assets/images/avatars/avatar9.avif";
 import avatar10 from "../../assets/images/avatars/avatar10.avif";
-import { eventWrapper } from "@testing-library/user-event/dist/utils";
+import { useSound } from "../../providers/soundProvider";
 
 const avatarImages = [
   avatar0,
@@ -32,8 +39,10 @@ const avatarImages = [
 ];
 
 function Index() {
+  const { stopBackground, playBackground } = useSound();
   const navigate = useNavigate();
   const [hasPlayers, setHasPlayers] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false); // Track music state
 
   useEffect(() => {
     const players = JSON.parse(localStorage.getItem("players")) || [];
@@ -44,6 +53,16 @@ function Index() {
     localStorage.clear();
     setHasPlayers(false);
     navigate("/manage-players");
+  };
+
+  const handlePlayMusic = () => {
+    playBackground();
+    setIsMusicPlaying(true); // Set music to playing
+  };
+
+  const handleStopMusic = () => {
+    stopBackground();
+    setIsMusicPlaying(false); // Set music to stopped
   };
 
   return (
@@ -78,14 +97,43 @@ function Index() {
         </div>
         <ul>
           {!hasPlayers ? (
-            <li>
-              <Button
-                icon={faGamepad}
-                variant="pushable red"
-                onClick={() => navigate("/manage-players")}
-                text="Play game"
-              />
-            </li>
+            <>
+              <li>
+                <Button
+                  icon={faGamepad}
+                  variant="pushable red"
+                  onClick={() => navigate("/manage-players")}
+                  text="Play game"
+                />
+              </li>
+              <li>
+                <Button
+                  icon={faQuestionCircle}
+                  variant="pushable green"
+                  onClick={() => navigate("/how-to-play")}
+                  text="How to play"
+                />
+              </li>
+              {isMusicPlaying ? (
+                <li>
+                  <Button
+                    icon={faVolumeMute}
+                    variant="pushable green"
+                    onClick={handleStopMusic}
+                    text="Music off"
+                  />
+                </li>
+              ) : (
+                <li>
+                  <Button
+                    icon={faVolumeLow}
+                    variant="pushable green"
+                    onClick={handlePlayMusic}
+                    text="Music on"
+                  />
+                </li>
+              )}
+            </>
           ) : (
             <>
               <li>
