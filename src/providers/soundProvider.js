@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useEffect } from "react";
+import React, { createContext, useContext, useRef, useState, useEffect } from "react";
 
 const SoundContext = createContext();
 
@@ -16,8 +16,11 @@ export const SoundProvider = ({ children }) => {
   ];
 
   const currentTrackRef = useRef("");
+  const [isMuted, setIsMuted] = useState(true);
+  const [isMusicPlaying, setisMusicPlaying] = useState(false);
 
   const playClick = () => {
+    if (isMuted) return;
     clickSoundRef.current.currentTime = 0;
     clickSoundRef.current.volume = 0.2;
     clickSoundRef.current.play().catch((e) => {
@@ -25,7 +28,14 @@ export const SoundProvider = ({ children }) => {
     });
   };
 
-  // Play a random track, but avoid repeating the same one
+  const playSlurp = () => {
+    if (isMuted) return;
+    slurpSoundRef.current.currentTime = 0;
+    slurpSoundRef.current.play().catch((e) => {
+      console.warn("Slurp sound autoplay blocked:", e);
+    });
+  };
+
   const playRandomTrack = () => {
     let newTrack = currentTrackRef.current;
 
@@ -49,8 +59,28 @@ export const SoundProvider = ({ children }) => {
   };
 
   const playBackground = () => {
-    playRandomTrack();
+    let newTrack = currentTrackRef.current;
+  
+    // Ensure newTrack is different from the current track
+    while (newTrack === currentTrackRef.current && backgroundTracks.length > 1) {
+      const randomIndex = Math.floor(Math.random() * backgroundTracks.length);
+      newTrack = backgroundTracks[randomIndex];
+    }
+  
+    currentTrackRef.current = newTrack;
+    const trackPath = `${process.env.PUBLIC_URL}/sounds/${newTrack}`;
+  
+    bgMusicRef.current.src = trackPath;
+    bgMusicRef.current.loop = true; // Loop the track if needed
+    bgMusicRef.current.volume = 0.1;
+  
+    bgMusicRef.current
+      .play()
+      .catch((e) => {
+        console.warn("Background music autoplay blocked:", e);
+      });
   };
+  
 
   const stopBackground = () => {
     bgMusicRef.current.pause();
@@ -58,14 +88,14 @@ export const SoundProvider = ({ children }) => {
     currentTrackRef.current = ""; // Reset so next play is random again
   };
 
-  const playSlurp = () => {
-    slurpSoundRef.current.currentTime = 0;
-    slurpSoundRef.current.play().catch((e) => {
-      console.warn("Slurp sound autoplay blocked:", e);
-    });
+  const toggleMute = () => {
+    setIsMuted((prev) => !prev); // Toggle mute state for non-music sounds
   };
 
-  // Setup shuffle on song end
+  const toggleIsMusicPlaying = () => {
+    setisMusicPlaying((prev) => !prev); // Toggle mute state for non-music sounds
+  };
+
   useEffect(() => {
     const audio = bgMusicRef.current;
     const handleEnded = () => {
@@ -78,8 +108,16 @@ export const SoundProvider = ({ children }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isMusicPlaying) {
+      playBackground();
+    } else {
+      stopBackground();
+    }
+  }, [isMusicPlaying]);
+
   return (
-    <SoundContext.Provider value={{ playBackground, stopBackground, playSlurp, playClick }}>
+    <SoundContext.Provider value={{ playBackground, stopBackground, playSlurp, playClick, toggleMute, toggleIsMusicPlaying, isMuted, isMusicPlaying }}>
       {children}
     </SoundContext.Provider>
   );

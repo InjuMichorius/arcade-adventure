@@ -38,10 +38,16 @@ const avatarImages = [
 ];
 
 function Index() {
-  const { stopBackground, playBackground } = useSound();
+  const {
+    stopBackground,
+    playBackground,
+    toggleMute,
+    toggleIsMusicPlaying,
+    isMuted,
+    isMusicPlaying,
+  } = useSound(); // Use the mute functionality
   const navigate = useNavigate();
   const [hasPlayers, setHasPlayers] = useState(false);
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false); // Track music state
 
   useEffect(() => {
     const players = JSON.parse(localStorage.getItem("players")) || [];
@@ -54,14 +60,12 @@ function Index() {
     navigate("/manage-players");
   };
 
-  const handlePlayMusic = () => {
-    playBackground();
-    setIsMusicPlaying(true); // Set music to playing
+  const handleToggleMute = () => {
+    toggleMute();
   };
 
-  const handleStopMusic = () => {
-    stopBackground();
-    setIsMusicPlaying(false); // Set music to stopped
+  const handleToggleIsMusicPlaying = () => {
+    toggleIsMusicPlaying();
   };
 
   return (
@@ -134,25 +138,38 @@ function Index() {
               text="How to play"
             />
           </li>
-          {isMusicPlaying ? (
-            <li>
-              <Button
-                icon={faVolumeMute}
-                variant="pushable green"
-                onClick={handleStopMusic}
-                text="Music off"
-              />
-            </li>
-          ) : (
-            <li>
+          <li className="button-wrapper">
+            {isMuted ? (
               <Button
                 icon={faVolumeLow}
                 variant="pushable green"
-                onClick={handlePlayMusic}
+                onClick={handleToggleMute}
                 text="Sounds on"
               />
-            </li>
-          )}
+            ) : (
+              <Button
+                icon={faVolumeMute}
+                variant="pushable green"
+                onClick={handleToggleMute}
+                text="Sounds off"
+              />
+            )}
+            {isMusicPlaying ? (
+              <Button
+                icon={faVolumeMute}
+                variant="pushable green"
+                onClick={handleToggleIsMusicPlaying}
+                text="Music off"
+              />
+            ) : (
+              <Button
+                icon={faVolumeLow}
+                variant="pushable green"
+                onClick={handleToggleIsMusicPlaying}
+                text="Music on"
+              />
+            )}
+          </li>
         </ul>
       </main>
     </div>
