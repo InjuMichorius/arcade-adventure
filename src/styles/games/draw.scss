@@ -13,4 +13,27 @@
     margin: 2rem auto;
     touch-action: none;
   }
+
+  .word-choices {
+    list-style: none;
+    margin: 3rem 0;
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    li {
+      padding: 3px;
+      border: 3px dashed transparent;
+      border-radius: 1rem;
+
+      &:has(.active) {
+        border-color: var(--light-green);
+      }
+      .word-option-button {
+        color: var(--green);
+        background-color: var(--off-white);
+      }
+    }
+  }
 }

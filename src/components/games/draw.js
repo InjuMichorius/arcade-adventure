@@ -183,17 +183,23 @@ function Draw({ onNextGame }) {
               word to draw
             </p>
           </div>
-          <div className="word-choices">
-            {wordChoices.map(({ word }) => (
-              <button
-                key={word}
-                className={`btn ${selectedWord === word ? "active" : ""}`}
-                onClick={() => revealed && setSelectedWord(word)}
-                disabled={!revealed}
-              >
-                {revealed ? word : "?"}
-              </button>
-            ))}
+          <div>
+            <ul className="word-choices">
+              {wordChoices.map(({ word }) => (
+                <li>
+                  <button
+                    key={word}
+                    className={`word-option-button ${
+                      selectedWord === word ? "active" : ""
+                    }`}
+                    onClick={() => revealed && setSelectedWord(word)}
+                    disabled={!revealed}
+                  >
+                    {revealed ? word : "?"}
+                  </button>
+                </li>
+              ))}
+            </ul>
             {!revealed && (
               <Button
                 icon={faEye}
