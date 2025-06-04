@@ -11,7 +11,7 @@ function HowToPlay() {
     navigate("/arcade-adventure");
   }
   return (
-    <div className="no-page">
+    <div className="how-to-play-container">
         <Button onClick={handleClick} text="Back"/>
         <GameInstructions
               steps={[

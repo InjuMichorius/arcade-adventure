@@ -109,6 +109,7 @@ function ManagePlayers() {
               variant="pushable green"
               onClick={addPlayer}
               text="Add player"
+              data-testid="add-player-button"
             />
           )}
           {canStartGame && (
@@ -117,6 +118,7 @@ function ManagePlayers() {
               variant="pushable red"
               onClick={handleStartGame}
               text="Play game"
+              data-testid="start-game-button"
             />
           )}
         </div>
