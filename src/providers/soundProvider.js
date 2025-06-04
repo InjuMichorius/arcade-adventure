@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useState, useEffect } from "react";
+import React, { createContext, useContext, useRef, useState, useEffect, useCallback, useMemo } from "react";
 
 const SoundContext = createContext();
 
@@ -7,13 +7,13 @@ export const SoundProvider = ({ children }) => {
   const slurpSoundRef = useRef(new Audio(`${process.env.PUBLIC_URL}/sounds/slurp.mp3`));
   const clickSoundRef = useRef(new Audio(`${process.env.PUBLIC_URL}/sounds/click.mp3`));
 
-  const backgroundTracks = [
+  const backgroundTracks = useMemo(() => [
     "background1.mp3",
     "background2.mp3",
     "background3.mp3",
     "background4.mp3",
     "background5.mp3",
-  ];
+  ], []);
 
   const currentTrackRef = useRef("");
   const [isMuted, setIsMuted] = useState(true);
@@ -36,7 +36,7 @@ export const SoundProvider = ({ children }) => {
     });
   };
 
-  const playRandomTrack = () => {
+  const playRandomTrack = useCallback(() => {
     let newTrack = currentTrackRef.current;
 
     while (newTrack === currentTrackRef.current && backgroundTracks.length > 1) {
@@ -56,12 +56,11 @@ export const SoundProvider = ({ children }) => {
       .catch((e) => {
         console.warn("Background music autoplay blocked:", e);
       });
-  };
+  }, [backgroundTracks]);
 
-  const playBackground = () => {
+  const playBackground = useCallback(() => {
     let newTrack = currentTrackRef.current;
   
-    // Ensure newTrack is different from the current track
     while (newTrack === currentTrackRef.current && backgroundTracks.length > 1) {
       const randomIndex = Math.floor(Math.random() * backgroundTracks.length);
       newTrack = backgroundTracks[randomIndex];
@@ -71,7 +70,7 @@ export const SoundProvider = ({ children }) => {
     const trackPath = `${process.env.PUBLIC_URL}/sounds/${newTrack}`;
   
     bgMusicRef.current.src = trackPath;
-    bgMusicRef.current.loop = true; // Loop the track if needed
+    bgMusicRef.current.loop = true;
     bgMusicRef.current.volume = 0.1;
   
     bgMusicRef.current
@@ -79,21 +78,20 @@ export const SoundProvider = ({ children }) => {
       .catch((e) => {
         console.warn("Background music autoplay blocked:", e);
       });
-  };
-  
+  }, [backgroundTracks]);
 
   const stopBackground = () => {
     bgMusicRef.current.pause();
     bgMusicRef.current.currentTime = 0;
-    currentTrackRef.current = ""; // Reset so next play is random again
+    currentTrackRef.current = "";
   };
 
   const toggleMute = () => {
-    setIsMuted((prev) => !prev); // Toggle mute state for non-music sounds
+    setIsMuted((prev) => !prev);
   };
 
   const toggleIsMusicPlaying = () => {
-    setisMusicPlaying((prev) => !prev); // Toggle mute state for non-music sounds
+    setisMusicPlaying((prev) => !prev);
   };
 
   useEffect(() => {
@@ -106,7 +104,7 @@ export const SoundProvider = ({ children }) => {
     return () => {
       audio.removeEventListener("ended", handleEnded);
     };
-  }, []);
+  }, [playRandomTrack]);
 
   useEffect(() => {
     if (isMusicPlaying) {
@@ -114,7 +112,7 @@ export const SoundProvider = ({ children }) => {
     } else {
       stopBackground();
     }
-  }, [isMusicPlaying]);
+  }, [isMusicPlaying, playBackground]);
 
   return (
     <SoundContext.Provider value={{ playBackground, stopBackground, playSlurp, playClick, toggleMute, toggleIsMusicPlaying, isMuted, isMusicPlaying }}>

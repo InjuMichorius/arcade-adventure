@@ -27,7 +27,7 @@ const TipsyTurns = ({ onNextGame }) => {
       const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
       setCurrentQuestion(remainingQuestions[randomIndex]);
     }
-  }, [players, loading]);
+  }, [players, loading, remainingQuestions]);
 
   // Check if players are loading or empty
   if (loading || players.length === 0) {
@@ -74,7 +74,7 @@ const TipsyTurns = ({ onNextGame }) => {
       <div>
         <h2>
           {currentQuestion &&
-            currentQuestion.msg.replace("${sips}", currentQuestion.sips)}
+            currentQuestion.msg.replace("$sips", currentQuestion.sips)}
         </h2>
         <div className="chosen-player-container">
           {selectedPlayers.length > 0 ? (

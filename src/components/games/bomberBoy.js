@@ -30,8 +30,6 @@ function BomberBoy({ onNextGame, updateSips }) {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
   const [isDrinkModalOpen, setIsDrinkModalOpen] = useState(false);
 
-  const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
-
   useEffect(() => {
     const storedPlayers = JSON.parse(localStorage.getItem("players")) || [];
     if (storedPlayers.length > 1) {

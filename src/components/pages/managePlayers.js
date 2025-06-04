@@ -23,12 +23,13 @@ function ManagePlayers() {
     localStorage.setItem("nextId", nextId);
   }, [players, nextId]);
 
+  // We intentionally omit newPlayerId from deps to prevent infinite loop
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (newPlayerId !== null && inputRefs.current[newPlayerId]) {
       inputRefs.current[newPlayerId].focus();
-      setNewPlayerId(null);
     }
-  }, [players]);
+  }, [players, newPlayerId]);
 
   const handleNameChange = (id, username) => {
     setPlayers((prevPlayers) =>
@@ -54,6 +55,7 @@ function ManagePlayers() {
 
     setPlayers((prevPlayers) => [...prevPlayers, newPlayer]);
     setNextId((prevNextId) => prevNextId + 1);
+    // Focus will happen in the next render
     setNewPlayerId(nextId);
   };
 

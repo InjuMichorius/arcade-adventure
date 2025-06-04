@@ -39,8 +39,6 @@ const avatarImages = [
 
 function Index() {
   const {
-    stopBackground,
-    playBackground,
     toggleMute,
     toggleIsMusicPlaying,
     isMuted,

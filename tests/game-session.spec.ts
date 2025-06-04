@@ -16,7 +16,7 @@ test("Game session persists players when returning to main menu", async ({ page 
   
   // Verify session persistence
   await expect(page.getByTestId("continue-game-button")).toBeVisible();
-  await expect(page.getByTestId("play-game-button")).not.toBeVisible();
+  await expect(page.getByTestId("play-game-button")).toBeHidden();
   
   // Continue game with same players
   await page.getByTestId("continue-game-button").click();
