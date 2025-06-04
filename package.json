@@ -28,7 +28,8 @@
     "lint": "npm run lint:react && npm run lint:playwright",
     "lint:react": "eslint src/",
     "lint:playwright": "eslint -c .eslintrc.playwright.js tests/",
-    "playwright-ui": "playwright test --ui"
+    "playwright-ui": "playwright test --ui",
+    "test:ci": "playwright test"
   },
   "eslintConfig": {
     "extends": [
