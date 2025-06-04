@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-function Hamburger({ onClick, "data-testid": dataTestId }) {
+function Hamburger({ onClick, dataTestId }) {
   const svgRef = useRef(null);
 
   const handleClick = () => {

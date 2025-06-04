@@ -12,7 +12,10 @@ test("Game session persists players when returning to main menu", async ({ page 
   }
   
   // Go back to main menu
-  await page.goto("http://localhost:3000");
+  await page.goto('/arcade-adventure/#/arcade-adventure');
+  
+  // Wait for the main menu to load by checking for the continue button
+  await page.getByTestId("continue-game-button").waitFor({ state: 'visible' });
   
   // Verify session persistence
   await expect(page.getByTestId("continue-game-button")).toBeVisible();

@@ -1,0 +1,17 @@
+{
+  "rewrites": [
+    { "source": "/arcade-adventure/*", "destination": "/index.html" },
+    { "source": "/arcade-adventure", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "**/*.@(js|css)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/javascript"
+        }
+      ]
+    }
+  ]
+} 

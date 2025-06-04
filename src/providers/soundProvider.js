@@ -4,7 +4,6 @@ const SoundContext = createContext();
 
 export const SoundProvider = ({ children }) => {
   const bgMusicRef = useRef(new Audio());
-  const slurpSoundRef = useRef(new Audio(`${process.env.PUBLIC_URL}/sounds/slurp.mp3`));
   const clickSoundRef = useRef(new Audio(`${process.env.PUBLIC_URL}/sounds/click.mp3`));
 
   const backgroundTracks = useMemo(() => [
@@ -25,14 +24,6 @@ export const SoundProvider = ({ children }) => {
     clickSoundRef.current.volume = 0.2;
     clickSoundRef.current.play().catch((e) => {
       console.warn("Click sound blocked:", e);
-    });
-  };
-
-  const playSlurp = () => {
-    if (isMuted) return;
-    slurpSoundRef.current.currentTime = 0;
-    slurpSoundRef.current.play().catch((e) => {
-      console.warn("Slurp sound autoplay blocked:", e);
     });
   };
 
@@ -115,7 +106,7 @@ export const SoundProvider = ({ children }) => {
   }, [isMusicPlaying, playBackground]);
 
   return (
-    <SoundContext.Provider value={{ playBackground, stopBackground, playSlurp, playClick, toggleMute, toggleIsMusicPlaying, isMuted, isMusicPlaying }}>
+    <SoundContext.Provider value={{ playBackground, stopBackground, playClick, toggleMute, toggleIsMusicPlaying, isMuted, isMusicPlaying }}>
       {children}
     </SoundContext.Provider>
   );
