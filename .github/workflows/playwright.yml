@@ -16,8 +16,10 @@ jobs:
         cache: 'npm'
     - name: Install dependencies
       run: npm ci
-    - name: Run ESLint
-      run: npm run lint
+    - name: Run ESLint for React code
+      run: npm run lint:react
+    - name: Run ESLint for Playwright tests
+      run: npm run lint:playwright
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Build application

@@ -1,7 +1,5 @@
 module.exports = {
   extends: ['plugin:playwright/recommended'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module'
