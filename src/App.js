@@ -24,16 +24,19 @@ function App() {
   return (
     <PlayerDataProvider>
       <SoundProvider>
-      <HashRouter>
-        <Routes>
-          <Route path="/arcade-adventure" element={<Index />} />
-          <Route path="/manage-players" element={<ManagePlayers />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/how-to-play" element={<HowToPlay />} />
-          <Route path="/" element={<Navigate to="/arcade-adventure" />} />
-          <Route path="*" element={<Navigate to="/arcade-adventure" />} />
-        </Routes>
-      </HashRouter>
+        <HashRouter future={{ 
+          v7_startTransition: true,
+          v7_relativeSplatPath: true 
+        }}>
+          <Routes>
+            <Route path="/arcade-adventure" element={<Index />} />
+            <Route path="/manage-players" element={<ManagePlayers />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/how-to-play" element={<HowToPlay />} />
+            <Route path="/" element={<Navigate to="/arcade-adventure" />} />
+            <Route path="*" element={<Navigate to="/arcade-adventure" />} />
+          </Routes>
+        </HashRouter>
       </SoundProvider>
     </PlayerDataProvider>
   );
