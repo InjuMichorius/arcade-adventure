@@ -63,17 +63,15 @@ function DrinkUp({
           icon={faRotateRight}
           variant="secondary"
           text="Play again"
-          onClick={() => {
-            onPlayAgain();
-          }}
+          onClick={onPlayAgain}
+          dataTestId="play-again-button"
         />
         <Button
           icon={faForward}
           variant="pushable red"
           text="Next game"
-          onClick={() => {
-            onNextGame();
-          }}
+          onClick={onNextGame}
+          dataTestId="next-game-button"
         />
       </div>
     </div>

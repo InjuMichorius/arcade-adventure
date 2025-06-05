@@ -6,14 +6,11 @@ function HowToPlay({ title, description, buttons, onClose }) {
   const footerRef = useRef(null);
 
   useEffect(() => {
-    // Add overflow hidden to body when modal is open
     document.body.style.overflow = "hidden";
-
-    // Cleanup: reset body overflow when the component is unmounted or modal is closed
     return () => {
       document.body.style.overflow = "";
     };
-  }, []); // This effect runs once when the component mounts and cleans up when unmounted
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current || !footerRef.current) return;
@@ -28,9 +25,12 @@ function HowToPlay({ title, description, buttons, onClose }) {
     const lastStepDelay = 1300 + (steps - 1) * stepDelay;
 
     // Add fade-in class after steps are done
-    setTimeout(() => {
-      footerRef.current.classList.add("fade-in-footer");
+    const timeoutId = setTimeout(() => {
+      if (footerRef.current) {
+        footerRef.current.classList.add("fade-in-footer");
+      }
     }, lastStepDelay);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
@@ -45,6 +45,7 @@ function HowToPlay({ title, description, buttons, onClose }) {
             icon={button.icon || null}
             text={button.text}
             variant={`${button.variant}`}
+            dataTestId={button.dataTestId}
             onClick={() => {
               button.onClick ? button.onClick() : onClose();
             }}

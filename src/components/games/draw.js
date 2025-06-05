@@ -185,7 +185,7 @@ function Draw({ onNextGame }) {
           </div>
           <div>
             <ul className="word-choices">
-              {wordChoices.map(({ word }) => (
+              {wordChoices.map(({ word }, index) => (
                 <li>
                   <button
                     key={word}
@@ -194,6 +194,7 @@ function Draw({ onNextGame }) {
                     }`}
                     onClick={() => revealed && setSelectedWord(word)}
                     disabled={!revealed}
+                    data-testid={`word-choice-${index}`}
                   >
                     {revealed ? word : "?"}
                   </button>
@@ -205,6 +206,7 @@ function Draw({ onNextGame }) {
                 icon={faEye}
                 variant="pushable red"
                 text="Reveal words"
+                dataTestId="reveal-words-button"
                 onClick={() => setRevealed(true)}
               />
             )}
@@ -213,6 +215,7 @@ function Draw({ onNextGame }) {
                 icon={faPencil}
                 variant="pushable red"
                 text={<>Draw {selectedWord}</>}
+                dataTestId="start-drawing-button"
                 onClick={() => setHidden(true)}
               />
             )}
@@ -223,6 +226,7 @@ function Draw({ onNextGame }) {
           <canvas
             ref={canvasRef}
             className="draw-canvas"
+            data-testid="drawing-canvas"
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
@@ -237,6 +241,7 @@ function Draw({ onNextGame }) {
               icon={faEraser}
               variant="secondary"
               text="Clear"
+              dataTestId="clear-canvas-button"
               onClick={clearCanvas}
             />
             <Button
@@ -244,6 +249,7 @@ function Draw({ onNextGame }) {
               variant="pushable red"
               onClick={handleWordGuessed}
               text="Word Guessed"
+              dataTestId="word-guessed-button"
             />
           </div>
         </>
@@ -317,6 +323,7 @@ function Draw({ onNextGame }) {
               icon: faGamepad,
               text: "Play game",
               variant: "pushable red",
+              dataTestId: "start-game-button",
               onClick: () => setIsInfoModalOpen(false),
             },
           ]}

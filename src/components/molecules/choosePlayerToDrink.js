@@ -25,10 +25,12 @@ function ChoosePlayerToDrink({
   };
 
   const handleDrinkClick = () => {
-    updateSips(
-      selectedPlayers.map((selectedPlayer) => selectedPlayer.username),
-      drinkAmount
-    );
+    // Get the usernames of selected players using their IDs
+    const selectedUsernames = players
+      .filter(player => selectedPlayers.includes(player.id))
+      .map(player => player.username);
+      
+    updateSips(selectedUsernames, drinkAmount);
     setIsDrinkUpVisible(true); // Show the DrinkUp component
   };
   const drinkMessage =
@@ -68,6 +70,7 @@ function ChoosePlayerToDrink({
                     type="checkbox"
                     checked={selectedPlayers.includes(player.id)}
                     onChange={() => handlePlayerToggle(player.id)}
+                    data-testid={`player-checkbox-${player.id}`}
                   />
                   {player.username}
                 </label>
@@ -79,6 +82,7 @@ function ChoosePlayerToDrink({
             onClick={handleDrinkClick}
             text="Drink"
             variant="pushable red"
+            dataTestId="drink-button"
           />
         </div>
       ) : (
@@ -90,6 +94,7 @@ function ChoosePlayerToDrink({
           onPlayAgain={onPlayAgain}
           onNextGame={onNextGame}
           drinkAmount={drinkAmount}
+          data-testid="drink-up-modal"
         />
       )}
     </div>
