@@ -41,7 +41,7 @@ function WhereThatWhistle({ onNextGame }) {
       setIsDrinkUpScreen(true);
       setWinner(null);
     }
-  }, [winner]);
+  }, [winner, updateSips]);
 
   useEffect(() => {
     if (!loading && players.length > 1 && !isPlayersSet.current) {
@@ -87,7 +87,7 @@ function WhereThatWhistle({ onNextGame }) {
       setIsDrinkUpScreen(true);
       setGameOver(false);
     }
-  }, [gameOver]);
+  }, [gameOver, losers, updateSips]);
 
   if (loading || players.length === 0) {
     return <div>Loading players...</div>;

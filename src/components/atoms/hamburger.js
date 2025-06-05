@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-function Hamburger({ onClick }) {
+function Hamburger({ onClick, dataTestId }) {
   const svgRef = useRef(null);
 
   const handleClick = () => {
@@ -12,7 +12,7 @@ function Hamburger({ onClick }) {
     }
   };
   return (
-    <button className='hamburger-button' onClick={handleClick}>
+    <button className='hamburger-button' onClick={handleClick} data-testid={dataTestId}>
       <svg
       ref={svgRef}
         className="ham"

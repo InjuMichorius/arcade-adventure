@@ -39,8 +39,6 @@ const avatarImages = [
 
 function Index() {
   const {
-    stopBackground,
-    playBackground,
     toggleMute,
     toggleIsMusicPlaying,
     isMuted,
@@ -107,6 +105,7 @@ function Index() {
                   variant="pushable red"
                   onClick={() => navigate("/manage-players")}
                   text="Play game"
+                  dataTestId="play-game-button"
                 />
               </li>
             </>
@@ -118,6 +117,7 @@ function Index() {
                   variant="pushable red"
                   onClick={() => navigate("/game")}
                   text="Continue"
+                  dataTestId="continue-game-button"
                 />
               </li>
               <li>

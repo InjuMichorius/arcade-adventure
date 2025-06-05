@@ -9,7 +9,8 @@ function NoPage() {
   return (
     <div className="no-page">
         <h1>No page found</h1>
-        <p>Oops, looks like your'e in a place of the website you don't belong.</p>
+        <p>Oops, looks like you're in a place of the website you don't belong.</p>
+        <Button onClick={handleClick} text="Back to home"/>
     </div>
   );
 }

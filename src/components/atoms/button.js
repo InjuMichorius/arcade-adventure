@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSound } from "../../providers/soundProvider"; // adjust path as needed
 
-function Button({ variant, onClick, icon, text, disabled }) {
+function Button({ variant, onClick, icon, text, disabled, dataTestId }) {
   const isPushable = variant?.includes("pushable");
   const { playClick } = useSound();
 
@@ -13,7 +13,12 @@ function Button({ variant, onClick, icon, text, disabled }) {
   };
 
   return (
-    <button onClick={handleClick} className={variant} disabled={disabled}>
+    <button 
+      onClick={handleClick} 
+      className={variant} 
+      disabled={disabled}
+      data-testid={dataTestId}
+    >
       {isPushable && (
         <>
           <span className="shadow"></span>

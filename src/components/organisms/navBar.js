@@ -27,9 +27,9 @@ function NavBar({ players }) {
 
   return (
     <header className="navbar-container">
-      <Hamburger onClick={handleHamburgerClick} />
+      <Hamburger onClick={handleHamburgerClick} dataTestId="hamburger-menu" />
       <div className={`player-list ${isPlayerListVisible ? "show" : ""}`}>
-        <button onClick={handleLeaveGameClick} className="primary">
+        <button onClick={handleLeaveGameClick} className="primary" dataTestId="leave-game-button">
           <FontAwesomeIcon icon={faPersonWalkingArrowRight} className="icon" />
         </button>
         <h1 className="player-list__title">Leaderboard</h1>
