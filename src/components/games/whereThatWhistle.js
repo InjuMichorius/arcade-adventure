@@ -203,6 +203,7 @@ function WhereThatWhistle({ onNextGame }) {
           variant="pushable red"
           text="Found"
           onClick={handleFound}
+          dataTestId="found-button"
         />
       )}
       {timeLeft === null && (
@@ -210,19 +211,19 @@ function WhereThatWhistle({ onNextGame }) {
           <div className="time-container">
             <h2 className="time-title">Time to search</h2>
             <div className="time-controls">
-              <button onClick={() => adjustSearchDuration(-15)}>-15s</button>
+              <button onClick={() => adjustSearchDuration(-15)} data-testid="decrease-search-time">-15s</button>
               <span className="time-display">{formatTime(searchDuration)}</span>
-              <button onClick={() => adjustSearchDuration(15)}>+15s</button>
+              <button onClick={() => adjustSearchDuration(15)} data-testid="increase-search-time">+15s</button>
             </div>
           </div>
           <div className="time-container">
             <h2 className="time-title">Whistle Interval</h2>
             <div className="time-controls">
-              <button onClick={() => adjustWhistleInterval(-15)}>-15s</button>
+              <button onClick={() => adjustWhistleInterval(-15)} data-testid="decrease-whistle-interval">-15s</button>
               <span className="time-display">
                 {formatTime(whistleInterval)}
               </span>
-              <button onClick={() => adjustWhistleInterval(15)}>+15s</button>
+              <button onClick={() => adjustWhistleInterval(15)} data-testid="increase-whistle-interval">+15s</button>
             </div>
           </div>
           <div className="button-wrapper">
@@ -231,12 +232,14 @@ function WhereThatWhistle({ onNextGame }) {
               variant="transparent"
               text="Test sound"
               onClick={playSound}
+              dataTestId="test-sound-button"
             />
             <Button
               icon={faStopwatch}
               variant="pushable red"
               text="Start search"
               onClick={startSearch}
+              dataTestId="start-search-button"
             />
           </div>
         </>
@@ -300,12 +303,14 @@ function WhereThatWhistle({ onNextGame }) {
               text: "Skip game",
               variant: "secondary",
               onClick: onNextGame,
+              dataTestId: "skip-game-button"
             },
             {
               icon: faGamepad,
               text: "Play game",
               variant: "pushable red",
               onClick: () => setIsInfoModalOpen(false),
+              dataTestId: "play-game-button"
             },
           ]}
           onClose={() => setIsInfoModalOpen(false)}
@@ -313,7 +318,7 @@ function WhereThatWhistle({ onNextGame }) {
       )}
       {isDrinkUpScreen && (
         <DrinkUp
-          drinkMessage={isFound ? `drinks 5!` : "all drink 10!"}
+          drinkMessage={isFound ? `The hider drinks 5!` : "All seekers drink 10!"}
           playersToDrink={isFound ? [player1] : seekers}
           drinkAmount={isFound ? 5 : 10}
           onPlayAgain={resetGame}

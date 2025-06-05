@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { setupPlayers } from './helpers/setup-players';
 
 test('Players are able to play the game draw', async ({ page }) => {
-    const players = ['Inju', 'Bart'];
+  const players = ['Inju', 'Bart'];
   await setupPlayers(page, players);
 
   // Wait for game instructions to be visible and extract sip amount

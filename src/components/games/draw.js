@@ -186,7 +186,7 @@ function Draw({ onNextGame }) {
           <div>
             <ul className="word-choices">
               {wordChoices.map(({ word }, index) => (
-                <li>
+                <li key={`word-${index}`}>
                   <button
                     key={word}
                     className={`word-option-button ${
@@ -317,6 +317,7 @@ function Draw({ onNextGame }) {
               icon: faForward,
               text: "Skip game",
               variant: "secondary",
+              dataTestId: "skip-game-button",
               onClick: onNextGame,
             },
             {
