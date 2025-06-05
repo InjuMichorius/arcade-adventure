@@ -24,7 +24,7 @@ test("Game session persists players when returning to main menu", async ({ page 
   // Continue game with same players
   await page.getByTestId("continue-game-button").click();
   
-  // Verify players are still present in leaderboard
+  // Verify if the same players are still present in leaderboard
   await page.getByTestId("hamburger-menu").click();
   for (const playerName of players) {
     await expect(page.locator('p.player-name').filter({ hasText: playerName })).toBeVisible();

@@ -4,21 +4,9 @@ export async function setupPlayers(
   page: Page,
   players: string[] = ['Inju', 'Bart', 'Storm', 'Mike']
 ) {
-  // Add console error handler
-  page.on('console', msg => {
-    console.log(`Browser ${msg.type()}: ${msg.text()}`);
-  });
-
-  page.on('pageerror', error => {
-    console.log('Page error:', error.message);
-  });
-
   try {
     // Navigate to the app and wait for load
     await page.goto('/arcade-adventure/#/arcade-adventure');
-    
-    // Debug info
-    console.log('Current URL:', page.url());
 
     // First wait for the loading state to finish
     const loadingElement = page.getByText('Loading...');
@@ -50,21 +38,9 @@ export async function setupPlayers(
     await startGameButton.click();
 
   } catch (e) {
-    // If there's an error, capture debugging information before the page closes
-    try {
-      console.error('Test failed:', e);
-      const url = page.url();
-      console.log('Current URL:', url);
-      
-      page.screenshot({ path: 'test-failure.png' });
-      console.log('Screenshot saved to test-failure.png');
-      
-      const content = await page.content();
-      console.log('Page content:', content);
-    } catch (debugError) {
-      console.error('Failed to capture debug info:', debugError);
-    }
-    
+    // Capture debug info on failure
+    console.error('Test failed:', e);
+    page.screenshot({ path: 'test-failure.png' });
     throw e;
   }
 }

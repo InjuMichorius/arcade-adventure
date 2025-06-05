@@ -29,6 +29,7 @@
     "lint:react": "eslint src/",
     "lint:playwright": "eslint -c .eslintrc.playwright.js tests/",
     "playwright-ui": "playwright test --ui",
+    "playwright-record": "npx playwright codegen http://localhost:3000/arcade-adventure/#/arcade-adventure",
     "test:ci": "playwright test"
   },
   "eslintConfig": {
