@@ -182,11 +182,13 @@ const TipsyTurns = ({ onNextGame }) => {
               text: "Skip game",
               variant: "secondary",
               onClick: onNextGame,
+              dataTestId: "skip-game-button",
             },
             {
               icon: faGamepad,
               text: "Play game",
               variant: "pushable red",
+              dataTestId: "play-game-button",
               onClick: () => setIsInfoModalOpen(false),
             },
           ]}

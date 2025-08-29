@@ -25,4 +25,4 @@ test("Game session persists players when returning to main menu", async ({ page 
   for (const playerName of players) {
     await expect(page.locator('p.player-name').filter({ hasText: playerName })).toBeVisible();
   }
-}); 
+});

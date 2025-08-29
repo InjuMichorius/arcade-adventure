@@ -205,12 +205,14 @@ function TicTacToe({ onNextGame }) {
               text: "Skip game",
               variant: "secondary",
               onClick: onNextGame,
+              dataTestId: "skip-game-button",
             },
             {
               icon: faGamepad,
               text: "Play game",
               variant: "pushable red",
               onClick: () => setIsInfoModalOpen(false), // Close modal on button click
+              dataTestId: "play-game-button",
             },
           ]}
           onClose={() => setIsInfoModalOpen(false)} // Close modal when overlay or close button is clicked
