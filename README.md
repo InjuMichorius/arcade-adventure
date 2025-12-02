@@ -6,7 +6,6 @@
 1. [Goal](https://github.com/InjuMichorius/arcade-adventure#goal-)
 2. [Getting started](https://github.com/InjuMichorius/arcade-adventure#getting-started-)
 3. [Wishlist](https://github.com/InjuMichorius/arcade-adventure#feature-wishlist--backlog-)
-4. [Practises](https://github.com/InjuMichorius/arcade-adventure#design-patterns-and-best-practices-)
 
 # Goal 💪🏻
 I build this project to learn more about react, playwright and pipelines. I thought it would be fun to create a drinking game, so i can test it in real life.
